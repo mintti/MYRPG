@@ -13,6 +13,8 @@ namespace Module
 
             selectedJobList.ForEach(index => units.Add(new Unit(index)));
             
+            // [TODO] 던전 정보 생성 
+            dungeons.First().IsEnable = true;
             return new PlayerData(dungeons, units);
         }
     }

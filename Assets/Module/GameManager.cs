@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Infra.Model.Data;
+using Module.WorldMap;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
@@ -12,7 +13,10 @@ namespace Module
     /// </summary>
     public class GameManager : MonoBehaviour
     {
+        #region Player Data
         public PlayerData PlayerData { get; set; }
+        public DungeonType DungeonType { get; set; }
+        #endregion
 
         private bool IsLoaded { get; set; }
 
@@ -56,11 +60,24 @@ namespace Module
         #endregion
 
         #region Game
+        /// <summary>
+        /// Move to WorldScene from MainMenu.
+        /// </summary>
+        /// <param name="data"></param>
         public void StartGame(PlayerData data = null)
         {
             data ??= PlayerData;
-
             SceneManager.LoadScene($"WorldScene");
+        }
+
+        /// <summary>
+        /// Move to SlotScene from WorldScene.
+        /// </summary>
+        /// <param name="type"></param>
+        public void MoveGameScene(DungeonType type)
+        {
+            DungeonType = type;
+            SceneManager.LoadScene($"SlotScene");
         }
 
         #endregion
