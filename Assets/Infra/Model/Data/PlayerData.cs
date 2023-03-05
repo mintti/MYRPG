@@ -15,7 +15,7 @@ namespace Infra.Model.Data
         
         public List<Unit> UnitList { get; set; }
         
-        public List<Artefact> ArtefactList { get; set; }
+        public List<Artifact> ArtefactList { get; set; }
 
         public uint Money { get; set; }
 

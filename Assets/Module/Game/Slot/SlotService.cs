@@ -4,11 +4,6 @@ using System.Text;
 
 namespace Module.Game.Slot
 {
-    public class Block
-    {
-        public float Weight { get; set; }
-        public float WeightBackup { get; set; }
-    }
     
     public delegate void Del(Block block);
     

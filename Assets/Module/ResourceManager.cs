@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Infra.Model.Resource;
 using Unity.Jobs;
 using UnityEngine;
+using Color = System.Drawing.Color;
 
 namespace Module
 {
@@ -28,11 +29,11 @@ namespace Module
         {
             JobList = new List<Job>()
             {
-                new Job(1, "Warrior"),
-                new Job(2, "Wizard"),
-                new Job(3, "Archer"),
-                new Job(4, "Knight"),
-                new Job(5, "Priest"),
+                new Job(1, "Warrior", Color.Blue),
+                new Job(2, "Wizard", Color.Purple),
+                new Job(3, "Archer", Color.Green),
+                new Job(4, "Knight", Color.LightSalmon),
+                new Job(5, "Priest", Color.Yellow),
             };
         }
     }
