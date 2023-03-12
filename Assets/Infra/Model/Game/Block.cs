@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Infra.Model.Data;
-using Module.WorldMap;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 
-namespace Module.Game.Slot
+namespace Infra.Model.Game
 {
-    public class Block
+    internal class Block
     {
         #region Info
         public string Name { get; set; }

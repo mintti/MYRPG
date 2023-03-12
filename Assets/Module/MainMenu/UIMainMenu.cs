@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
+using Infra.Model.Game;
 using Infra.Model.Resource;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,7 +12,7 @@ using UnityEngine.UI;
 
 namespace Module.MainMenu
 {
-    public class UIMainMenu : MonoBehaviour
+    internal class UIMainMenu : MonoBehaviour
     {
         #region Varaibles
         private GameManager GameManager { get; set; }
@@ -93,7 +94,7 @@ namespace Module.MainMenu
         private void StartNewGame()
         {
             var data = DataUtils.CreateNewData(_selectedJobList);
-            GameManager.StartGame(data);
+            GameManager.StartGame(new GameData(data));
         }
 
         public bool SelectJobObj(Job job)

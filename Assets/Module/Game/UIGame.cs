@@ -2,19 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Infra.Model.Data;
 using Infra.Model.Game;
+using Module.Game.Battle;
 using Module.Game.Slot;
 using Module.WorldMap;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Block = Infra.Model.Data.Block;
+
+using Block = Infra.Model.Game.Block;
 
 namespace Module.Game
 {
-    public class UIGame : MonoBehaviour
+    internal class UIGame : MonoBehaviour
     {
         #region Variables
         private GameManager GameManager { get; set; }
@@ -28,9 +28,10 @@ namespace Module.Game
         #endregion
 
         #region Game
-        private PlayerData PlayerData { get; set; }
-        
-        
+
+        private GameData GameData { get; set; }
+
+
 
         #endregion
         #region Game Component
@@ -44,6 +45,7 @@ namespace Module.Game
         
         #region Slot
         public UISlot uiSlot;
+        private SlotService SlotService { get; set; }
         private List<Block> BlockList { get; set; } = new ();
         
         /// <summary>
@@ -55,18 +57,22 @@ namespace Module.Game
         /// 스핀 종료 플래그. 모든 스핀 이벤트가 종료되었을 때, True
         /// </summary>
         private bool SpinEndFlag { get; set; }
+        
+        private BlockEvents BlockEvents { get; set; } 
         #endregion
 
-        #region Battle ( Unit )
+        #region Battle
 
-        public List<CanvasScaler.Unit> UnitList { get; set; } = new List<CanvasScaler.Unit>();
+        public UIBattle uIBattle;
+        public List<Unit> UnitList { get; set; } = new List<Unit>();
         public List<Enemy> EnemyList { get; set; } = new List<Enemy>();
 
         #endregion
 
         #region Artifact
-        public GameObject artifactListObject;
-        private List<Artifact> ArtifactList { get; set; } = new();
+        public Transform artefactListTr;
+        public GameObject artefactPrefab;
+        private List<Artefact> ArtifactList { get; set; } = new();
         #endregion
         #endregion
         #endregion
@@ -82,27 +88,38 @@ namespace Module.Game
             
             GameManager = FindObjectsOfType<GameManager>().First();
 
-            Init(GameManager.PlayerData, GameManager.DungeonType);
+            Init(GameManager.GameData, GameManager.DungeonType);
 
             StartCoroutine(nameof(Main));
         }
         
-        private void Init(PlayerData data, DungeonType dungeonType)
+        private void Init(GameData data, DungeonType dungeonType)
         {
-            PlayerData = data;
+            GameData = data;
+            SlotService = new SlotService();
             
             // Slot 배치
             BlockList.Clear();
-            BlockList = PlayerData.UnitList.SelectMany(u => u.HasBlocks).ToList();
+            BlockList = GameData.UnitList.SelectMany(u => u.HasBlocks).ToList();
+            uiSlot.Init(this, GameData.SlotWidth, GameData.SlotHeight);
             
             // Artifact 배치
             ArtifactList.Clear();
-            ArtifactList = PlayerData.ArtefactList;
+            ArtifactList = GameData.ArtefactList;            
+            foreach (var item in ArtifactList)
+            {
+                var obj = Instantiate(artefactPrefab, artefactListTr);
+                obj.GetComponent<UIArtefact>().Set(item);
+            }
             
-            // Unit 배치
+            // Battle View Setting
             UnitList.Clear();
             EnemyList.Clear();
+            uIBattle.Init(this);
             
+            
+            // 블럭 효과 초기화 (by artefact and enemy)
+            BlockEvents = new BlockEvents((e) => { });
             
             // 등등 초기화
             resultPopupGameObject.SetActive(false);
@@ -165,10 +182,13 @@ namespace Module.Game
             if (Setting || Spinning) return;
 
             Spinning = true;
-
             
+            // 블럭 지정 및 설정
+            var seq = SlotService.GetRandomBlock(BlockList, GameData.SlotWidth, GameData.SlotHeight, BlockEvents);
+            uiSlot.SetBlocks(seq);
             
-            // 스핀 효과 적용
+            // 스핀 효과 적용 *Show Animation
+            
             Spinning = false;
             SpinEndFlag = true;
         }

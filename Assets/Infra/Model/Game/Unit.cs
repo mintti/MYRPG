@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace Infra.Model.Data
+namespace Infra.Model.Game
 {
     internal class Unit
     {
         public int JobIndex { get; }
         
-        public List<(int Index, int Grade, int Level)> HasBlocks { get; set; }
+        public List<Block> HasBlocks { get; set; }
         
         public int Hp { get; set; }
 
@@ -15,6 +15,6 @@ namespace Infra.Model.Data
             JobIndex = jobIndex;
             // 기본 데이타 설정
         }
-        
+
     }
 }

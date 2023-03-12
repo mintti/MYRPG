@@ -1,10 +1,10 @@
-using Infra.Model.Data;
+using Infra.Model.Game;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Module.WorldMap
 {
-    public class UIDungeon : MonoBehaviour
+    internal class UIDungeon : MonoBehaviour
     {
         private UIWorldMap WorldMap { get; set; }
         

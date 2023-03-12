@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
+using Infra.Model.Data;
 
-namespace Infra.Model.Data
+namespace Infra.Model.Game
 {
-    /// <summary>
-    /// Dungeon info that saved player data.
-    /// Dungeon's Index, component of event when user data created.
-    /// </summary>
     internal class Dungeon
     {
         #region Variables

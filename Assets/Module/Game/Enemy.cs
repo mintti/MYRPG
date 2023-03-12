@@ -1,6 +1,6 @@
 ﻿namespace Module.Game
 {
-    public class Enemy : Entity
+    internal class Enemy : Entity
     {
         
     }

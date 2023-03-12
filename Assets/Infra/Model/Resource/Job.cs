@@ -3,7 +3,7 @@ using Color = System.Drawing.Color;
 
 namespace Infra.Model.Resource
 {
-    public class Job
+    internal class Job
     {
         public int Index { get; }
         public string Name { get; }

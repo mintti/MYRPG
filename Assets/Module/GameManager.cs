@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using Infra.Model.Data;
+using Infra.Model.Game;
 using Module.WorldMap;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -11,10 +11,10 @@ namespace Module
     /// <summary>
     /// 전체적인 게임 흐름 제어
     /// </summary>
-    public class GameManager : MonoBehaviour
+    internal class GameManager : MonoBehaviour
     {
         #region Player Data
-        public PlayerData PlayerData { get; set; }
+        public GameData GameData { get; set; }
         public DungeonType DungeonType { get; set; }
         #endregion
 
@@ -64,9 +64,9 @@ namespace Module
         /// Move to WorldScene from MainMenu.
         /// </summary>
         /// <param name="data"></param>
-        public void StartGame(PlayerData data = null)
+        public void StartGame(GameData data = null)
         {
-            data ??= PlayerData;
+            data ??= GameData;
             SceneManager.LoadScene($"WorldScene");
         }
 

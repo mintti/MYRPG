@@ -1,6 +1,6 @@
 ﻿namespace Infra.Model.Data
 {
-    public class MapPoint
+    internal class MapPoint
     {
         public int Depth { get; }
         public int EventIndex { get; }

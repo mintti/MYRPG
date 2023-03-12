@@ -2,7 +2,7 @@
 
 namespace Module.Game
 {
-    public class Entity
+    internal class Entity
     {
         public uint Hp { get; set; }
         public uint MaxHp { get; set; }

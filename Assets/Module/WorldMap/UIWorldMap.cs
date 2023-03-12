@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Module.WorldMap
 {
-    public class UIWorldMap : MonoBehaviour
+    internal class UIWorldMap : MonoBehaviour
     {
         private GameManager GameManager { get; set; }
 
@@ -20,7 +20,7 @@ namespace Module.WorldMap
             for (int i = 0, cnt = UIDungeons.Length; i < cnt; i++)
             {
                 var type = (DungeonType) (i + 1);
-                UIDungeons[i].Init(this, type, GameManager.PlayerData.DungeonList[i]);    
+                UIDungeons[i].Init(this, type, GameManager.GameData.DungeonList[i]);    
             }
         }
 

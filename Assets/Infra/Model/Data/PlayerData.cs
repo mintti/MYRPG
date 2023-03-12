@@ -9,13 +9,13 @@ namespace Infra.Model.Data
     /// - 해당 데이타를 가공하여 게임 데이타를 생성
     /// - 가공된 데이타를 해당 데이타 구조로 저장
     /// </summary>
-    public class PlayerData
+    internal class PlayerData
     {
         public List<Dungeon> DungeonList { get; set; }
         
         public List<Unit> UnitList { get; set; }
         
-        public List<Artifact> ArtefactList { get; set; }
+        public List<Artefact> ArtefactList { get; set; }
 
         public uint Money { get; set; }
 

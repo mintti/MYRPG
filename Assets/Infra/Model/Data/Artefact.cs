@@ -1,10 +1,10 @@
 ﻿namespace Infra.Model.Data
 {
-    public class Artifact
+    public abstract class Artefact
     {
         public int Index { get; }
 
-        public Artifact(int index)
+        protected Artefact(int index)
         {
             Index = index;
         }

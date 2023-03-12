@@ -9,7 +9,7 @@ namespace Module
     /// <summary>
     /// 전체 리소스 관리
     /// </summary>
-    public static class ResourceManager
+    internal static class ResourceManager
     {
         private static List<Job> _jobList;
         public static List<Job> JobList

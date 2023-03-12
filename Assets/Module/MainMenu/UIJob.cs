@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Module.MainMenu
 {
-    public class UIJob : MonoBehaviour
+    internal class UIJob : MonoBehaviour
     {
         public GameObject selectedObj;
         private UIMainMenu Parent { get; set; }
