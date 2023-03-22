@@ -1,3 +1,4 @@
+using Infra.Model.Data;
 using Infra.Model.Game;
 using UnityEngine;
 using UnityEngine.UIElements;

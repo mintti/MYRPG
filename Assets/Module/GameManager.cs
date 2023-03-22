@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using Infra;
+using Infra.Model.Data;
 using Infra.Model.Game;
 using Module.WorldMap;
 using UnityEngine;
@@ -11,7 +13,7 @@ namespace Module
     /// <summary>
     /// 전체적인 게임 흐름 제어
     /// </summary>
-    internal class GameManager : MonoBehaviour
+    internal class GameManager : MonoSingleton<GameManager>
     {
         #region Player Data
         public GameData GameData { get; set; }
@@ -43,11 +45,10 @@ namespace Module
             // 시스템 초기화는 한 번만 수행한다.
             if (!IsLoaded)
             {
-
+                SceneManager.LoadScene($"MainMenuScene");
                 IsLoaded = true;
             }
         }
-
         #endregion
 
         #region Program
@@ -66,8 +67,13 @@ namespace Module
         /// <param name="data"></param>
         public void StartGame(GameData data = null)
         {
-            data ??= GameData;
-            SceneManager.LoadScene($"WorldScene");
+            if (data != null) // New Game
+            {
+                GameData = data;
+                SaveData();
+            }
+            
+            SceneManager.LoadScene($"WorldMapScene");
         }
 
         /// <summary>
@@ -78,6 +84,17 @@ namespace Module
         {
             DungeonType = type;
             SceneManager.LoadScene($"SlotScene");
+        }
+
+        #endregion
+
+        #region Data
+        /// <summary>
+        /// 임시로 작성된 저장하는 용도
+        /// </summary>
+        public void SaveData()
+        {
+            
         }
 
         #endregion

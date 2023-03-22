@@ -11,6 +11,9 @@ namespace Module.Game.Slot
         public void Set(Artefact artefact)
         {
             Artefact = artefact;
+
+            GetComponentInChildren<Text>().text = Artefact.Name;
+
         }
     }
 }

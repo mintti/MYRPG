@@ -12,10 +12,15 @@ namespace Infra.Model.Resource
         
         public Sprite Icon { get; }
         
-        public Job(int index, string name, Color color, Sprite icon= null)
+        public int Hp { get; }
+        
+        public Job(int index, string name, int hp, Color color, Sprite icon= null)
         {
             Index = index;
             Name = name;
+
+            Hp = hp;
+            
             Color = color;
             Icon = icon;
         }

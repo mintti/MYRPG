@@ -1,10 +1,10 @@
-﻿namespace Infra.Model.Game
+﻿namespace Infra.Model.Resource
 {
-    internal class Artefact
+    internal class Enemy
     {
         public string Name { get; }
 
-        public Artefact(string name)
+        public Enemy(string name)
         {
             Name = name;
         }

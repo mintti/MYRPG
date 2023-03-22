@@ -1,5 +1,7 @@
 using System;
+using Infra.Model.Data;
 using Infra.Model.Resource;
+using Module.WorldMap;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +11,10 @@ namespace Module.MainMenu
     internal class UIJob : MonoBehaviour
     {
         public GameObject selectedObj;
+        public GameObject lockGameObject;
         private UIMainMenu Parent { get; set; }
         private Job Job { get; set; }
+        private bool IsUnlock { get; set; }
         
         public void Start()
         {
@@ -29,7 +33,11 @@ namespace Module.MainMenu
         {
             Parent = parent;
             Job = job;
-            
+            IsUnlock = PermanentData.Instance.UnlockDict[UnlockType.Job][job.Index];
+
+            lockGameObject.SetActive(!IsUnlock);
+            if (!IsUnlock) return;
+
             var image = gameObject.GetComponent<Image>();
             var testText = gameObject.GetComponentInChildren<TextMeshProUGUI>();
             testText.text = Job.Name;
@@ -37,6 +45,8 @@ namespace Module.MainMenu
 
         private void ClickedEvent()
         {
+            if(!IsUnlock) return;
+               
             var isSelected =  Parent.SelectJobObj(Job);
             selectedObj.SetActive(isSelected);
         }

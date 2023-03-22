@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using Block = Infra.Model.Game.Block;
+using State = Infra.Model.Game.State;
 
 namespace Module.Game
 {
@@ -85,9 +86,9 @@ namespace Module.Game
         private void Start()
         {
             Setting = true;
-            
-            GameManager = FindObjectsOfType<GameManager>().First();
 
+            GameManager = GameManager.Instance;
+            
             Init(GameManager.GameData, GameManager.DungeonType);
 
             StartCoroutine(nameof(Main));
@@ -140,17 +141,20 @@ namespace Module.Game
                 Setting = false;
                 
                 // Spin 대기
-                yield return SpinEndFlag;
+                yield return new WaitUntil(() => SpinEndFlag);
 
                 Setting = true;
-                if (true)
+                if (EnemyList.All(e => e.State == State.Die))
                 {
                     EndGame();
                     yield break;
                 }
                 
                 // 적의 턴
-                //EnemyList.ForEach(x=> );
+                foreach (var enemy in EnemyList.Where(e=> e.CanAction()))
+                {
+                    enemy.Execute();;
+                }
             }
 
 
