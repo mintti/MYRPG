@@ -30,21 +30,15 @@ namespace Module
 
             Dungeons = new List<Dungeon>()
             {
-                new (0, "테스트 던전", 1, new (){1, 2}, new List<int>())
+                new (0, "테스트 던전", 1, new (){1, 2}, new List<int>(){1, 2})
             };
 
-            DungeonEvents = new List<DungeonEvent>()
-            {
-                new(0, "테스트 이벤트", DungeonEventType.None), 
-                new(1, "아티펙트", DungeonEventType.Event),
-                new(2, "체력 회복 이벤트", DungeonEventType.Event),
-            };
 
             Enemies = new List<Enemy>()
             {
                 new("테스트 몬스터")
             };
-
+            
             #endregion
         }
         #endregion
@@ -56,12 +50,10 @@ namespace Module
 
         public List<Dungeon> Dungeons { get; }
 
-        public List<DungeonEvent> DungeonEvents { get;  }
-
         public List<Enemy> Enemies  { get;  }
         #endregion
         
-        public List<(int depth, int width)> MapSizeByDungeonLevel= new ()
+        public readonly List<(int depth, int width)> MapSizeByDungeonLevel= new ()
         {
             (0,0), // never using
             (4,2),
@@ -71,8 +63,9 @@ namespace Module
             (0,0),
         };
 
-        #endregion
+        public readonly (float battle, float elete, float @event, float rest) EventPercentage 
+            = new (0.6f, 0.0f, 0.3f, 0.1f);
 
-        
+        #endregion
     }
 }

@@ -1,18 +1,62 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Infra.Model.Data;
+using Module.Game.Map;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UISpot : MonoBehaviour
+internal class UISpot : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    #region Varaibles
+    private UIMap UIMap { get; set; }
+    private Spot BaseSpot { get; set; }
+    private Button _button;
+
+    #region External
+    public Sprite icon;
+    public void B_Select() => UIMap.SelectSpot(BaseSpot);
+    #endregion
+    #endregion
+    
+    public void Init(UIMap map, Spot spot)
     {
+        UIMap = map;
         
+        _button = GetComponentInChildren<Button>();
+        _button.interactable = false;
+
+        BaseSpot = spot;
+        
+        // [TEST] 텍스트 설정
+        string childtext = "";
+        if (spot.ChildSpots != null)
+        {
+            foreach (var s in spot.ChildSpots)
+            {
+                childtext += $"{s.Index} ";
+            }
+        }
+        string text = $"{spot.Index}\n({childtext})";
+        GetComponentInChildren<TextMeshProUGUI>().SetText(text);
+        
+        
+        Refresh();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Refresh()
     {
-        
+        switch (BaseSpot.State)
+        {
+            case SpotState.Do:
+                _button.interactable = true;
+                break;
+            case SpotState.None:
+            case SpotState.Clear :
+                _button.interactable = false;
+                break;
+        }
     }
 }

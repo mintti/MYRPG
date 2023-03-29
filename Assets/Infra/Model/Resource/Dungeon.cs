@@ -10,7 +10,7 @@ namespace Infra.Model.Resource
         public int Level { get; }
         public List<int> EnemyList { get; }
         public List<int> EventList { get; }
-        
+
         public Dungeon(int index, string name, int level, List<int> enemy = null, List<int> @event = null)
         {
             Index = index;

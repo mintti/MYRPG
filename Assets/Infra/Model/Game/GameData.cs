@@ -1,22 +1,39 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml.Schema;
 using Infra.Model.Data;
 
 namespace Infra.Model.Game
 {
     internal class GameData
     {
-        public List<Dungeon> DungeonList { get; set; } // 수정 필요
-        
-        public List<Unit> UnitList { get; set; }
-        
-        public List<Artefact> ArtefactList { get; set; }
+        private PlayerData PlayerData { get; }
+
+        #region PlayerData Navigate
+
+        public List<Dungeon> DungeonList => PlayerData.DungeonList;
+
+        public int DungeonIndex
+        {
+            get => PlayerData.DungeonIndex;
+            set => PlayerData.DungeonIndex = value;
+        }
+        public Spot Map
+        {
+            get => PlayerData.Spot;
+            set => PlayerData.Spot = value;
+        }
+        #endregion
+
+        public List<Unit> UnitList { get; } = new ();
+
+        public List<Artefact> ArtefactList { get; } = new();
 
         public uint Money { get; set; }
 
 
         #region Game
         public int SlotWidth { get; set; }
-
         public int SlotHeight { get; set; }
 
 
@@ -29,16 +46,8 @@ namespace Infra.Model.Game
 
         public GameData(PlayerData data)
         {
-            DungeonList = new List<Dungeon>(data.DungeonList);
-
-            UnitList ??= new ();
-            foreach (var unit in data.UnitList)
-            {
-                UnitList.Add( new Unit(unit));
-            }
-
-            ArtefactList = new();
-
+            PlayerData = data;
+            PlayerData.UnitList.ForEach(unit => UnitList.Add(new Unit(unit)));
         }
     }
 }

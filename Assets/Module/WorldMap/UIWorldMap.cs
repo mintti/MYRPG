@@ -17,54 +17,36 @@ namespace Module.WorldMap
         // Start is called before the first frame update
         private void Start()
         {
+            // 세팅
             GameManager = GameManager.Instance;
-
-            for (int i = 0, cnt = GameManager.GameData.DungeonList.Count /*UIDungeons.Length*/; i < cnt; i++)
+            for (int i = 0, cnt = GameManager.GameData.DungeonList.Count ; i < cnt; i++)
             {
-                var type = (DungeonType) (i + 1);
-                UIDungeons[i].Init(this, type, GameManager.GameData.DungeonList[i]);    
+                UIDungeons[i].Init(this, GameManager.GameData.DungeonList[i]);
+            }
+            
+            // 현재 진행 중인 던전이 존재
+            if (GameManager.GameData.Map != null)
+            {
+                SelectDungeon();
             }
         }
 
 
         #region WorldMap
-        public void SelectDungeon(DungeonType type) => GameManager.MoveGameScene(type);
 
-        private void CreateMapSpot(int maxDepth, int maxWidth)
+        public void SelectDungeon(Dungeon dungeon = null)
         {
-            Spot firstSpot;
-
-            // 뎁스별 Spot 갯수 설정
-            var widthList = new List<int>();
-            int sum = 0;
-            for (var i = 1; i < maxDepth - 1; i++)
+            // 사용자가 던전을 선택한 경우
+            if (dungeon != null)
             {
-                int count = Random.Range(2, maxWidth);
-                sum += count;
-                widthList.Add(count);
-            }
-
-            var possibleEventList = new List<int>()
-            {
-                
-            };
-                
-            // 이벤트 생성
-            for (var i = 0; i < sum; i++)
-            {
-                
-            }
+                var spot = DataUtils.GetRandomMap(dungeon);
+                GameManager.GameData.Map = spot;
+            } 
             
-            for (int i = 1; i < maxDepth - 1; i++)
-            {
-                for (int j = 0; j < widthList[i]; j++)
-                {
-                    
-                }
-            }
-            GameManager.SaveData();
+            // 씬 이동
+            GameManager.MoveGameScene();  
         }
-        
+
         #endregion
     }
 }

@@ -6,13 +6,13 @@ using Random = System.Random;
 
 namespace Infra.Util.RandomMapMaker
 {
-    public class RandomMapMaker
+    internal class RandomMapMaker
     {
         Random _random;
-        public Spot Generate(int depth, int maxWidth)
+        public List<Spot> Generate(int depth, int maxWidth)
         {
-            var firstSpot = new Spot(1);
-            var lastSpot = new Spot(depth);
+            var firstSpot = new Spot(1){State = SpotState.Do};
+            var allCollection = new List<Spot>(){firstSpot};
             _random = new Random();
             
             // 뎁스별 Spot 갯수 설정
@@ -34,27 +34,33 @@ namespace Infra.Util.RandomMapMaker
             {
                 var spot = new Spot(index++);
                 currentSpots.Add(spot);
+                allCollection.Add(spot);
                 firstSpot.Connect(spot);
             }
             
             // 다음 노드 생성 및 연결
-            for (int i = 2; i < depth - 2; i++)
+            for (int i = 0, cnt = widthList.Count -1 ; i < cnt; i++)
             {
                 nextSpots.Clear();
                 for (int j = 0; j < widthList[i]; j++)
                 {
-                    nextSpots.Add(new Spot(index++));
+                    var spot = new Spot(index++);
+                    nextSpots.Add(spot);
+                    allCollection.Add(spot);
                 }
         
                 ConnectEdge(currentSpots, nextSpots); // 연결
         
-                currentSpots = nextSpots;
+                currentSpots.Clear();
+                nextSpots.ForEach(s => currentSpots.Add(s)) ;
             }
             
-            // depth - 1 에 위치한 노드들을 마지막 노드에 연결 
+            // depth - 1 에 위치한 노드들을 마지막 노드에 연결
+            var lastSpot = new Spot(index);
             currentSpots.ForEach(n => n.Connect(lastSpot));
+            allCollection.Add(lastSpot);
             
-            return firstSpot;
+            return allCollection;
         }
         
         private void ConnectEdge(List<Spot> Currents, List<Spot> Childs)
@@ -68,9 +74,11 @@ namespace Infra.Util.RandomMapMaker
                 {
                     Currents[i].Connect(Childs[j]);
                 }
-        
-                pivot = canBranchCount;
-        
+
+                if (canBranchCount < Childs.Count)
+                    pivot = _random.Next(canBranchCount, canBranchCount + 1);
+                else pivot = canBranchCount;
+
             }
         }
         #region interface

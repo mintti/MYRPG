@@ -13,7 +13,6 @@ namespace Infra.Model.Data
         
         public bool IsEnable { get; set; }
         public bool IsClear { get; set; }
-        public Spot Map { get; }
             
         /// <summary>
         /// Rate of Progress
@@ -24,10 +23,9 @@ namespace Infra.Model.Data
         /// <summary>
         /// 초기화
         /// </summary>
-        public Dungeon(int index, Spot map)
+        public Dungeon(int index)
         {
             Index = index;
-            Map = map;
             IsClear = false;
         }
     }

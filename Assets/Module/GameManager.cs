@@ -17,7 +17,6 @@ namespace Module
     {
         #region Player Data
         public GameData GameData { get; set; }
-        public DungeonType DungeonType { get; set; }
         #endregion
 
         private bool IsLoaded { get; set; }
@@ -80,9 +79,9 @@ namespace Module
         /// Move to SlotScene from WorldScene.
         /// </summary>
         /// <param name="type"></param>
-        public void MoveGameScene(DungeonType type)
+        public void MoveGameScene()
         {
-            DungeonType = type;
+            
             SceneManager.LoadScene($"SlotScene");
         }
 

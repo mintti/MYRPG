@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Infra.Model.Game;
 using Module.Game.Battle;
+using Module.Game.Map;
 using Module.Game.Slot;
 using Module.WorldMap;
 using UnityEditorInternal;
@@ -29,14 +30,13 @@ namespace Module.Game
         #endregion
 
         #region Game
-
+        
         private GameData GameData { get; set; }
-
-
-
+    
         #endregion
         #region Game Component
 
+        public UIMap uiMap;
         public GameObject resultPopupGameObject;
             
         /// <summary>
@@ -89,12 +89,13 @@ namespace Module.Game
 
             GameManager = GameManager.Instance;
             
-            Init(GameManager.GameData, GameManager.DungeonType);
-
+            // Init(GameManager.GameData, GameManager.DungeonType);
+            uiMap.Init(this);
+            
             StartCoroutine(nameof(Main));
         }
         
-        private void Init(GameData data, DungeonType dungeonType)
+        private void Init(GameData data)
         {
             GameData = data;
             SlotService = new SlotService();
@@ -117,7 +118,6 @@ namespace Module.Game
             UnitList.Clear();
             EnemyList.Clear();
             uIBattle.Init(this);
-            
             
             // 블럭 효과 초기화 (by artefact and enemy)
             BlockEvents = new BlockEvents((e) => { });

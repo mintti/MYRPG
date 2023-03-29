@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Infra.Model.Data
@@ -20,6 +21,12 @@ namespace Infra.Model.Data
 
         public uint Money { get; set; }
 
+        /* 해당 데이터 존재 여부로 던전 진행 상태를 확인할 수 있다. 진행중인 데이터가 없는 경우 null로 초기화 할 것*/
+        #region Selected Dungeon Infomation
+        public int DungeonIndex { get; set; } 
+        public Spot Spot { get; set; }  
+        #endregion
+        
         public PlayerData(List<Dungeon> dungeonList,
             List<Unit> unitList)
         {
