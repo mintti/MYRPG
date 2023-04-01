@@ -15,14 +15,8 @@ namespace Infra.Model.Data
         public SpotState State { get; set; } 
         
         public List<Spot> ChildSpots { get; set; }
-        
-        public SpotEventType Type { get; set; }
        
         public SpotEvent Event { get; set; }
-        
-        public int EventIndex { get; set; }
-        
-        public bool IsClear { get; set; }
         
         public Spot(int index)
         {

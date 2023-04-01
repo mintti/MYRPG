@@ -11,7 +11,7 @@ namespace Module.Game.Map
     {
         #region Variables
         private GameManager GameManager { get; set; }
-        private UIGame UIGame { get; set; }
+        public UIGame UIGame { get; set; }
         
         private List<UISpot> SpotList { get; set; }
         
@@ -86,11 +86,6 @@ namespace Module.Game.Map
         public void UpdateMap()
         {
             SpotList.ForEach(s => s.Refresh());
-        }
-
-        public void SelectSpot(Spot spot)
-        {
-            
         }
     }
 }

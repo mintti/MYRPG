@@ -93,7 +93,7 @@ namespace Module
                 switch (evt)
                 {
                     case SpotEventType.Battle:
-                        spotEvent = new Battle(randomMonsterSeq.ToList());
+                        spotEvent = new BattleEvent(randomMonsterSeq.ToList());
                         break;
                     case SpotEventType.Rest:
                         spotEvent = null;

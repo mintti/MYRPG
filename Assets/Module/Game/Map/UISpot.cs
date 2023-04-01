@@ -17,7 +17,7 @@ internal class UISpot : MonoBehaviour
 
     #region External
     public Sprite icon;
-    public void B_Select() => UIMap.SelectSpot(BaseSpot);
+    public void B_Select() => UIMap.UIGame.SelectMap(BaseSpot);
     #endregion
     #endregion
     

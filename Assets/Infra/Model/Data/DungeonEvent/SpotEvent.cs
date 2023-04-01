@@ -1,12 +1,16 @@
-﻿using Infra.Model.Resource;
+﻿using System.ComponentModel;
+using Infra.Model.Resource;
 
 namespace Infra.Model.Data
 {
+    /// <summary>
+    /// 맵에 대표적으로 표시될 수 있는 아이콘
+    /// </summary>
     internal enum SpotEventType
     {
-        None, 
+        None,
         Battle,
-        Elete,
+        Elite,
         Boss,
         Rest,
         Artefact,

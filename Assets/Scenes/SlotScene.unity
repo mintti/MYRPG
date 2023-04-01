@@ -1446,6 +1446,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761e14068dc8b83449465e6901a0452c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rewardPopupGameObject: {fileID: 0}
+  uiSlot: {fileID: 0}
+  artefactListTr: {fileID: 0}
+  artefactPrefab: {fileID: 0}
 --- !u!1 &822330057
 GameObject:
   m_ObjectHideFlags: 0
@@ -2436,6 +2440,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1515929628}
   - component: {fileID: 1515929627}
+  - component: {fileID: 1515929629}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -2456,11 +2461,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiMap: {fileID: 1427370189}
-  resultPopupGameObject: {fileID: 1841276474}
-  uiSlot: {fileID: 1811965986}
-  uIBattle: {fileID: 1988964958}
-  artefactListTr: {fileID: 363347668}
-  artefactPrefab: {fileID: 588635222398117981, guid: ec5fc8b71c0dd5c488a170fbbb50a08a, type: 3}
 --- !u!4 &1515929628
 Transform:
   m_ObjectHideFlags: 0
@@ -2476,6 +2476,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1515929629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515929626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761e14068dc8b83449465e6901a0452c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rewardPopupGameObject: {fileID: 1841276474}
+  uiSlot: {fileID: 1811965986}
+  artefactListTr: {fileID: 363347668}
+  artefactPrefab: {fileID: 588635222398117981, guid: ec5fc8b71c0dd5c488a170fbbb50a08a, type: 3}
 --- !u!1 &1551237552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3812,7 +3828,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1841276475}
   m_Layer: 5
-  m_Name: ResultPopup
+  m_Name: RewardPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4351,6 +4367,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761e14068dc8b83449465e6901a0452c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rewardPopupGameObject: {fileID: 0}
+  uiSlot: {fileID: 0}
+  artefactListTr: {fileID: 0}
+  artefactPrefab: {fileID: 0}
 --- !u!1 &2001215815
 GameObject:
   m_ObjectHideFlags: 0

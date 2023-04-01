@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using Infra.Model.Game;
+using Module.Game.Battle;
 using UnityEngine;
 namespace Module.Game.Slot
 {
     internal class UISlot : MonoBehaviour
     {
         #region Variables
-        private UIGame UIGame { get; set; }
+        private UIEvent UIEvent { get; set; }
         
         public RectTransform slotRectTr;
         public Transform blockContentTr;
@@ -15,9 +16,9 @@ namespace Module.Game.Slot
         private List<UIBlock> Blocks { get; set; }
         #endregion
         
-        public void Init(UIGame uiGame, int width, int height) 
+        public void Init(UIEvent uiGame, int width, int height) 
         {
-            UIGame = uiGame;
+            UIEvent = uiGame;
             
             var rect = slotRectTr.rect;
             rect.width = width * 100;

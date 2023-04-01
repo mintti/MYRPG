@@ -2,11 +2,11 @@
 
 namespace Infra.Model.Data
 {
-    internal class Battle : SpotEvent
+    internal class BattleEvent : SpotEvent
     {
         public List<int> Monster { get; }
 
-        public Battle(List<int> monster)
+        public BattleEvent(List<int> monster)
         {
             Monster = monster;
         }
