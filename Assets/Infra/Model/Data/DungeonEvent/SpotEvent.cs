@@ -17,6 +17,9 @@ namespace Infra.Model.Data
         Event
     }
     
+    /// <summary>
+    /// Spot에서 발생하는 이벤트 정보
+    /// </summary>
     internal class SpotEvent
     {
         public SpotEventType Type { get; set; }

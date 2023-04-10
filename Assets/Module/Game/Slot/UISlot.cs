@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Infra.Model.Game;
-using Module.Game.Battle;
 using UnityEngine;
 namespace Module.Game.Slot
 {

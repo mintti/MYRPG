@@ -1,6 +1,5 @@
 using Infra.Model.Data;
 using Infra.Model.Game;
-using Module.Game.Battle;
 using Module.Game.Map;
 using UnityEngine;
 
@@ -18,6 +17,7 @@ namespace Module.Game
         #endregion
         private UIEvent UIEvent { get; set; }
         public UIMap uiMap;
+        public UIOption uiOption;
         
         #endregion
         /// <summary>
@@ -33,32 +33,28 @@ namespace Module.Game
         }
 
         #region Event-Related
-        public void SelectMap(Spot spot) => UIEvent.SetEvent(spot);
 
+        /// <summary>
+        /// UIMap에서 맵 선택 이벤트 발생시 수행
+        /// </summary>
+        public void SelectMap(Spot spot)
+        {
+            UIEvent.SetEvent(spot);
+            Map(false);
+        }
         #endregion
 
 
         #region Default Function
-        #region Map
-
-
-        private void Map()
+        private void Map(bool state = true)
         {
-            
+            uiMap.gameObject.SetActive(state);
         }
 
-        #endregion
-        
-        #region Option
-
-        private void Option()
+        private void Option(bool state = true)
         {
-            
+            uiOption.gameObject.SetActive(state);
         }
-        
-        
-
-        #endregion
         #endregion
 
     }

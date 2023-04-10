@@ -11,7 +11,6 @@ namespace Module.Game
 
         public virtual void Execute()
         {
-            
         }
 
         public bool CanAction()
