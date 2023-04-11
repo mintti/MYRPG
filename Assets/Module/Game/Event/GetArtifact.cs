@@ -13,20 +13,5 @@
         {
             
         }
-
-        public void SpinEvent()
-        {
-            
-        }
-
-        public void SpinResult()
-        {
-            
-        }
-
-        public void MsgConfirm()
-        {
-            
-        }
     }
 }

@@ -1630,9 +1630,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761e14068dc8b83449465e6901a0452c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <UIGame>k__BackingField: {fileID: 0}
+  <Setting>k__BackingField: 0
   rewardPopupGameObject: {fileID: 0}
   uIMessageBox: {fileID: 0}
   uiSlot: {fileID: 0}
+  <Spinning>k__BackingField: 0
+  <SpinEndFlag>k__BackingField: 0
   artefactListTr: {fileID: 0}
   artefactPrefab: {fileID: 0}
 --- !u!1 &822330057
@@ -2627,7 +2631,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1515929628}
   - component: {fileID: 1515929627}
-  - component: {fileID: 1515929629}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -2649,6 +2652,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiMap: {fileID: 1427370189}
   uiOption: {fileID: 451250438}
+  uiReward: {fileID: 1841276476}
+  uIMessageBox: {fileID: 2032496058}
+  uiSlot: {fileID: 1811965986}
+  artefactListTr: {fileID: 363347668}
+  artefactPrefab: {fileID: 588635222398117981, guid: ec5fc8b71c0dd5c488a170fbbb50a08a, type: 3}
 --- !u!4 &1515929628
 Transform:
   m_ObjectHideFlags: 0
@@ -2664,23 +2672,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1515929629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1515929626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 761e14068dc8b83449465e6901a0452c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rewardPopupGameObject: {fileID: 1841276474}
-  uIMessageBox: {fileID: 0}
-  uiSlot: {fileID: 1811965986}
-  artefactListTr: {fileID: 363347668}
-  artefactPrefab: {fileID: 588635222398117981, guid: ec5fc8b71c0dd5c488a170fbbb50a08a, type: 3}
 --- !u!1 &1524325895
 GameObject:
   m_ObjectHideFlags: 0
@@ -4228,6 +4219,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1841276475}
+  - component: {fileID: 1841276476}
   m_Layer: 5
   m_Name: RewardPopup
   m_TagString: Untagged
@@ -4256,6 +4248,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1841276476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841276474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77227d98efd46aa4fa71a0860fd293d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1856520727
 GameObject:
   m_ObjectHideFlags: 0
@@ -4768,9 +4772,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 761e14068dc8b83449465e6901a0452c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <UIGame>k__BackingField: {fileID: 0}
+  <Setting>k__BackingField: 0
   rewardPopupGameObject: {fileID: 0}
   uIMessageBox: {fileID: 0}
   uiSlot: {fileID: 0}
+  <Spinning>k__BackingField: 0
+  <SpinEndFlag>k__BackingField: 0
   artefactListTr: {fileID: 0}
   artefactPrefab: {fileID: 0}
 --- !u!1 &2001215815
@@ -4991,7 +4999,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2032496055
 RectTransform:
   m_ObjectHideFlags: 0

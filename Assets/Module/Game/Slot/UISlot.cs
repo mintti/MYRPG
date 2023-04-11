@@ -6,7 +6,7 @@ namespace Module.Game.Slot
     internal class UISlot : MonoBehaviour
     {
         #region Variables
-        private UIEvent UIEvent { get; set; }
+        private UIGame UIGame { get; set; }
         
         public RectTransform slotRectTr;
         public Transform blockContentTr;
@@ -15,9 +15,9 @@ namespace Module.Game.Slot
         private List<UIBlock> Blocks { get; set; }
         #endregion
         
-        public void Init(UIEvent uiGame, int width, int height) 
+        public void Init(UIGame uiGame, int width, int height) 
         {
-            UIEvent = uiGame;
+            UIGame = uiGame;
             
             var rect = slotRectTr.rect;
             rect.width = width * 100;

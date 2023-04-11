@@ -1,21 +1,17 @@
 ﻿using System;
+using Infra.Model.Game;
 using Module.Game.Event.Message;
 
 namespace Module.Game
 {
     internal interface IEventController
     {
-        void SetView();
+        void SpinEvent(Action nextAction = null);
 
-        void SpinEvent();
+        void Reward(Reward reward);
         
-        void Reward();
+        void EndEvent(string none = null);
         
-        void StartEvent();
-        
-        void EndEvent();
-        
-        IMessageBox IMessageBox { get; }
-        
+        IMessageBox MessageBox { get; }
     }
 }

@@ -1,8 +1,17 @@
 ﻿namespace Infra.Model.Resource
 {
-    public enum EventType
+    public enum EventType : int
     {
         None = 0,
-        Artifact,
+        HealingLake,
+        GetArtifact,
+    }
+
+    public enum BattleType : int
+    {
+        None = 0,
+        Common,
+        Elite,
+        Boss
     }
 }

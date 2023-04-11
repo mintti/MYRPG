@@ -30,7 +30,7 @@ namespace Module
 
             Dungeons = new List<Dungeon>()
             {
-                new (0, "테스트 던전", 1, new (){1, 2}, new List<int>(){1, 2})
+                new (0, "테스트 던전", 1, new (){ 1, 2}, new List<int>(){ (int)EventType.HealingLake, (int)EventType.GetArtifact})
             };
 
 

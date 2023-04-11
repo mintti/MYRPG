@@ -15,13 +15,12 @@ namespace Module.Game.Event
 
         public void Execute()
         {
-            ICon.IMessageBox.SetMessageBox("find healing lake.", Distractor.Keys.ToArray(), ReceiveAnswer );
+            ICon.MessageBox.SetMessageBox("find healing lake.", Distractor.Keys.ToArray(), ReceiveAnswer );
         }
 
         private void ReceiveAnswer(string answer)
         {
-            ICon.IMessageBox.SetMessageBox(Distractor[answer]);
+            ICon.MessageBox.SetMessageBox(Distractor[answer], callback: ICon.EndEvent);
         }
-        
     }
 }

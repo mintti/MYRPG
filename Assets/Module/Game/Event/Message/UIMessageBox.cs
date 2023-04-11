@@ -17,7 +17,7 @@ namespace Module.Game.Event.Message
     internal class UIMessageBox : MonoBehaviour, IMessageBox
     {
         #region Varaibles
-        private UIEvent UIEvent { get; set; }
+        private UIGame UIGame { get; set; }
         private List<UIAnswer> AnswerBuffer {get; set; }
         private bool HasAnswer { get; set; }
 
@@ -33,9 +33,9 @@ namespace Module.Game.Event.Message
         private void On() => gameObject.SetActive(true);
         private void Off() => gameObject.SetActive(false);
 
-        public void Init(UIEvent uiEvent)
+        public void Init(UIGame uiGame)
         {
-            UIEvent = uiEvent;
+            UIGame = uiGame;
             AnswerBuffer = new ();
             HasAnswer = false;
         }

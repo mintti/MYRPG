@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Infra.Model.Data;
 using Infra.Model.Game;
+using Infra.Model.Resource;
+using Module.Game;
+using Module.Game.Event;
 
 namespace Module
 {
@@ -8,7 +13,6 @@ namespace Module
     /// </summary>
     internal class Factory
     {
-        #region Game
         #region Block
         private static Dictionary<(int job, int index, int level), Block> BlockBuffer { get; set; } =
             new();
@@ -25,30 +29,63 @@ namespace Module
         #endregion
 
         #region Event
-
-        private static Dictionary<int, DungeonEvent> DungeonEventBuffer { get; set; } =
-            new();
-        public static DungeonEvent DungeonEventFactory(int key)
+        private static Dictionary<(SpotEventType type, int index), IEventItem> EventBuffer { get; set; } = new();
+        
+        public static IEventItem EventFactory(UIGame uiGame, SpotEvent spotEvent)
         {
-            DungeonEvent de;
-
-            // [TODO} Clone으로 할 것 인가?
-            if (DungeonEventBuffer.ContainsKey(key)) de = (DungeonEvent)DungeonEventBuffer[key].Clone();
+            (SpotEventType type, int index) key = (spotEvent.Type, spotEvent.Index);
+            IEventItem eventItem = null;
+        
+            if (EventBuffer.ContainsKey(key)) eventItem = EventBuffer[key];
             else
             {
-                de = new();
+                switch (key.type)
+                {
+                    case SpotEventType.Battle :
+                        switch ((BattleType)key.index)
+                        {
+                            case BattleType.Common:
+                                eventItem = new CommonBattle(uiGame);
+                                ((CommonBattle)eventItem).Init(spotEvent as BattleEvent);
+                                break;
+                            case BattleType.Elite:
+                                break;
+                            case BattleType.Boss:
+                                break;
+                            default:break;
+                        }
+                        break;
+                    case SpotEventType.Event :
+                        switch ((EventType)key.index)
+                        {
+                            case EventType.GetArtifact :
+                                eventItem = new GetArtifact(uiGame);
+                                break;
+                            case EventType.HealingLake : 
+                                eventItem = new HealingLake(uiGame);
+                                break;
+                            case EventType.None:
+                            default: break;
+                        }
+                        break;
+                    case SpotEventType.None:
+                        break;
+                    case SpotEventType.Elite:
+                        break;
+                    case SpotEventType.Boss:
+                        break;
+                    case SpotEventType.Rest:
+                        break;
+                    case SpotEventType.Artefact:
+                        break;
+                    default: break;
+                }
+
+                EventBuffer[key] = eventItem;
             }
-
-            return de;
+        
+            return eventItem;
         }
-
-        
-
         #endregion
-
-        #endregion
-        
-        
-        
     }
 }
