@@ -86,14 +86,24 @@ namespace Module
             // Set Detail of event 
             int index = 0;
             var randomMonsterSeq = GetRandomList(dungeon.EnemyList, 1, 4);
+            var randomEliteSeq = GetRandomList(dungeon.EnemyList, 1, 4); // [TODO] 랜덤 엘리트 조합 생성 필요
             var randomEventSeq = (GetRandomList(dungeon.EventList, 1));
             foreach (var evt in eventList)
             {
                 SpotEvent spotEvent;
-                switch (evt)
+                SpotEventType type = evt;
+                switch (type)
                 {
                     case SpotEventType.Battle:
-                        spotEvent = new BattleEvent(randomMonsterSeq.ToList());
+                        spotEvent = new BattleEvent(BattleType.Common, randomMonsterSeq.ToList());
+                        break;
+                    case  SpotEventType.Elite:
+                        spotEvent = new BattleEvent(BattleType.Elite, randomEliteSeq.ToList());
+                        type = SpotEventType.Battle;
+                        break;
+                    case SpotEventType.Boss:
+                        spotEvent = new BattleEvent(BattleType.Boss, null);
+                        type = SpotEventType.Battle;
                         break;
                     case SpotEventType.Rest:
                         spotEvent = null;
@@ -106,6 +116,7 @@ namespace Module
                         break;
                 }
 
+                spotEvent.Type = type;
                 spotList[index++].Event = spotEvent;
             }
             #endregion

@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Infra.Model.Data;
 using Infra.Model.Game;
+using Module.Game.Battle;
 using UnityEngine;
 
 namespace Module.Game.Event
@@ -19,51 +21,111 @@ namespace Module.Game.Event
 
         #region Variables
         private UIGame UIGame { get; set; }
+        private UIBattle UIBattle { get; set; }
         private BattleEvent BattleEvent { get; set; }
+        private IEnumerator Iterator { get; set; }
         #endregion
         
-        public void Init(BattleEvent battleEvent)
+        private void Init(BattleEvent battleEvent)
         {
             if (battleEvent == null)
                 return; // 절대 여기로 돌면 안됨
-            
+           
+            // 초기값 설정
+            UIBattle = UIGame.uIBattle;
+            Iterator = BattleIterator().GetEnumerator();
             BattleEvent = battleEvent;
+
+            foreach (var index in BattleEvent.Enemies)
+            {
+                var enemy =  Factory.EnemyFactory(index);
+                UIGame.EnemyList.Add(enemy);
+            }
             
+            UIBattle.UpdateView();
+            
+            // 전투 시퀀스 타기
+            Iterator.MoveNext();
         }
 
         public void Execute()
         {
-            // [TODO] 스테이지 아티펙트 효과 활성화
-            // [TODO] 턴 아티펙트 효과 활성화
-            UIGame.SpinEvent(Spin);
+            Init(UIGame.CurrentSpot.Event as BattleEvent);
         }
 
-        private void Spin()
-        {
-            if (UIGame.EnemyList.All(e => e.State == State.Die))
-            {
-                // 모든 적이 죽은 경우 종료
-                UIGame.Reward(GetBattleReword());
-            }
-            else // 적의 턴
-            {
-                foreach (var enemy in UIGame.EnemyList.Where(e=> e.CanAction()))
-                {
-                    enemy.Execute();;
-                }
-            }
-            
-            // [TODO] 턴 아티펙트 효과 활성화
-            UIGame.SpinEvent(Spin);
-        }
+        private void Spun() => Iterator.MoveNext();
 
         private void End()
         {
             // Clear
             BattleEvent = null;
+            Iterator = null;
             UIGame.EndEvent();
         }
-        // private IEnumerator BattleCoroutine()
+        
+        #region Method
+        // public void Execute()
+        // {
+        //     // [TODO] 스테이지 아티펙트 효과 활성화
+        //     // [TODO] 턴 아티펙트 효과 활성화
+        //     UIGame.SpinEvent(Spin);
+        // }
+        // private void Spin()
+        // {
+        //     if (UIGame.EnemyList.All(e => e.State == State.Die))
+        //     {
+        //         // 모든 적이 죽은 경우 종료
+        //         UIGame.Reward(GetBattleReword());
+        //     }
+        //     else // 적의 턴
+        //     {
+        //         foreach (var enemy in UIGame.EnemyList.Where(e=> e.CanAction()))
+        //         {
+        //             enemy.Execute();;
+        //         }
+        //     }
+        //     
+        //     // [TODO] 턴 아티펙트 효과 활성화
+        //     UIGame.SpinEvent(Spin);
+        // }
+#endregion
+
+
+        #region Iteratoer
+        /// <summary>
+        /// 이터레이턴 패턴으로 구현된 전투 로직
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerable BattleIterator()
+        {
+            // [TODO] 스테이지 아티펙트 효과 활성화
+            
+            while(true)
+            {
+                // [TODO] 턴 아티펙트 효과 활성화
+                
+                UIGame.SpinEvent(Spun);  // 스핀 허용 상태
+                yield return null; // 스핀 입력 대기
+                
+                if (UIGame.EnemyList.All(e => e.State == State.Die))
+                {
+                    // 모든 적이 죽은 경우 종료
+                    UIGame.Reward(GetBattleReword());
+                    yield break;
+                }
+                else // 적의 턴
+                {
+                    foreach (var enemy in UIGame.EnemyList.Where(e=> e.CanAction()))
+                    {
+                        enemy.Execute();;
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Coroutine
+// private IEnumerator BattleCoroutine()
         // {
         //     if (BattleEvent == null) yield break;
         //     
@@ -102,6 +164,8 @@ namespace Module.Game.Event
         //     BattleEvent = null;
         //     UIEvent.EndEvent();
         // }
+        #endregion
+        
 
         private Reward GetBattleReword()
         {

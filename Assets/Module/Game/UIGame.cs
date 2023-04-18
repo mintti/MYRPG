@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Infra.Model.Data;
 using Infra.Model.Game;
+using Module.Game.Battle;
 using Module.Game.Event.Message;
 using Module.Game.Map;
 using Module.Game.Slot;
@@ -13,7 +14,7 @@ using Artefact = Infra.Model.Game.Artefact;
 
 namespace Module.Game
 {
-    internal class UIGame : MonoBehaviour, IEventController
+    internal class UIGame : MonoBehaviour, IEventController, IBattle
     {
         #region Variables
         private GameManager GameManager { get; set; }
@@ -24,10 +25,11 @@ namespace Module.Game
         public void B_Map() => Map();
         public void B_Option() => Option();
         #endregion
-        
+
+        public UIBattle uIBattle;
         public UIMap uiMap;
         public UIOption uiOption;
-        [FormerlySerializedAs("uIReward")] public UIReward uiReward;
+        public UIReward uiReward;
         public UIMessageBox uIMessageBox;
         
         #region Slot
@@ -52,6 +54,8 @@ namespace Module.Game
         private IEventController _eventControllerImplementation;
         private List<Artefact> ArtifactList { get; set; } = new();
         #endregion
+        
+        public Spot CurrentSpot { get; set; }
         #endregion
         
         /// <summary>
@@ -61,8 +65,11 @@ namespace Module.Game
         {
             GameManager = GameManager.Instance;
 
+            // 초기화
             uiMap.Init(this);
             Init();
+            
+            Map();
         }
 
         private void Init()
@@ -108,11 +115,6 @@ namespace Module.Game
         #region IEventController
         public IMessageBox MessageBox => uIMessageBox;
 
-        public void StartEvent()
-        {
-            
-        }
-
         public void EndEvent(string none = null)
         {
             
@@ -126,7 +128,7 @@ namespace Module.Game
 
         public void SpinEvent(Action nextAction = null)
         {
-            StartEvent();
+            StartCoroutine(nameof(Spin) , nextAction);
         }
 
         public void Reward(Reward reward) => uiReward.Init(reward);
@@ -134,7 +136,7 @@ namespace Module.Game
         
 
         #region Spin Event
-        private IEnumerable Spin(Action callback = null)
+        private IEnumerator Spin(Action callback = null)
         {
             yield return new WaitUntil(() => CanDoSpin);
             CanDoSpin = false;
@@ -149,6 +151,7 @@ namespace Module.Game
             yield return null;
         }
         #endregion
+
         #endregion
         
         #region Map-Related
@@ -157,6 +160,7 @@ namespace Module.Game
         /// </summary>
         public void SelectMap(Spot spot)
         {
+            CurrentSpot = spot;
             ExecuteEvent(spot);
             Map(false);
         }
@@ -175,5 +179,11 @@ namespace Module.Game
         }
         #endregion
 
+        #region IBattle
+        public IEnumerable<Entity> GetUnits()
+        {
+            return UnitList.Where(x=> x.State == State.Alive);
+        }
+        #endregion
     }
 }
