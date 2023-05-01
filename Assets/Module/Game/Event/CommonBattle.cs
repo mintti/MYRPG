@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Infra.Model.Data;
 using Infra.Model.Game;
+using Infra.Model.Resource;
 using Module.Game.Battle;
 using UnityEngine;
 
@@ -36,10 +37,12 @@ namespace Module.Game.Event
             Iterator = BattleIterator().GetEnumerator();
             BattleEvent = battleEvent;
 
+            UIBattle.UnitList = UIGame.GameData.UnitList;
             foreach (var index in BattleEvent.Enemies)
             {
                 var enemy =  Factory.EnemyFactory(index);
-                UIGame.EnemyList.Add(enemy);
+                enemy?.Init(UIBattle, (EnemyType)index);
+                UIBattle.EnemyList.Add(enemy);
             }
             
             UIBattle.UpdateView();
@@ -107,7 +110,7 @@ namespace Module.Game.Event
                 UIGame.SpinEvent(Spun);  // 스핀 허용 상태
                 yield return null; // 스핀 입력 대기
                 
-                if (UIGame.EnemyList.All(e => e.State == State.Die))
+                if (UIBattle.EnemyList.All(e => e.State == State.Die))
                 {
                     // 모든 적이 죽은 경우 종료
                     UIGame.Reward(GetBattleReword());
@@ -115,7 +118,7 @@ namespace Module.Game.Event
                 }
                 else // 적의 턴
                 {
-                    foreach (var enemy in UIGame.EnemyList.Where(e=> e.CanAction()))
+                    foreach (var enemy in UIBattle.EnemyList.Where(e=> e.CanAction()))
                     {
                         enemy.Execute();;
                     }

@@ -30,13 +30,13 @@ namespace Module
 
             Dungeons = new List<Dungeon>()
             {
-                new (0, "테스트 던전", 1, new (){ 1, 2}, new List<int>(){ (int)EventType.HealingLake, (int)EventType.GetArtifact})
+                new (0, "테스트 던전", 1, new (){ 0}, new List<int>(){ (int)EventType.HealingLake, (int)EventType.GetArtifact})
             };
 
 
             Enemies = new List<Enemy>()
             {
-                new("테스트 몬스터")
+                new("테스트 몬스터", 10, 5)
             };
             
             #endregion

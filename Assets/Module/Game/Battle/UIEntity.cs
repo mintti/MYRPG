@@ -1,19 +1,30 @@
+using System;
 using UnityEngine;
 
 namespace Module.Game.Battle
 {
     internal class UIEntity : MonoBehaviour
     {
-        public Sprite sprite;
+        private IBattleEntity BattleEntity{ get; set; }
+        public Sprite Sprite { get; set; }
+
+        public GameObject testDeadMark;
         
         public void Init()
         {
             gameObject.SetActive(false);
+        } 
+
+        public void SetEntity(IBattleEntity entity)
+        {
+            BattleEntity = entity;
+            gameObject.SetActive(true);
         }
 
-        public void SetEntity(Entity entity)
+        public void Clear()
         {
-            gameObject.SetActive(true);
+            BattleEntity = null;
+            Sprite = null;
         }
     }
 }

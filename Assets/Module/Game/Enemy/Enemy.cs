@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Infra.Model.Game;
+using Infra.Model.Resource;
+using Module;
+using Module.Game.Battle;
 using UnityEngine;
 
 namespace Module.Game
@@ -18,18 +22,39 @@ namespace Module.Game
     /// <summary>
     /// 전투 시 호출되는 적 객체
     /// </summary>
-    internal abstract class Enemy : Entity
+    internal abstract class Enemy : BattleEntity
     {
         public HowToTarget HowToTarget { get; set; }
+
+        public void Init(IBattleController controller, EnemyType e)
+        {
+            BattleController = controller;
+            var enemy = ResourceManager.Instance.Enemies[(int) e];
+            Name = enemy.Name;
+            Hp = enemy.Hp;
+            MaxHp = enemy.Hp;
+            Power = enemy.Power;
+            State = State.Alive;
+        }
         
         public override void Execute()
         {
             Debug.Log($"{this.GetType().Name} Execute() 미구현 ");
         }
 
-        public Entity GetTarget(IEnumerable<Entity> entities)
+        public BattleEntity GetTarget(IEnumerable<BattleEntity> targets)
         {
-            return entities.First();
+            BattleEntity target = null;
+            switch (HowToTarget)
+            {
+                case HowToTarget.First :
+                    target = targets.FirstOrDefault();
+                    break;
+                default:
+                    break;
+            }
+
+            return target;
         }
     }
 }

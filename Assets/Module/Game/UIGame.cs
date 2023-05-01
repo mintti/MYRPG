@@ -11,14 +11,15 @@ using Module.Game.Slot;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Artefact = Infra.Model.Game.Artefact;
+using Unit = Infra.Model.Game.Unit;
 
 namespace Module.Game
 {
-    internal class UIGame : MonoBehaviour, IEventController, IBattle
+    internal class UIGame : MonoBehaviour, IEventController
     {
         #region Variables
         private GameManager GameManager { get; set; }
-        private GameData GameData { get; set; }
+        public GameData GameData { get; private set; }
         
         #region Button
         public void B_Spin() => CanDoSpin = true;
@@ -42,16 +43,10 @@ namespace Module.Game
         private BlockEvents BlockEvents { get; set; } 
         #endregion
         
-        #region Battle
-        public List<Unit> UnitList { get; set; } = new List<Unit>();
-        public List<Enemy> EnemyList { get; set; } = new List<Enemy>();
-
-        #endregion
-
         #region Artifact
         public Transform artefactListTr;
         public GameObject artefactPrefab;
-        private IEventController _eventControllerImplementation;
+        
         private List<Artefact> ArtifactList { get; set; } = new();
         #endregion
         
@@ -67,6 +62,7 @@ namespace Module.Game
 
             // 초기화
             uiMap.Init(this);
+            uIBattle.Init(this);
             Init();
             
             Map();
@@ -93,11 +89,7 @@ namespace Module.Game
                 var obj = Instantiate(artefactPrefab, artefactListTr);
                 obj.GetComponent<UIArtefact>().Set(item);
             }
-
-            // Battle View Setting
-            UnitList.Clear();
-            EnemyList.Clear();
-
+            
             // 블럭 효과 초기화 (by artefact and enemy)
             BlockEvents = new BlockEvents((e) => { });
 
@@ -176,13 +168,6 @@ namespace Module.Game
         private void Option(bool state = true)
         {
             uiOption.gameObject.SetActive(state);
-        }
-        #endregion
-
-        #region IBattle
-        public IEnumerable<Entity> GetUnits()
-        {
-            return UnitList.Where(x=> x.State == State.Alive);
         }
         #endregion
     }

@@ -110,7 +110,7 @@ namespace Module
                     default: break;
                 }
             }
-
+            
             return enemy;
         }
 
