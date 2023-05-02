@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Color = System.Drawing.Color;
 
 namespace Infra.Model.Resource
 {
@@ -8,7 +7,7 @@ namespace Infra.Model.Resource
         public int Index { get; }
         public string Name { get; }
 
-        public Color Color { get; }
+        public UnityEngine.Color Color { get; }
         
         public Sprite Icon { get; }
         

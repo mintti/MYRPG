@@ -6,7 +6,6 @@ namespace Module.Game.Battle
     internal class UIEntity : MonoBehaviour
     {
         private IBattleEntity BattleEntity{ get; set; }
-        public Sprite Sprite { get; set; }
 
         public GameObject testDeadMark;
         
@@ -17,6 +16,7 @@ namespace Module.Game.Battle
 
         public void SetEntity(IBattleEntity entity)
         {
+            GetComponent<SpriteRenderer>().sprite = entity.Sprite;
             BattleEntity = entity;
             gameObject.SetActive(true);
         }
@@ -24,7 +24,7 @@ namespace Module.Game.Battle
         public void Clear()
         {
             BattleEntity = null;
-            Sprite = null;
+            GetComponent<SpriteRenderer>().sprite = null;
         }
     }
 }

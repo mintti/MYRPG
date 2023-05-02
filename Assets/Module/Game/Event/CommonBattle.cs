@@ -102,26 +102,25 @@ namespace Module.Game.Event
         private IEnumerable BattleIterator()
         {
             // [TODO] 스테이지 아티펙트 효과 활성화
-            
-            while(true)
+
+            while (true)
             {
                 // [TODO] 턴 아티펙트 효과 활성화
-                
-                UIGame.SpinEvent(Spun);  // 스핀 허용 상태
+
+                UIGame.SpinEvent(Spun); // 스핀 허용 상태
                 yield return null; // 스핀 입력 대기
-                
+
                 if (UIBattle.EnemyList.All(e => e.State == State.Die))
                 {
                     // 모든 적이 죽은 경우 종료
                     UIGame.Reward(GetBattleReword());
                     yield break;
                 }
-                else // 적의 턴
+                
+                // 적의 턴
+                foreach (var enemy in UIBattle.EnemyList.Where(e => e.CanAction()))
                 {
-                    foreach (var enemy in UIBattle.EnemyList.Where(e=> e.CanAction()))
-                    {
-                        enemy.Execute();;
-                    }
+                    enemy.Execute();
                 }
             }
         }

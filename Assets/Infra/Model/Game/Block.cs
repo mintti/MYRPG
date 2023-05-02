@@ -16,13 +16,13 @@ namespace Infra.Model.Game
         public float WeightBackup { get; set; }
         #endregion
         
-        public Block(){}
-
         public Block(string name, Color color, Sprite sprite = null)
         {
             Name = name;
             Color = color;
             Sprite = sprite;
+            Weight = 1;
+            WeightBackup = Weight;
         }
         public object Clone()
         {

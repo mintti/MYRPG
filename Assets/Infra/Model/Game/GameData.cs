@@ -48,6 +48,10 @@ namespace Infra.Model.Game
         {
             PlayerData = data;
             PlayerData.UnitList.ForEach(unit => UnitList.Add(new Unit(unit)));
+
+            // 임시 초기 값
+            SlotWidth = 5;
+            SlotHeight = 2;
         }
     }
 }

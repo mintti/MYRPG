@@ -84,6 +84,7 @@ namespace Module.Game.Slot
             {
                 var randomIdx = Random.Next(0, i);
                 OutputBlockList.Add(BlockDict[temp[randomIdx]]);
+                temp.RemoveAt(randomIdx);
             }
                 
             return OutputBlockList;

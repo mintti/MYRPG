@@ -6,7 +6,9 @@ using Infra.Model.Game;
 using Infra.Model.Resource;
 using Module.Game;
 using Module.Game.Event;
+using UnityEngine;
 using Enemy = Module.Game.Enemy;
+using EventType = Infra.Model.Resource.EventType;
 
 namespace Module
 {
@@ -20,11 +22,13 @@ namespace Module
             new();
         public static Block GetBlock((int job, int index, int level) key)
         {
-            Block block;
+            Block block = null;
             if (BlockBuffer.ContainsKey(key)) block = (Block)BlockBuffer[key].Clone();
             else
             {
-                block = new();
+                var job = ResourceManager.Instance.Jobs[key.job];
+                var sprite = ResourceManager.Instance.BlockSprites[0];
+                block = new($"{job.Name}블럭", job.Color, sprite);
             }
             return block;
         }

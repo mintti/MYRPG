@@ -28,15 +28,8 @@ namespace Infra.Model.Game
             MaxHp = jobBase.Hp;
             Hp = data.Hp;
             State = (data.Hp > 0) ? State.Alive : State.Die;
-
+            Sprite = jobBase.Icon;
         }
-
-        #region IBattleEntity
-        public void Connect(UIEntity uiEntity)
-        {
-            
-        }
-        #endregion
 
         public void AddBlock(Block block) => HasBlocks.Add(block);
         

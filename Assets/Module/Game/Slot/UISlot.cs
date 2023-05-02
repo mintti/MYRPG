@@ -18,13 +18,11 @@ namespace Module.Game.Slot
         public void Init(UIGame uiGame, int width, int height) 
         {
             UIGame = uiGame;
-            
-            var rect = slotRectTr.rect;
-            rect.width = width * 100;
-            rect.height = height * 100;
+
+            slotRectTr.sizeDelta = new Vector2(width * 100, height * 100);
 
             Blocks = new List<UIBlock>();
-            for (int i = 0, cnt = width * height * 3; i < cnt; i++)
+            for (int i = 0, cnt = width * height; i < cnt; i++)
             {
                 var obj = Instantiate(blockPrefab, blockContentTr);
                 Blocks.Add(obj.GetComponent<UIBlock>());
@@ -37,7 +35,7 @@ namespace Module.Game.Slot
         public void SetBlocks(IEnumerable<Block> seq)
         {
             var index = 0;
-            var length = Blocks.Count * 3;
+            var length = Blocks.Count;
 
             do
             {

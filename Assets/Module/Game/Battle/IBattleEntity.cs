@@ -9,5 +9,7 @@ namespace Module.Game.Battle
     internal interface IBattleEntity
     {
         void Connect(UIEntity uiEntity);
+
+        Sprite Sprite { get; set; }
     }
 }

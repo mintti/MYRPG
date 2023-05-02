@@ -25,7 +25,7 @@ namespace Module.Game
     internal abstract class Enemy : BattleEntity
     {
         public HowToTarget HowToTarget { get; set; }
-
+        
         public void Init(IBattleController controller, EnemyType e)
         {
             BattleController = controller;
@@ -34,9 +34,10 @@ namespace Module.Game
             Hp = enemy.Hp;
             MaxHp = enemy.Hp;
             Power = enemy.Power;
+            Sprite = enemy.Sprite;
             State = State.Alive;
         }
-        
+
         public override void Execute()
         {
             Debug.Log($"{this.GetType().Name} Execute() 미구현 ");

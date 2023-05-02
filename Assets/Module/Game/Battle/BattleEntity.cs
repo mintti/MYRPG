@@ -1,4 +1,5 @@
-﻿using Infra.Model.Game;
+﻿using System.Runtime.CompilerServices;
+using Infra.Model.Game;
 using Module.Game.Battle;
 using UnityEditor.Sprites;
 using UnityEngine;
@@ -44,10 +45,14 @@ namespace Module.Game
             return State == State.Alive;
         }
 
+        #region IBattleEntity
         public void Connect(UIEntity uiEntity)
         {
             UIEntity = uiEntity;
         }
+
+        public Sprite Sprite { get; set; }
+        #endregion
 
         #region This method in region define in derived class.
         public virtual void Execute()

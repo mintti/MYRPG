@@ -39,6 +39,7 @@ namespace Module.MainMenu
             if (!IsUnlock) return;
 
             var image = gameObject.GetComponent<Image>();
+            image.sprite = job.Icon;
             var testText = gameObject.GetComponentInChildren<TextMeshProUGUI>();
             testText.text = Job.Name;
         }
