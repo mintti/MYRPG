@@ -8,8 +8,10 @@ namespace Module.Game.Battle
     /// </summary>
     internal interface IBattleEntity
     {
-        void Connect(UIEntity uiEntity);
+        void Connect(IBattleController controller, UIEntity uiEntity);
 
+        void Disconnect();
+        
         Sprite Sprite { get; set; }
     }
 }

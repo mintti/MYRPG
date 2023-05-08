@@ -2,6 +2,7 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Schema;
 using Infra.Model.Data;
+using Module;
 
 namespace Infra.Model.Game
 {
@@ -47,7 +48,13 @@ namespace Infra.Model.Game
         public GameData(PlayerData data)
         {
             PlayerData = data;
-            PlayerData.UnitList.ForEach(unit => UnitList.Add(new Unit(unit)));
+
+            foreach (var unit in PlayerData.UnitList)
+            {
+                var unitInstance = Factory.GetUnit(unit.JobIndex);
+                unitInstance.SetBaseData(unit);
+                UnitList.Add(unitInstance);
+            }
 
             // 임시 초기 값
             SlotWidth = 5;

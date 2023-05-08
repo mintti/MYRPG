@@ -30,22 +30,20 @@ namespace Module.Game.Battle
             
             foreach (var uiEntity in UIUnits.Concat(UIEnemies))
             {
-                uiEntity.Init();
+                uiEntity.Init(this);
             }
         }
 
         public void UpdateView()
         {
-            var unitList = UnitList;
-            var enemyList = EnemyList;
-            for (int i = 0, cnt = unitList.Count; i < cnt; i++)
+            for (int i = 0, cnt = UnitList.Count; i < cnt; i++)
             {
-                UIUnits[i].SetEntity(UnitList[i]);    
+                UIUnits[i].SetEntity(UnitList[i]);
             }
             
-            for (int i = 0, cnt = enemyList.Count; i < cnt; i++)
+            for (int i = 0, cnt = EnemyList.Count; i < cnt; i++)
             {
-                UIEnemies[i].SetEntity(enemyList[i]);    
+                UIEnemies[i].SetEntity(EnemyList[i]);  
             }
         }
 
@@ -56,11 +54,16 @@ namespace Module.Game.Battle
                 uiEntity.Clear();
             }
         }
-        
+
+        #region IBattleController
         public IEnumerable<BattleEntity> GetUnits()
         {
             return UnitList.Where(x=> x.State == State.Alive);
         }
-        
+
+        public  UIActionSelector UIActionSelector => UIGame.uIActionSelector;
+
+        #endregion
+
     }
 }

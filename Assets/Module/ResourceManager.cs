@@ -23,12 +23,12 @@ namespace Module
             var jobSprites = Resources.LoadAll<Sprite>("Sprite/Job");
             Jobs = new List<Job>()
             {
-                new (0, "테스트", 20, Color.black),
-                new (1, "Warrior", 20, Color.blue, jobSprites[0]),
-                new (2, "Wizard", 20, Color.magenta, jobSprites[1]),
-                new (3, "Archer", 20, Color.green, jobSprites[2]),
-                new (4, "Knight", 20, Color.cyan, jobSprites[3]),
-                new (5, "Priest", 20, Color.yellow, jobSprites[4]),
+                new ((int)JobType.Test, "테스트", 20, Color.black),
+                new ((int)JobType.Warrior, "Warrior", 20, Color.blue, jobSprites[0]),
+                new ((int)JobType.Wizard, "Wizard", 20, Color.magenta, jobSprites[1]),
+                new ((int)JobType.Archer, "Archer", 20, Color.green, jobSprites[2]),
+                new ((int)JobType.Knight, "Knight", 20, Color.cyan, jobSprites[3]),
+                new ((int)JobType.Priest, "Priest", 20, Color.yellow, jobSprites[4]),
             };
             Dungeons = new List<Dungeon>()
             {

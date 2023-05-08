@@ -26,9 +26,8 @@ namespace Module.Game
     {
         public HowToTarget HowToTarget { get; set; }
         
-        public void Init(IBattleController controller, EnemyType e)
+        public void Init(EnemyType e)
         {
-            BattleController = controller;
             var enemy = ResourceManager.Instance.Enemies[(int) e];
             Name = enemy.Name;
             Hp = enemy.Hp;

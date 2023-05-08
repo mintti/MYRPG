@@ -14,7 +14,7 @@ namespace Module.Game
         protected IBattleController BattleController { get; set; }
         private UIEntity UIEntity { get; set; }
 
-        #region Status
+        #region Status Related
         public string Name { get; set; }
 
         private int _hp;
@@ -36,21 +36,31 @@ namespace Module.Game
         protected int Power { get; set; }
 
         public State State { get; set; }
-        #endregion
         
-        public Color TempColor { get; set; }
-
         public bool CanAction()
         {
             return State == State.Alive;
         }
+        #endregion
 
         #region IBattleEntity
-        public void Connect(UIEntity uiEntity)
+        /// <summary>
+        /// UI Entity 인스턴스와 연결
+        /// </summary>
+        public void Connect(IBattleController controller, UIEntity uiEntity)
         {
+            BattleController = controller;
             UIEntity = uiEntity;
         }
 
+        /// <summary>
+        /// UI Entity 인스턴스와 연결 해제
+        /// </summary>
+        public void Disconnect()
+        {
+            BattleController = null;
+            UIEntity = null;
+        }
         public Sprite Sprite { get; set; }
         #endregion
 
@@ -61,12 +71,16 @@ namespace Module.Game
         }
         #endregion
 
-        #region Action
+        #region Battle Action Related
         public void Hit(int damage)
         {
             Hp -= damage;
         }
-        
+
+        public void Heal(int point)
+        {
+            Hp += point;
+        }
         #endregion
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Infra.Model.Data;
 using Infra.Model.Game;
 using Module.Game.Battle;
@@ -35,7 +36,8 @@ namespace Module.Game
         
         #region Slot
         public UISlot uiSlot;
-        private SlotService SlotService { get; set; }
+        public UIActionSelector uIActionSelector;
+        public SlotService SlotService { get; set; }
         private List<Block> BlockList { get; set; } = new ();
         
         public bool CanDoSpin { get; set; } = false;
@@ -63,6 +65,7 @@ namespace Module.Game
             // 초기화
             uiMap.Init(this);
             uIBattle.Init(this);
+            uIActionSelector.Init(this);
             Init();
             
             Map();
@@ -118,32 +121,65 @@ namespace Module.Game
             
         }
 
-        public void SpinEvent(Action nextAction = null)
+        public void SpinEvent(Action<Block[,]> nextAction = null)
         {
             StartCoroutine(nameof(Spin) , nextAction);
         }
 
         public void Reward(Reward reward) => uiReward.Init(reward);
+
+
+        public void ExecuteActionSelector(Action nextAction, Func<bool> checkFunc = null)
+            => uIActionSelector.Show(nextAction, checkFunc);
         #endregion
         
 
         #region Spin Event
-        private IEnumerator Spin(Action callback = null)
+        private IEnumerator Spin(Action<Block[,]> callback = null)
         {
             yield return new WaitUntil(() => CanDoSpin);
             CanDoSpin = false;
-            
+
+            int slotWidth = GameData.SlotWidth;
+            int slotHeight = GameData.SlotHeight;
             // 블럭 지정 및 설정
-            var seq = SlotService.GetRandomBlock(BlockList, GameData.SlotWidth, GameData.SlotHeight, BlockEvents);
-            uiSlot.SetBlocks(seq);
+            var list = SlotService.GetRandomBlock(BlockList, slotWidth, slotHeight, BlockEvents).ToList();
+            uiSlot.SetBlocks(list);
             
             // 스핀 효과 적용 *Show Animation
-
-            callback?.Invoke();
+            uiSlot.SpinAnimation();
+            
+            // 결과 전달
+            if (callback != null)
+            {
+                var blocks = new Block[slotHeight, slotWidth];
+                for (int i = 0, cnt = list.Count(); i < cnt; i++)
+                {
+                    blocks[i / slotWidth, i % slotWidth] = list[i];
+                }
+                callback?.Invoke(blocks);
+            }
+            
             yield return null;
         }
         #endregion
 
+        #region Target Selected Event
+
+        public BattleEntity SelectTarget(TargetType targetType)
+        {
+            BattleEntity entity = null;
+            switch (targetType)
+            {
+                case TargetType.Enemy :
+                    break;
+                case TargetType.Unit :
+                    break;
+            }
+            
+            return entity;
+        }
+        #endregion
         #endregion
         
         #region Map-Related

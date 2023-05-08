@@ -6,12 +6,18 @@ namespace Module.Game
 {
     internal interface IEventController
     {
-        void SpinEvent(Action nextAction = null);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nextAction">Spin Result</param>
+        void SpinEvent(Action<Block[,]> nextAction = null);
 
         void Reward(Reward reward);
         
         void EndEvent(string none = null);
         
         IMessageBox MessageBox { get; }
+
+        void ExecuteActionSelector(Action nextAction, Func<bool> checkFunc = null);
     }
 }

@@ -45,5 +45,10 @@ namespace Module.Game.Slot
                 }
             } while (index < length);
         }
+
+        public void SpinAnimation()
+        {
+            
+        }
     }
 }

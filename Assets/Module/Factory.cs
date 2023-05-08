@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using Infra.Model.Data;
 using Infra.Model.Game;
+using Infra.Model.Game.Blocks;
+using Infra.Model.Game.Class;
 using Infra.Model.Resource;
 using Module.Game;
 using Module.Game.Event;
 using UnityEngine;
 using Enemy = Module.Game.Enemy;
 using EventType = Infra.Model.Resource.EventType;
+using Unit = Infra.Model.Game.Unit;
 
 namespace Module
 {
@@ -17,19 +20,80 @@ namespace Module
     /// </summary>
     internal class Factory
     {
+        #region Class
+        private static Dictionary<int, Unit> UnitBuffer { get; set; } =
+            new();
+        public static Unit GetUnit(int key)
+        {
+            Unit unit = null;
+            if (UnitBuffer.ContainsKey(key)) unit = UnitBuffer[key];
+            else
+            {
+                switch ((JobType) key)
+                {
+                    case JobType.Warrior:
+                        unit = new Warrior();
+                        break;
+                    case JobType.Archer:
+                        unit = new Archer();
+                        break;
+                    case JobType.Wizard:
+                        unit = new Wizard();
+                        break;
+                    case JobType.Knight:
+                        unit = new Knight();
+                        break;
+                    case JobType.Priest:
+                        unit = new Priest();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
+                UnitBuffer.Add(key, unit);
+            }
+            
+            return unit;
+        }
+        
+
+        #endregion
         #region Block
         private static Dictionary<(int job, int index, int level), Block> BlockBuffer { get; set; } =
             new();
         public static Block GetBlock((int job, int index, int level) key)
         {
             Block block = null;
-            if (BlockBuffer.ContainsKey(key)) block = (Block)BlockBuffer[key].Clone();
-            else
+            // if (BlockBuffer.ContainsKey(key)) block = BlockBuffer[key];
+            // else
             {
+                switch ((JobType) key.job)
+                {
+                    case JobType.Warrior:
+                        block = new WarriorBlock01();
+                        break;
+                    case JobType.Archer:
+                        block = new ArcherBlock01();
+                        break;
+                    case JobType.Wizard:
+                        block = new WizardBlock01();
+                        break;
+                    case JobType.Knight:
+                        block = new KnightBlock01();
+                        break;
+                    case JobType.Priest:
+                        block = new PriestBlock01();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+                
                 var job = ResourceManager.Instance.Jobs[key.job];
                 var sprite = ResourceManager.Instance.BlockSprites[0];
-                block = new($"{job.Name}블럭", job.Color, sprite);
+                block.Set($"{job.Name}블럭", job.Color, sprite);
+                //BlockBuffer.Add(key, block);
             }
+            
             return block;
         }
         #endregion

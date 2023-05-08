@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Infra.Model.Data;
 using Infra.Model.Game;
@@ -41,14 +42,14 @@ namespace Module.Game.Event
             foreach (var index in BattleEvent.Enemies)
             {
                 var enemy =  Factory.EnemyFactory(index);
-                enemy?.Init(UIBattle, (EnemyType)index);
+                enemy?.Init((EnemyType)index);
                 UIBattle.EnemyList.Add(enemy);
             }
             
             UIBattle.UpdateView();
             
             // 전투 시퀀스 타기
-            Iterator.MoveNext();
+            Next();
         }
 
         public void Execute()
@@ -56,8 +57,31 @@ namespace Module.Game.Event
             Init(UIGame.CurrentSpot.Event as BattleEvent);
         }
 
-        private void Spun() => Iterator.MoveNext();
+        /// <summary>
+        /// 스핀 후 이벤트
+        /// 블럭 효과 적용 및 유닛들의 행동 부여 
+        /// </summary>
+        private void Spun(Block[,] blocks)
+        {
+            // 블럭 효과 적용
+            foreach (var block in blocks)
+            {
+                block.PreExecute(blocks);
+            }
+            
+            // 블럭 효과 적용
+            foreach (var block in blocks)
+            {
+                block.Execute();
+            }
+            
+            UIBattle.UnitList.ForEach(unit => unit.Execute());
+            
+            // 다음 시퀀스 진행
+            Next();   
+        }
 
+        private void Next() => Iterator.MoveNext();
         private void End()
         {
             // Clear
@@ -65,34 +89,6 @@ namespace Module.Game.Event
             Iterator = null;
             UIGame.EndEvent();
         }
-        
-        #region Method
-        // public void Execute()
-        // {
-        //     // [TODO] 스테이지 아티펙트 효과 활성화
-        //     // [TODO] 턴 아티펙트 효과 활성화
-        //     UIGame.SpinEvent(Spin);
-        // }
-        // private void Spin()
-        // {
-        //     if (UIGame.EnemyList.All(e => e.State == State.Die))
-        //     {
-        //         // 모든 적이 죽은 경우 종료
-        //         UIGame.Reward(GetBattleReword());
-        //     }
-        //     else // 적의 턴
-        //     {
-        //         foreach (var enemy in UIGame.EnemyList.Where(e=> e.CanAction()))
-        //         {
-        //             enemy.Execute();;
-        //         }
-        //     }
-        //     
-        //     // [TODO] 턴 아티펙트 효과 활성화
-        //     UIGame.SpinEvent(Spin);
-        // }
-#endregion
-
 
         #region Iteratoer
         /// <summary>
@@ -107,10 +103,15 @@ namespace Module.Game.Event
             {
                 // [TODO] 턴 아티펙트 효과 활성화
 
-                UIGame.SpinEvent(Spun); // 스핀 허용 상태
-                yield return null; // 스핀 입력 대기
+                // 스핀 허용 상태로 설정 후, 스핀 대기
+                UIGame.SpinEvent(Spun); 
+                yield return null;
 
-                if (UIBattle.EnemyList.All(e => e.State == State.Die))
+                // 사용자 턴 진행 완료 대기.
+                UIGame.ExecuteActionSelector(Next ,CheckAllEnemyDie);
+                yield return null;
+                
+                if (CheckAllEnemyDie())
                 {
                     // 모든 적이 죽은 경우 종료
                     UIGame.Reward(GetBattleReword());
@@ -124,6 +125,9 @@ namespace Module.Game.Event
                 }
             }
         }
+
+        private bool CheckAllEnemyDie() => UIBattle.EnemyList.All(e => e.State == State.Die);
+        private bool CheckAllUnitDie() => UIBattle.EnemyList.All(e => e.State == State.Die);
         #endregion
 
         #region Coroutine
