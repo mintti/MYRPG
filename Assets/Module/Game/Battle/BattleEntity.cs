@@ -62,6 +62,8 @@ namespace Module.Game
             UIEntity = null;
         }
         public Sprite Sprite { get; set; }
+
+        public BattleEntity GetEntity { get => this; }
         #endregion
 
         #region This method in region define in derived class.

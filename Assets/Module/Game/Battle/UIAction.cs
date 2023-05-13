@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -44,6 +45,7 @@ namespace Module.Game.Battle
             BaseInfo = null;
             Active = false;
             gameObject.SetActive(false);
+            UIActionSelector.ExecuteAction();
         }
 
         private void Execute()
@@ -53,17 +55,31 @@ namespace Module.Game.Battle
             {
                 case TargetType.Unit:
                 case TargetType.Enemy:
-                    var target = UIActionSelector.UIGame.SelectTarget(type);
-                    BaseInfo.Action(target);
+                    // 대상 지정 요청
+                    UIActionSelector.UIGame.SelectBattleEntity(type, Execute);
                     break;
                 case TargetType.AllUnit:
-                    BaseInfo.Actions(UIBattle.UnitList);
+                    Execute(UIBattle.UnitList);
+                    Clear();
                     break;
                 case TargetType.AllEnemy:
-                    BaseInfo.Actions(UIBattle.EnemyList);
+                    Execute(UIBattle.EnemyList);
                     break;
             }
+        }
 
+        private void Execute(IEnumerable<BattleEntity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                BaseInfo.Action(entity);
+            }
+            Clear();
+        }
+        
+        private void Execute(BattleEntity entity)
+        {
+            BaseInfo.Action(entity);
             Clear();
         }
     }

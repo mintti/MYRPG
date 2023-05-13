@@ -19,12 +19,9 @@ namespace Infra.Model.Game.Class
             }
         }
         
-        private void MagicShower(IEnumerable<BattleEntity> entities)
+        private void MagicShower(BattleEntity entity)
         {
-            foreach (var entity in entities)
-            {
-                entity.Hit(5 * MagicShowerGauge);
-            }
+            entity.Hit(5 * MagicShowerGauge);
         }
         #endregion
     }

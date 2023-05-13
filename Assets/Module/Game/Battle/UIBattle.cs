@@ -8,7 +8,7 @@ namespace Module.Game.Battle
     internal class UIBattle : MonoBehaviour, IBattleController
     {
         #region Variables
-        private UIGame UIGame { get; set; }
+        public UIGame UIGame { get; private set; }
 
         public List<Unit> UnitList { get; set; }= new();
         public List<Enemy> EnemyList { get; set; } = new();

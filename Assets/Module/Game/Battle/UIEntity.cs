@@ -14,6 +14,7 @@ namespace Module.Game.Battle
         {
             UIBattle = uiBattle;
             gameObject.SetActive(false);
+            TargetMode(false);
         } 
 
         public void SetEntity(IBattleEntity entity)
@@ -30,5 +31,20 @@ namespace Module.Game.Battle
             BattleEntity = null;
             GetComponent<SpriteRenderer>().sprite = null;
         }
+
+        #region Target On Event
+
+        public GameObject canBeTargetGameObject;
+
+        public void TargetMode(bool state)
+        {
+            canBeTargetGameObject.SetActive(state);
+        }
+        
+        private void OnMouseUp()
+        {
+            UIBattle.UIGame.SelectedUIEntityEvent(BattleEntity.GetEntity);
+        }
+        #endregion
     }
 }

@@ -17,12 +17,9 @@ namespace Infra.Model.Game.Class
             }
         }
 
-        private void Heal(IEnumerable<BattleEntity> entities)
+        private void Heal(BattleEntity entity)
         {
-            foreach (var entity in entities)
-            {
-                entity.Hit(5 * HealGauge);
-            }
+            entity.Hit(5 * HealGauge);
         }
     }
 }

@@ -13,5 +13,7 @@ namespace Module.Game.Battle
         void Disconnect();
         
         Sprite Sprite { get; set; }
+
+        BattleEntity GetEntity { get; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Infra.Model.Data;
 using Infra.Model.Game;
 using Module.Game.Battle;
@@ -95,6 +96,10 @@ namespace Module.Game
             
             // 블럭 효과 초기화 (by artefact and enemy)
             BlockEvents = new BlockEvents((e) => { });
+            
+            
+            // 화면
+            targetSelectGameObject.SetActive(false);
 
             #endregion
         }
@@ -166,18 +171,56 @@ namespace Module.Game
 
         #region Target Selected Event
 
-        public BattleEntity SelectTarget(TargetType targetType)
+        public GameObject targetSelectGameObject;
+
+        private Action<BattleEntity> SelectedAction { get; set; }
+        /// <summary>
+        /// 대상을 지정하기 위한 세팅
+        /// </summary>
+        /// <param name="targetType"></param>
+        /// <returns></returns>
+        public void SelectBattleEntity(TargetType targetType, Action<BattleEntity> action = null)
         {
             BattleEntity entity = null;
+            SelectedAction = action;
+            targetSelectGameObject.SetActive(true);
+
+            IEnumerable<UIEntity> targets = null;
             switch (targetType)
             {
                 case TargetType.Enemy :
+                    targets = uIBattle.UIEnemies;
                     break;
                 case TargetType.Unit :
+                    targets = uIBattle.UIUnits;
                     break;
             }
+
+            if (targets != null)
+            {
+                foreach (var target in targets)
+                {
+                    target.TargetMode(true);
+                }
+            }
+        }
+
+
+        public void SelectedUIEntityEvent(BattleEntity battleEntity)
+        {
+            SelectedAction?.Invoke(battleEntity);
+            SelectedAction = null;
+            CancelSelectEntity();
+        }
+
+        private void CancelSelectEntity()
+        {
+            foreach (var uiEntity in uIBattle.UIEnemies.Concat(uIBattle.UIUnits))
+            {
+                uiEntity.TargetMode(false);
+            }
             
-            return entity;
+            targetSelectGameObject.SetActive(false);
         }
         #endregion
         #endregion

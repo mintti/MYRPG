@@ -52,6 +52,7 @@ namespace Module.Game.Battle
             {
                 var obj = Instantiate(actionPrefab, actionContent);
                 uiAction = obj.GetComponent<UIAction>();
+                Actions.Add(uiAction);
                 uiAction.Init(this);
             }
 
@@ -69,9 +70,12 @@ namespace Module.Game.Battle
             On();
         }
         
+        /// <summary>
+        /// 액션 수행을 알려, 남은 액션이 존재하지 않다면 다음 동작(NextAction) 수행.
+        /// </summary>
         public void ExecuteAction()
         {
-            if (Actions.Count == 0 || CheckFunc == null || CheckFunc())
+            if (Actions.All(x=> !x.Active) || CheckFunc == null || CheckFunc())
             {
                 NextAction();
                 
