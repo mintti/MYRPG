@@ -47,6 +47,9 @@ namespace Module.Game.Battle
             }
         }
 
+        /// <summary>
+        /// 이벤트 종료 시 호출
+        /// </summary>
         public void Clear()
         {
             foreach (var uiEntity in UIUnits.Concat(UIEnemies))

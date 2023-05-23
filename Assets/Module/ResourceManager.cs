@@ -35,10 +35,10 @@ namespace Module
                 new (0, "테스트 던전", 1, new (){ 0}, new List<int>(){ (int)EventType.HealingLake, (int)EventType.GetArtifact})
             };
 
-
+            List<Reward> defaultRewards = new() { new Reward(RewardType.Gold, 100, 10) };
             Enemies = new List<Enemy>()
             {
-                new("테스트 몬스터", 10, 5, Resources.Load<Sprite>("Sprite/enemy"))
+                new("테스트 몬스터", 10, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
             };
 
             BlockSprites = Resources.LoadAll<Sprite>("Sprite/block").ToList();

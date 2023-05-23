@@ -2,7 +2,9 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Xml.Schema;
 using Infra.Model.Data;
+using Infra.Model.Resource;
 using Module;
+using Dungeon = Infra.Model.Data.Dungeon;
 
 namespace Infra.Model.Game
 {
@@ -60,5 +62,23 @@ namespace Infra.Model.Game
             SlotWidth = 5;
             SlotHeight = 2;
         }
+
+        #region Update Item
+
+        public void GetReward(IEnumerable<Reward> rewards)
+        {
+            foreach (var reward in rewards)
+            {
+                switch (reward.Type)
+                {
+                    case RewardType.Gold :
+                        Money += (uint)reward.Value;
+                    break;
+                }
+                
+            }
+        }
+
+        #endregion
     }
 }

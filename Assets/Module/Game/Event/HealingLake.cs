@@ -20,7 +20,12 @@ namespace Module.Game.Event
 
         private void ReceiveAnswer(string answer)
         {
-            ICon.MessageBox.SetMessageBox(Distractor[answer], callback: ICon.EndEvent);
+            ICon.MessageBox.SetMessageBox(Distractor[answer], callback: End);
+        }
+
+        private void End(string msg)
+        {
+            ICon.EndEvent();
         }
     }
 }

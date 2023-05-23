@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Infra.Model.Data;
@@ -26,6 +27,8 @@ namespace Module.Game.Event
         private UIBattle UIBattle { get; set; }
         private BattleEvent BattleEvent { get; set; }
         private IEnumerator Iterator { get; set; }
+
+        private List<Reward> Rewards { get; set; } = new();
         #endregion
         
         private void Init(BattleEvent battleEvent)
@@ -63,6 +66,11 @@ namespace Module.Game.Event
         /// </summary>
         private void Spun(Block[,] blocks)
         {
+            foreach (var block in blocks)
+            {
+                block.Init();
+            }
+            
             // 블럭 효과 적용
             foreach (var block in blocks)
             {
@@ -81,12 +89,19 @@ namespace Module.Game.Event
             Next();   
         }
 
-        private void Next() => Iterator.MoveNext();
+        private void Next() => Iterator.MoveNext();  
         private void End()
         {
+            // Reward 적용
+            UIGame.GameData.GetReward(Rewards);
+            
             // Clear
             BattleEvent = null;
             Iterator = null;
+            Rewards.Clear();
+            
+            // UI Clear
+            UIBattle.Clear();
             UIGame.EndEvent();
         }
 
@@ -114,7 +129,8 @@ namespace Module.Game.Event
                 if (CheckAllEnemyDie())
                 {
                     // 모든 적이 죽은 경우 종료
-                    UIGame.Reward(GetBattleReword());
+                    Rewards = GetBattleReword().ToList();
+                    UIGame.Reward(Rewards, End);
                     yield break;
                 }
                 
@@ -173,10 +189,17 @@ namespace Module.Game.Event
         #endregion
         
 
-        private Reward GetBattleReword()
+        private IEnumerable<Reward> GetBattleReword()
         {
-            return new Reward();
-        }
+            IEnumerable<Reward> result = new List<Reward>();
 
+            foreach (var enemy in UIBattle.EnemyList)
+            {
+                var reward = enemy.BaseEnemy.GetReward();
+                result = result.Concat(reward);
+            }
+
+            return result;
+        }
     }
 }

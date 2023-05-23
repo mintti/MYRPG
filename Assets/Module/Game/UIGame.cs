@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Infra.Model.Data;
 using Infra.Model.Game;
+using Infra.Model.Resource;
 using Module.Game.Battle;
 using Module.Game.Event.Message;
 using Module.Game.Map;
@@ -67,6 +68,7 @@ namespace Module.Game
             uiMap.Init(this);
             uIBattle.Init(this);
             uIActionSelector.Init(this);
+            uiReward.Init(this);
             Init();
             
             Map();
@@ -115,9 +117,21 @@ namespace Module.Game
         #region IEventController
         public IMessageBox MessageBox => uIMessageBox;
 
-        public void EndEvent(string none = null)
+        /// <summary>
+        /// 이벤트 종료 시 수행
+        /// </summary>
+        public void EndEvent(bool isClear = true)
         {
-            
+            if (isClear)
+            {
+                CurrentSpot.State = SpotState.Clear;
+                Map(true);
+                uiMap.UpdateMap();
+            }
+            else
+            {
+                // End Game
+            }
         }
 
 
@@ -131,7 +145,7 @@ namespace Module.Game
             StartCoroutine(nameof(Spin) , nextAction);
         }
 
-        public void Reward(Reward reward) => uiReward.Init(reward);
+        public void Reward(IEnumerable<Reward> rewards, Action confirmAction = null) => uiReward.Set(rewards, confirmAction);
 
 
         public void ExecuteActionSelector(Action nextAction, Func<bool> checkFunc = null)

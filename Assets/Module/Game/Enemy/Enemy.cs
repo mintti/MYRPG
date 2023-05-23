@@ -25,10 +25,14 @@ namespace Module.Game
     internal abstract class Enemy : BattleEntity
     {
         public HowToTarget HowToTarget { get; set; }
+        public Infra.Model.Resource.Enemy BaseEnemy { get; set; }
         
         public void Init(EnemyType e)
         {
             var enemy = ResourceManager.Instance.Enemies[(int) e];
+
+            BaseEnemy = enemy;
+            
             Name = enemy.Name;
             Hp = enemy.Hp;
             MaxHp = enemy.Hp;
