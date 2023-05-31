@@ -27,9 +27,12 @@ namespace Module.Game.Battle
 
         public void Clear()
         {
-            BattleEntity.Disconnect();
-            BattleEntity = null;
-            GetComponent<SpriteRenderer>().sprite = null;
+            if (BattleEntity != null)
+            {
+                BattleEntity.Disconnect();
+                BattleEntity = null;
+                GetComponent<SpriteRenderer>().sprite = null;
+            }
         }
 
         #region Target On Event

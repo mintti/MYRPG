@@ -9,9 +9,10 @@ namespace Infra.Util.RandomMapMaker
     internal class RandomMapMaker
     {
         Random _random;
-        public List<Spot> Generate(int depth, int maxWidth)
+        public List<Spot> Generate(int finalDepth, int maxWidth)
         {
-            var firstSpot = new Spot(1){State = SpotState.Do};
+            int depth = 1;
+            var firstSpot = new Spot(1, depth){State = SpotState.Do};
             var allCollection = new List<Spot>(){firstSpot};
             _random = new Random();
             
@@ -19,7 +20,7 @@ namespace Infra.Util.RandomMapMaker
             var widthList = new List<int>();
             int sum = 0;
             int count;
-            for (var i = 1; i < depth - 1; i++)
+            for (var i = 1; i < finalDepth - 1; i++)
             {
                 count = _random.Next(2, maxWidth + 1);
                 sum += count;
@@ -30,21 +31,23 @@ namespace Infra.Util.RandomMapMaker
             var currentSpots = new List<Spot>();
             var nextSpots = new List<Spot>();
             int index = 2;
+            depth = 2;
             for (int i = 0; i < widthList.First(); i++)
             {
-                var spot = new Spot(index++);
+                var spot = new Spot(index++, depth);
                 currentSpots.Add(spot);
                 allCollection.Add(spot);
                 firstSpot.Connect(spot);
             }
             
             // 다음 노드 생성 및 연결
+            depth = 3;
             for (int i = 0, cnt = widthList.Count -1 ; i < cnt; i++)
             {
                 nextSpots.Clear();
                 for (int j = 0; j < widthList[i]; j++)
                 {
-                    var spot = new Spot(index++);
+                    var spot = new Spot(index++, depth + i);
                     nextSpots.Add(spot);
                     allCollection.Add(spot);
                 }
@@ -56,7 +59,7 @@ namespace Infra.Util.RandomMapMaker
             }
             
             // depth - 1 에 위치한 노드들을 마지막 노드에 연결
-            var lastSpot = new Spot(index);
+            var lastSpot = new Spot(index, finalDepth);
             currentSpots.ForEach(n => n.Connect(lastSpot));
             allCollection.Add(lastSpot);
             

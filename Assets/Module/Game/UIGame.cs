@@ -124,13 +124,10 @@ namespace Module.Game
         {
             if (isClear)
             {
-                CurrentSpot.State = SpotState.Clear;
+                CurrentSpot.UpdateState(SpotState.Clear);
+                GameData.Map.UpdateStateRest(CurrentSpot.Depth);
                 Map(true);
                 uiMap.UpdateMap();
-            }
-            else
-            {
-                // End Game
             }
         }
 
