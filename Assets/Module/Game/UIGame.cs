@@ -2,220 +2,284 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using Infra.Model.Data;
 using Infra.Model.Game;
+using Infra.Model.Resource;
 using Module.Game.Battle;
+using Module.Game.Event.Message;
+using Module.Game.Map;
 using Module.Game.Slot;
-using Module.WorldMap;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.UI;
-
-using Block = Infra.Model.Game.Block;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using Artefact = Infra.Model.Game.Artefact;
+using Unit = Infra.Model.Game.Unit;
 
 namespace Module.Game
 {
-    internal class UIGame : MonoBehaviour
+    internal class UIGame : BaseMonoBehaviour, IEventController
     {
         #region Variables
         private GameManager GameManager { get; set; }
-
+        public GameData GameData { get; private set; }
+        
         #region Button
-        public void B_Spin() => Spin();
+        public void B_Spin() => CanDoSpin = true;
         public void B_Map() => Map();
         public void B_Option() => Option();
-
-        public void B_ResultPopupConfirm() => End();
         #endregion
 
-        #region Game
-
-        private GameData GameData { get; set; }
-
-
-
-        #endregion
-        #region Game Component
-
-        public GameObject resultPopupGameObject;
-            
-        /// <summary>
-        /// 각종 아티펙트, 블럭 설정 및 게임 이벤트가 종료될 때까지 Ture
-        /// </summary>
-        private bool Setting { get; set; }
+        public UIBattle uIBattle;
+        public UIMap uiMap;
+        public UIOption uiOption;
+        public UIReward uiReward;
+        public UIMessageBox uIMessageBox;
         
         #region Slot
         public UISlot uiSlot;
-        private SlotService SlotService { get; set; }
+        public UIActionSelector uIActionSelector;
+        public SlotService SlotService { get; set; }
         private List<Block> BlockList { get; set; } = new ();
         
-        /// <summary>
-        /// 스핀 버튼 선택 후, 스핀 이벤트가 종료될 때 까지 True.
-        /// </summary>
-        private bool Spinning { get; set; }
-        
-        /// <summary>
-        /// 스핀 종료 플래그. 모든 스핀 이벤트가 종료되었을 때, True
-        /// </summary>
-        private bool SpinEndFlag { get; set; }
+        public bool CanDoSpin { get; set; } = false;
         
         private BlockEvents BlockEvents { get; set; } 
         #endregion
-
-        #region Battle
-
-        public UIBattle uIBattle;
-        public List<Unit> UnitList { get; set; } = new List<Unit>();
-        public List<Enemy> EnemyList { get; set; } = new List<Enemy>();
-
-        #endregion
-
-        #region Artifact
+        
+        #region Artefact
         public Transform artefactListTr;
         public GameObject artefactPrefab;
-        private List<Artefact> ArtifactList { get; set; } = new();
+        
+        private List<Artefact> ArtefactList { get; set; } = new();
         #endregion
+        
+        public Spot CurrentSpot { get; set; }
         #endregion
-        #endregion
-
-
-        #region Game
+        
         /// <summary>
         /// 씬로드 후 수행되는 첫 이벤트.
         /// </summary>
         private void Start()
         {
-            Setting = true;
+            GameManager = GameManager.Instance;
             
-            GameManager = FindObjectsOfType<GameManager>().First();
-
-            Init(GameManager.GameData, GameManager.DungeonType);
-
-            StartCoroutine(nameof(Main));
+            // 재활용 구현된 UI 클래스
+            uiMap.Init(this);
+            uIBattle.Init(this);
+            uIMessageBox.Init(this);
+            uIActionSelector.Init(this);
+            uiReward.Init(this);
+            uiSlot.Init(this);
+            
+            Init();
         }
-        
-        private void Init(GameData data, DungeonType dungeonType)
+
+        public void Init()
         {
-            GameData = data;
-            SlotService = new SlotService();
+            if (this == null)
+            {
+                return;
+            }
             
+            GameData = GameManager.Instance.GameData;
+
+            #region 화면 설정
+            SlotService = new SlotService();
+
             // Slot 배치
             BlockList.Clear();
             BlockList = GameData.UnitList.SelectMany(u => u.HasBlocks).ToList();
-            uiSlot.Init(this, GameData.SlotWidth, GameData.SlotHeight);
-            
-            // Artifact 배치
-            ArtifactList.Clear();
-            ArtifactList = GameData.ArtefactList;            
-            foreach (var item in ArtifactList)
+            uiSlot.CreateSlot(GameData.SlotWidth, GameData.SlotHeight);
+
+            // Artefact 배치
+            ArtefactList.Clear();
+            ArtefactList = GameData.ArtefactList;
+            foreach (var item in ArtefactList)
             {
                 var obj = Instantiate(artefactPrefab, artefactListTr);
                 obj.GetComponent<UIArtefact>().Set(item);
             }
             
-            // Battle View Setting
-            UnitList.Clear();
-            EnemyList.Clear();
-            uIBattle.Init(this);
-            
-            
             // 블럭 효과 초기화 (by artefact and enemy)
             BlockEvents = new BlockEvents((e) => { });
             
-            // 등등 초기화
-            resultPopupGameObject.SetActive(false);
+            // 화면
+            targetSelectGameObject.SetActive(false);
+
+            #endregion
+            
+            Map();
         }
 
-        private IEnumerator Main()
+        #region GameView/Event-Related
+        public void ExecuteEvent(Spot spot)
         {
-            var waitUntil = new WaitUntil(() => SpinEndFlag);
-            
-            // [TODO] 스테이지 아티펙트 효과 활성화
-            while (true)
-            {
-                SpinEndFlag = false;
-                
-                // [TODO] 턴 아티펙트 효과 활성화
-                
-
-                Setting = false;
-                
-                // Spin 대기
-                yield return SpinEndFlag;
-
-                Setting = true;
-                if (true)
-                {
-                    EndGame();
-                    yield break;
-                }
-                
-                // 적의 턴
-                //EnemyList.ForEach(x=> );
-            }
-
-
-            yield return null;
-        }
-
-        private void EndGame()
-        {
-            // 보상 정산
-            
-            
-            
-            // 팝업에 표시
-            resultPopupGameObject.SetActive(true);
-            
-            // 팝업 내 보상 결과 리스트에 표시 필요 <= 
+            var spotEvent = spot.Event;
+            var item = Factory.EventFactory(this, spotEvent);
+            item.Execute();
         }
         
-        private void End()
+        #region IEventController
+        public IMessageBox MessageBox => uIMessageBox;
+
+        /// <summary>
+        /// 이벤트 종료 시 수행
+        /// </summary>
+        public void EndEvent(bool isClear = true)
         {
-            //GameManager
+            if (isClear)
+            {
+                CurrentSpot.UpdateState(SpotState.Clear);
+                GameData.Map.UpdateStateRest(CurrentSpot.Depth);
+                Map(true);
+                uiMap.UpdateMap();
+
+                // 클리어 
+                if (CurrentSpot.ChildSpots == null)
+                {
+                    GameData.DungeonClear();
+                    GameManager.DungeonClear();
+                }
+            }
+            else
+            {
+                GameManager.ClearFail();
+            }
         }
+
+
+        public void SetView()
+        {
+            
+        }
+
+        public void SpinEvent(Action<Block[,]> nextAction = null)
+        {
+            StartCoroutine(nameof(Spin) , nextAction);
+        }
+
+        public void Reward(IEnumerable<Reward> rewards, Action confirmAction = null) => uiReward.Set(rewards, confirmAction);
+
+
+        public void ExecuteActionSelector(Action nextAction, Func<bool> checkFunc = null)
+            => uIActionSelector.Show(nextAction, checkFunc);
+
+        public IEnumerable<Unit> UnitList => GameData.UnitList;
+
         #endregion
+        
 
         #region Spin Event
-        
-        private void Spin()
+        private IEnumerator Spin(Action<Block[,]> callback = null)
         {
-            if (Setting || Spinning) return;
+            yield return new WaitUntil(() => CanDoSpin);
+            CanDoSpin = false;
 
-            Spinning = true;
-            
+            int slotWidth = GameData.SlotWidth;
+            int slotHeight = GameData.SlotHeight;
             // 블럭 지정 및 설정
-            var seq = SlotService.GetRandomBlock(BlockList, GameData.SlotWidth, GameData.SlotHeight, BlockEvents);
-            uiSlot.SetBlocks(seq);
+            var list = SlotService.GetRandomBlock(BlockList, slotWidth, slotHeight, BlockEvents).ToList();
+            uiSlot.SetBlocks(list);
             
             // 스핀 효과 적용 *Show Animation
+            uiSlot.SpinAnimation();
             
-            Spinning = false;
-            SpinEndFlag = true;
+            // 결과 전달
+            if (callback != null)
+            {
+                var blocks = new Block[slotHeight, slotWidth];
+                for (int i = 0, cnt = list.Count(); i < cnt; i++)
+                {
+                    blocks[i / slotWidth, i % slotWidth] = list[i];
+                }
+                callback?.Invoke(blocks);
+            }
+            
+            yield return null;
         }
-        
-
         #endregion
 
-        #region Map
+        #region Target Selected Event
 
+        public GameObject targetSelectGameObject;
 
-        private void Map()
+        private Action<BattleEntity> SelectedAction { get; set; }
+        /// <summary>
+        /// 대상을 지정하기 위한 세팅
+        /// </summary>
+        /// <param name="targetType"></param>
+        /// <returns></returns>
+        public void SelectBattleEntity(TargetType targetType, Action<BattleEntity> action = null)
         {
-            
+            BattleEntity entity = null;
+            SelectedAction = action;
+            targetSelectGameObject.SetActive(true);
+
+            IEnumerable<UIEntity> targets = null;
+            switch (targetType)
+            {
+                case TargetType.Enemy :
+                    targets = uIBattle.UIEnemies;
+                    break;
+                case TargetType.Unit :
+                    targets = uIBattle.UIUnits;
+                    break;
+            }
+
+            if (targets != null)
+            {
+                foreach (var target in targets)
+                {
+                    target.TargetMode(true);
+                }
+            }
         }
 
-        #endregion
-        
-        #region Option
 
-        private void Option()
+        public void SelectedUIEntityEvent(BattleEntity battleEntity)
         {
-            
+            SelectedAction?.Invoke(battleEntity);
+            SelectedAction = null;
+            CancelSelectEntity();
         }
-        
-        
 
+        private void CancelSelectEntity()
+        {
+            foreach (var uiEntity in uIBattle.UIEnemies.Concat(uIBattle.UIUnits))
+            {
+                uiEntity.TargetMode(false);
+            }
+            
+            targetSelectGameObject.SetActive(false);
+        }
+        #endregion
+        #endregion
+        
+        #region Map-Related
+        /// <summary>
+        /// UIMap에서 맵 선택 이벤트 발생시 수행
+        /// </summary>
+        public void SelectMap(Spot spot)
+        {
+            CurrentSpot = spot;
+            Map(false);
+            ExecuteEvent(spot);
+        }
         #endregion
 
+
+        #region Default Function
+        private void Map(bool state = true)
+        {
+            uiMap.gameObject.SetActive(state);
+        }
+
+        private void Option(bool state = true)
+        {
+            uiOption.gameObject.SetActive(state);
+        }
+        #endregion
     }
 }

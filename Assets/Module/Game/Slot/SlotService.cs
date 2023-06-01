@@ -51,7 +51,6 @@ namespace Module.Game.Slot
             OutputBlockList.Clear();
             BlockDict.Clear();
             
-            
             // 블럭엔 효과 적용 전 옵션과 적용 후 옵션이 둘 다 적혀 있을 것
             // 블럭 효과 적용 및 랜덤블럭에 추가
             var index = 1;
@@ -85,6 +84,7 @@ namespace Module.Game.Slot
             {
                 var randomIdx = Random.Next(0, i);
                 OutputBlockList.Add(BlockDict[temp[randomIdx]]);
+                temp.RemoveAt(randomIdx);
             }
                 
             return OutputBlockList;

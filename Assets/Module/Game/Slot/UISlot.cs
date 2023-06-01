@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Infra.Model.Game;
 using UnityEngine;
 namespace Module.Game.Slot
 {
-    internal class UISlot : MonoBehaviour
+    internal class UISlot : BaseMonoBehaviour
     {
         #region Variables
         private UIGame UIGame { get; set; }
@@ -14,21 +15,27 @@ namespace Module.Game.Slot
         
         private List<UIBlock> Blocks { get; set; }
         #endregion
-        
-        public void Init(UIGame uiGame, int width, int height) 
+
+        public void Init(UIGame uiGame)
         {
             UIGame = uiGame;
-            
-            var rect = slotRectTr.rect;
-            rect.width = width * 100;
-            rect.height = height * 100;
+        }
+
+        public void CreateSlot(int width, int height) 
+        {
+            slotRectTr.sizeDelta = new Vector2(width * 100, height * 100);
 
             Blocks = new List<UIBlock>();
-            for (int i = 0, cnt = width * height * 3; i < cnt; i++)
+            for (int i = 0, cnt = width * height; i < cnt; i++)
             {
                 var obj = Instantiate(blockPrefab, blockContentTr);
                 Blocks.Add(obj.GetComponent<UIBlock>());
             }
+        }
+
+        public void CreateBlock()
+        {
+            
         }
 
         /// <summary>
@@ -37,7 +44,7 @@ namespace Module.Game.Slot
         public void SetBlocks(IEnumerable<Block> seq)
         {
             var index = 0;
-            var length = Blocks.Count * 3;
+            var length = Blocks.Count;
 
             do
             {
@@ -46,6 +53,11 @@ namespace Module.Game.Slot
                     Blocks[index++].Set(block);
                 }
             } while (index < length);
+        }
+
+        public void SpinAnimation()
+        {
+            
         }
     }
 }

@@ -674,7 +674,7 @@ MonoBehaviour:
   jobListTarget: {fileID: 497532068}
   jobPrefab: {fileID: 5538670058209931181, guid: 799753ecea3c2154cb05a26691fd5e0e, type: 3}
   startButton: {fileID: 122054165}
-  optionGameObject: {fileID: 0}
+  optionGameObject: {fileID: 469584540}
 --- !u!1 &370691057
 GameObject:
   m_ObjectHideFlags: 0

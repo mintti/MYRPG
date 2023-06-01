@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography.X509Certificates;
+using Infra.Model.Data;
 using Infra.Model.Game;
 using Infra.Model.Resource;
 using UnityEngine;
@@ -12,7 +13,7 @@ using UnityEngine.UI;
 
 namespace Module.MainMenu
 {
-    internal class UIMainMenu : MonoBehaviour
+    internal class UIMainMenu : BaseMonoBehaviour
     {
         #region Varaibles
         private GameManager GameManager { get; set; }
@@ -69,7 +70,7 @@ namespace Module.MainMenu
             
             // 처음으로 화면을 띄울 때 로드
             if (jobListTarget.childCount > 0) return;
-            foreach (var job in ResourceManager.JobList)
+            foreach (var job in ResourceManager.Instance.Jobs.Skip(1))
             {
                 var obj = Instantiate(jobPrefab, jobListTarget);
                 obj.GetComponent<UIJob>().SetData(this, job);
