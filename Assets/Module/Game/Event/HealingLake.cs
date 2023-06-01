@@ -3,29 +3,39 @@ using System.Linq;
 
 namespace Module.Game.Event
 {
-    internal class HealingLake : IEventItem
+    internal class HealingLake : EventBase, IEventItem
     {
-        public HealingLake(IEventController con)
+        public HealingLake(IEventController ec) : base(ec)
         {
-            ICon = con;
+            
         }
         
         public Dictionary<string, string> Distractor { get; set; }
-        public IEventController ICon { get; }
 
-        public void Execute()
+        public override void Execute()
         {
-            ICon.MessageBox.SetMessageBox("find healing lake.", Distractor.Keys.ToArray(), ReceiveAnswer );
+            // [PROTO] 이벤트 텍스트 넣는 더 좋은 로직 구현 필요
+            Distractor = new Dictionary<string, string>()
+            {
+                {"Drink spring water.", "recovery the half of hp."}
+            };
+            
+            EC.MessageBox.SetMessageBox("find healing lake.", Distractor.Keys.ToArray(), ReceiveAnswer );
         }
 
         private void ReceiveAnswer(string answer)
         {
-            ICon.MessageBox.SetMessageBox(Distractor[answer], callback: End);
-        }
-
-        private void End(string msg)
-        {
-            ICon.EndEvent();
+            switch (Distractor.Keys.ToList().IndexOf(answer))
+            {
+                case 1 :
+                    foreach (var unit in EC.UnitList)
+                    {
+                        unit.Heal((int)(unit.MaxHp * 0.5f));
+                    }
+                    break;
+            }
+            
+            EC.MessageBox.SetMessageBox(Distractor[answer], callback: End);
         }
     }
 }

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Infra;
 using Infra.Model;
+using Infra.Model.Data;
 using Infra.Model.Resource;
 using Module.WorldMap;
 using UnityEngine;
+using Dungeon = Infra.Model.Resource.Dungeon;
 using EventType = Infra.Model.Resource.EventType;
 
 namespace Module
@@ -15,6 +17,7 @@ namespace Module
     /// </summary>
     internal class ResourceManager : Singleton<ResourceManager>
     {
+        
         #region Initializer
         public ResourceManager()
         {
@@ -32,7 +35,7 @@ namespace Module
             };
             Dungeons = new List<Dungeon>()
             {
-                new (0, "테스트 던전", 1, new (){ 0}, new List<int>(){ (int)EventType.HealingLake, (int)EventType.GetArtifact})
+                new (0, "테스트 던전", 1, new (){ 0}, new List<int>(){ (int)EventType.HealingLake, (int)EventType.GetArtefact})
             };
 
             List<Reward> defaultRewards = new() { new Reward(RewardType.Gold, 100, 10) };
@@ -43,6 +46,13 @@ namespace Module
 
             BlockSprites = Resources.LoadAll<Sprite>("Sprite/block").ToList();
 
+            MapSprites = new ();
+            var temps = Resources.LoadAll<Sprite>($"Sprite/Map");
+            foreach (var name in Enum.GetNames(typeof(SpotEventType)))
+            {
+                MapSprites.Add(temps.FirstOrDefault(x => x.name.Equals($"Map_{name}")));
+            }
+            
             #endregion
         }
         #endregion
@@ -68,9 +78,11 @@ namespace Module
         };
 
         public readonly (float battle, float elete, float @event, float rest) EventPercentage 
-            = new (0.6f, 0.0f, 0.3f, 0.1f);
+            = new (0.6f, 0.0f, 0.4f, 0.0f);
 
         public List<Sprite> BlockSprites { get; }
+        
+        public List<Sprite> MapSprites { get; }
         #endregion
     }
 }

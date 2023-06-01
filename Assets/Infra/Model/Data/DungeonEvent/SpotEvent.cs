@@ -30,7 +30,7 @@ namespace Infra.Model.Data
         {
             
         }
-
+        
         public SpotEvent(int index)
         {
             Index = index;

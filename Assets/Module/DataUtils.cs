@@ -80,8 +80,9 @@ namespace Module
             
             // Shuffle
             eventList = ShuffleList(eventList).ToList();
-            eventList.Insert(0, SpotEventType.Battle);
-            eventList.Add(SpotEventType.Boss);
+            eventList.Insert(0, SpotEventType.Battle); // 첫 턴은 무조건 전투
+            eventList.Insert(0, SpotEventType.Battle); // [PROTO] 마지막 턴은 보스지만 프로토에서는 전투로 
+            // eventList.Add(SpotEventType.Boss);
             
             // Set Detail of event 
             int index = 0;
@@ -95,21 +96,21 @@ namespace Module
                 switch (type)
                 {
                     case SpotEventType.Battle:
-                        spotEvent = new BattleEvent(BattleType.Common, randomMonsterSeq.ToList());
+                        spotEvent = new BattleEvent(randomMonsterSeq.ToList());
                         break;
                     case  SpotEventType.Elite:
-                        spotEvent = new BattleEvent(BattleType.Elite, randomEliteSeq.ToList());
+                        spotEvent = new BattleEvent(randomEliteSeq.ToList());
                         type = SpotEventType.Battle;
                         break;
                     case SpotEventType.Boss:
-                        spotEvent = new BattleEvent(BattleType.Boss, null);
+                        spotEvent = new BattleEvent(null);
                         type = SpotEventType.Battle;
                         break;
                     case SpotEventType.Rest:
                         spotEvent = null;
                         break;
                     case SpotEventType.Event:
-                        spotEvent = new SpotEvent(randomEventSeq.First());
+                         spotEvent = new SpotEvent(randomEventSeq.First());
                         break;
                     default:
                         spotEvent = null;

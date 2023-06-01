@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Infra.Model.Data;
+using Module;
 using Module.Game.Map;
 using TMPro;
 using UnityEngine;
@@ -16,19 +17,20 @@ internal class UISpot : MonoBehaviour
     private Button _button;
 
     #region External
-    public Sprite icon;
     public void B_Select() => UIMap.UIGame.SelectMap(BaseSpot);
+    public Image icon;
     #endregion
     #endregion
     
     public void Init(UIMap map, Spot spot)
     {
         UIMap = map;
+        BaseSpot = spot;
         
         _button = GetComponentInChildren<Button>();
         _button.interactable = false;
 
-        BaseSpot = spot;
+        icon.sprite = ResourceManager.Instance.MapSprites[(int) BaseSpot.Event.Type];
         
         // [TEST] 텍스트 설정
         string childtext = "";

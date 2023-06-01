@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Infra.Model.Game;
 using Infra.Model.Resource;
@@ -21,5 +22,7 @@ namespace Module.Game
         IMessageBox MessageBox { get; }
 
         void ExecuteActionSelector(Action nextAction, Func<bool> checkFunc = null);
+        
+        IEnumerable<Unit> UnitList { get; }
     }
 }

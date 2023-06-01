@@ -112,24 +112,13 @@ namespace Module
                 switch (key.type)
                 {
                     case SpotEventType.Battle:
-                        switch ((BattleType) key.index)
-                        {
-                            case BattleType.Common:
-                                eventItem = new CommonBattle(uiGame);
-                                break;
-                            case BattleType.Elite:
-                                break;
-                            case BattleType.Boss:
-                                break;
-                            default: break;
-                        }
-
+                        eventItem = new CommonBattle(uiGame);
                         break;
                     case SpotEventType.Event:
                         switch ((EventType) key.index)
                         {
-                            case EventType.GetArtifact:
-                                eventItem = new GetArtifact(uiGame);
+                            case EventType.GetArtefact:
+                                eventItem = new GetArtefact(uiGame);
                                 break;
                             case EventType.HealingLake:
                                 eventItem = new HealingLake(uiGame);
@@ -139,17 +128,13 @@ namespace Module
                         }
 
                         break;
-                    case SpotEventType.None:
-                        break;
                     case SpotEventType.Elite:
-                        break;
                     case SpotEventType.Boss:
-                        break;
+                    case SpotEventType.None:
                     case SpotEventType.Rest:
-                        break;
                     case SpotEventType.Artefact:
-                        break;
                     default:
+                        throw new NotImplementedException("구현하지 않음");
                         break;
                 }
                 EventBuffer[key] = eventItem;

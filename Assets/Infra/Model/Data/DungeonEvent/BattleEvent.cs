@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Infra.Model.Resource;
 
 namespace Infra.Model.Data
@@ -7,7 +8,7 @@ namespace Infra.Model.Data
     {
         public List<int> Enemies { get; }
 
-        public BattleEvent(BattleType type, List<int> enemies) : base((int)type)
+        public BattleEvent(List<int> enemies)
         {
             Enemies = enemies;
         }

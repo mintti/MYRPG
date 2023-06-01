@@ -9,6 +9,10 @@ namespace Infra.Model.Data
         Clear,
         Do,
     }
+    
+    /// <summary>
+    /// Spot간 연결 정보/클리어 정보를 포함하며, 이벤트에 대한 정보는 Event 속성을 통해 확인이 가능
+    /// </summary>
     internal class Spot
     {
         public int Index { get; protected set; }
@@ -49,7 +53,7 @@ namespace Infra.Model.Data
             switch (state)
             {
                 case SpotState.Clear :
-                    ChildSpots.ForEach(spot => spot.UpdateState(SpotState.Do));
+                    ChildSpots?.ForEach(spot => spot.UpdateState(SpotState.Do));
                     break;
             }
         }

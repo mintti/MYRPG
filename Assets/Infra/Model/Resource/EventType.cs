@@ -4,7 +4,7 @@
     {
         None = 0,
         HealingLake,
-        GetArtifact,
+        GetArtefact,
     }
 
     public enum BattleType : int

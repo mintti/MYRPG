@@ -47,11 +47,11 @@ namespace Module.Game
         private BlockEvents BlockEvents { get; set; } 
         #endregion
         
-        #region Artifact
+        #region Artefact
         public Transform artefactListTr;
         public GameObject artefactPrefab;
         
-        private List<Artefact> ArtifactList { get; set; } = new();
+        private List<Artefact> ArtefactList { get; set; } = new();
         #endregion
         
         public Spot CurrentSpot { get; set; }
@@ -67,6 +67,7 @@ namespace Module.Game
             // 초기화
             uiMap.Init(this);
             uIBattle.Init(this);
+            uIMessageBox.Init(this);
             uIActionSelector.Init(this);
             uiReward.Init(this);
             Init();
@@ -87,10 +88,10 @@ namespace Module.Game
             BlockList = GameData.UnitList.SelectMany(u => u.HasBlocks).ToList();
             uiSlot.Init(this, GameData.SlotWidth, GameData.SlotHeight);
 
-            // Artifact 배치
-            ArtifactList.Clear();
-            ArtifactList = GameData.ArtefactList;
-            foreach (var item in ArtifactList)
+            // Artefact 배치
+            ArtefactList.Clear();
+            ArtefactList = GameData.ArtefactList;
+            foreach (var item in ArtefactList)
             {
                 var obj = Instantiate(artefactPrefab, artefactListTr);
                 obj.GetComponent<UIArtefact>().Set(item);
@@ -147,6 +148,9 @@ namespace Module.Game
 
         public void ExecuteActionSelector(Action nextAction, Func<bool> checkFunc = null)
             => uIActionSelector.Show(nextAction, checkFunc);
+
+        public IEnumerable<Unit> UnitList => GameData.UnitList;
+
         #endregion
         
 
@@ -243,8 +247,8 @@ namespace Module.Game
         public void SelectMap(Spot spot)
         {
             CurrentSpot = spot;
-            ExecuteEvent(spot);
             Map(false);
+            ExecuteEvent(spot);
         }
         #endregion
 

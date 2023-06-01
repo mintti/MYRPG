@@ -21,6 +21,6 @@ namespace Infra.Model.Resource
         None,
         Gold,
         Item,
-        Artifact
+        Artefact
     }
 }

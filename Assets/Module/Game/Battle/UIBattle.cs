@@ -56,6 +56,7 @@ namespace Module.Game.Battle
             {
                 uiEntity.Clear();
             }
+            EnemyList.Clear();
         }
 
         #region IBattleController
