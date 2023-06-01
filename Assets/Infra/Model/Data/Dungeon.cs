@@ -6,14 +6,13 @@ namespace Infra.Model.Data
     /// Dungeon info that saved player data.
     /// Dungeon's Index, component of event when user data created.
     /// </summary>
-    public class Dungeon
+    internal class Dungeon
     {
         #region Variables
         public int Index { get;}
         
         public bool IsEnable { get; set; }
         public bool IsClear { get; set; }
-        public List<MapPoint> MapPoints { get; }
             
         /// <summary>
         /// Rate of Progress
@@ -21,14 +20,12 @@ namespace Infra.Model.Data
         public int ProgressRate { get; set; }
         #endregion
 
-        
         /// <summary>
         /// 초기화
         /// </summary>
-        public Dungeon(int index, List<MapPoint> mapPoints )
+        public Dungeon(int index)
         {
             Index = index;
-            MapPoints = mapPoints;
             IsClear = false;
         }
     }

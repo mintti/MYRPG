@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Infra.Model.Game;
 
 namespace Module.Game.Slot
 {
-    public class Block
-    {
-        public float Weight { get; set; }
-        public float WeightBackup { get; set; }
-    }
-    
-    public delegate void Del(Block block);
-    
-    public class SlotService
+    internal class SlotService
     {
         #region Variables
 
@@ -28,12 +21,12 @@ namespace Module.Game.Slot
         /// 스테이지 시작 후 스핀 전, 모든 블럭에 효과 적용
         /// </summary>
         /// <param name="blocks"></param>
-        /// <param name="stageEffectDel"></param>
-        private void ApplyEffectBeforeSpin(List<Block> blocks, Del stageEffectDel)
+        /// <param name="stageEffectBlockEvents"></param>
+        private void ApplyEffectBeforeSpin(List<Block> blocks, BlockEvents stageEffectBlockEvents)
         {
             foreach (var block in blocks)
             {
-                stageEffectDel?.Invoke(block);
+                stageEffectBlockEvents?.Invoke(block);
                 block.WeightBackup = block.Weight;
             }
         }
@@ -45,9 +38,9 @@ namespace Module.Game.Slot
         /// <param name="blocks">플레이어가 소지한 블럭들</param>
         /// <param name="width">슬롯의 가로 크기</param>
         /// <param name="height">슬롯의 세로 크기</param>
-        /// <param name="turnEffectDel">턴 단위로 소멸되는 일회성 블럭효과</param>
+        /// <param name="turnEffectBlockEvents">턴 단위로 소멸되는 일회성 블럭효과</param>
         /// <returns>랜덤한 블럭 스퀀스</returns>
-        private IEnumerable<Block> GetRandomBlock(List<Block> blocks, int width, int height, Del turnEffectDel = null)
+        public IEnumerable<Block> GetRandomBlock(List<Block> blocks, int width, int height, BlockEvents turnEffectBlockEvents = null)
         {
             Random ??= new Random();
             Builder ??= new StringBuilder();
@@ -58,14 +51,13 @@ namespace Module.Game.Slot
             OutputBlockList.Clear();
             BlockDict.Clear();
             
-            
             // 블럭엔 효과 적용 전 옵션과 적용 후 옵션이 둘 다 적혀 있을 것
             // 블럭 효과 적용 및 랜덤블럭에 추가
             var index = 1;
             foreach (var block in blocks)
             {
                 block.Weight = block.WeightBackup; // 아티펙트 적용된 블럭 가중치 초기화
-                turnEffectDel?.Invoke(block);
+                turnEffectBlockEvents?.Invoke(block);
 
                 // 블럭 넣기
                 var weight = (int)(block.Weight * 100);
@@ -92,6 +84,7 @@ namespace Module.Game.Slot
             {
                 var randomIdx = Random.Next(0, i);
                 OutputBlockList.Add(BlockDict[temp[randomIdx]]);
+                temp.RemoveAt(randomIdx);
             }
                 
             return OutputBlockList;

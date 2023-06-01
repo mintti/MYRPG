@@ -1,15 +1,27 @@
-﻿namespace Infra.Model.Resource
+﻿using UnityEngine;
+
+namespace Infra.Model.Resource
 {
-    public class Job
+    internal class Job
     {
         public int Index { get; }
         public string Name { get; }
 
-
-        public Job(int index, string name)
+        public UnityEngine.Color Color { get; }
+        
+        public Sprite Icon { get; }
+        
+        public int Hp { get; }
+        
+        public Job(int index, string name, int hp, Color color, Sprite icon= null)
         {
             Index = index;
             Name = name;
+
+            Hp = hp;
+            
+            Color = color;
+            Icon = icon;
         }
     }
 }

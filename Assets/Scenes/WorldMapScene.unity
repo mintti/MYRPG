@@ -471,7 +471,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8724708576249497171, guid: 0b7e869025d9acd409d74e5b135698c8, type: 3}
       propertyPath: m_Name
-      value: FourDungeon1
+      value: FourthDungeon1
       objectReference: {fileID: 0}
     - target: {fileID: 8724708576249497175, guid: 0b7e869025d9acd409d74e5b135698c8, type: 3}
       propertyPath: m_RootOrder
@@ -612,7 +612,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8724708576249497171, guid: 0b7e869025d9acd409d74e5b135698c8, type: 3}
       propertyPath: m_Name
-      value: FourDungeon2
+      value: FourthDungeon2
       objectReference: {fileID: 0}
     - target: {fileID: 8724708576249497175, guid: 0b7e869025d9acd409d74e5b135698c8, type: 3}
       propertyPath: m_RootOrder

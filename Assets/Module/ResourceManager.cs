@@ -1,39 +1,88 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Infra;
+using Infra.Model;
+using Infra.Model.Data;
 using Infra.Model.Resource;
-using Unity.Jobs;
+using Module.WorldMap;
 using UnityEngine;
+using Dungeon = Infra.Model.Resource.Dungeon;
+using EventType = Infra.Model.Resource.EventType;
 
 namespace Module
 {
     /// <summary>
     /// 전체 리소스 관리
     /// </summary>
-    public static class ResourceManager
+    internal class ResourceManager : Singleton<ResourceManager>
     {
-        private static List<Job> _jobList;
-        public static List<Job> JobList
+        
+        #region Initializer
+        public ResourceManager()
         {
-            get
+            #region 테스트 코드
+
+            var jobSprites = Resources.LoadAll<Sprite>("Sprite/Job");
+            Jobs = new List<Job>()
             {
-                if(_jobList == null)
-                    TestInit();
-                return _jobList;
-            }
-            private set => _jobList = value;
-        }
-        
-        
-        
-        private static void TestInit()
-        {
-            JobList = new List<Job>()
-            {
-                new Job(1, "Warrior"),
-                new Job(2, "Wizard"),
-                new Job(3, "Archer"),
-                new Job(4, "Knight"),
-                new Job(5, "Priest"),
+                new ((int)JobType.Test, "테스트", 20, Color.black),
+                new ((int)JobType.Warrior, "Warrior", 20, Color.blue, jobSprites[0]),
+                new ((int)JobType.Wizard, "Wizard", 20, Color.magenta, jobSprites[1]),
+                new ((int)JobType.Archer, "Archer", 20, Color.green, jobSprites[2]),
+                new ((int)JobType.Knight, "Knight", 20, Color.cyan, jobSprites[3]),
+                new ((int)JobType.Priest, "Priest", 20, Color.yellow, jobSprites[4]),
             };
+            Dungeons = new List<Dungeon>()
+            {
+                new (0, "테스트 던전", 1, new (){ 0}, new List<int>(){ (int)EventType.HealingLake, (int)EventType.GetArtefact})
+            };
+
+            List<Reward> defaultRewards = new() { new Reward(RewardType.Gold, 100, 10) };
+            Enemies = new List<Enemy>()
+            {
+                new("테스트 몬스터", 10, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
+            };
+
+            BlockSprites = Resources.LoadAll<Sprite>("Sprite/block").ToList();
+
+            MapSprites = new ();
+            var temps = Resources.LoadAll<Sprite>($"Sprite/Map");
+            foreach (var name in Enum.GetNames(typeof(SpotEventType)))
+            {
+                MapSprites.Add(temps.FirstOrDefault(x => x.name.Equals($"Map_{name}")));
+            }
+            
+            #endregion
         }
+        #endregion
+
+        #region Variables
+
+        #region Core Data ★★★
+        public List<Job> Jobs { get; }
+
+        public List<Dungeon> Dungeons { get; }
+
+        public List<Enemy> Enemies  { get;  }
+        #endregion
+        
+        public readonly List<(int depth, int width)> MapSizeByDungeonLevel= new ()
+        {
+            (0,0), // never using
+            (4,2),
+            (0,0),
+            (0,0),
+            (0,0),
+            (0,0),
+        };
+
+        public readonly (float battle, float elete, float @event, float rest) EventPercentage 
+            = new (0.6f, 0.0f, 0.4f, 0.0f);
+
+        public List<Sprite> BlockSprites { get; }
+        
+        public List<Sprite> MapSprites { get; }
+        #endregion
     }
 }

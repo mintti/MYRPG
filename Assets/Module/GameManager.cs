@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
+using Infra;
 using Infra.Model.Data;
+using Infra.Model.Game;
+using Module.Game;
 using Module.WorldMap;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -11,15 +14,13 @@ namespace Module
     /// <summary>
     /// 전체적인 게임 흐름 제어
     /// </summary>
-    public class GameManager : MonoBehaviour
+    internal class GameManager : MonoSingleton<GameManager>
     {
         #region Player Data
-        public PlayerData PlayerData { get; set; }
-        public DungeonType DungeonType { get; set; }
+        public GameData GameData { get; set; }
         #endregion
 
         private bool IsLoaded { get; set; }
-
 
         #region Initialize
         public void Awake()
@@ -43,11 +44,10 @@ namespace Module
             // 시스템 초기화는 한 번만 수행한다.
             if (!IsLoaded)
             {
-
+                MoveMainMenuScene();
                 IsLoaded = true;
             }
         }
-
         #endregion
 
         #region Program
@@ -64,20 +64,44 @@ namespace Module
         /// Move to WorldScene from MainMenu.
         /// </summary>
         /// <param name="data"></param>
-        public void StartGame(PlayerData data = null)
+        public void StartGame(GameData data = null)
         {
-            data ??= PlayerData;
-            SceneManager.LoadScene($"WorldScene");
+            if (data != null) // New Game
+            {
+                GameData = data;
+                SaveData();
+            }
+
+            MoveWorldMapScene();
         }
 
-        /// <summary>
-        /// Move to SlotScene from WorldScene.
-        /// </summary>
-        /// <param name="type"></param>
-        public void MoveGameScene(DungeonType type)
+        private void MoveMainMenuScene() => LoadScene("MainMenuScene");
+        private void MoveWorldMapScene() => LoadScene("WorldMapScene");
+        public void MoveGameScene() => LoadScene("SlotScene");
+
+
+        public void DungeonClear()
         {
-            DungeonType = type;
-            SceneManager.LoadScene($"SlotScene");
+            MoveWorldMapScene();
+        }
+        public void ClearFail()
+        {
+            MoveMainMenuScene();
+        }
+
+        private void LoadScene(string name)
+        {
+            SceneManager.LoadSceneAsync(name);
+        }
+        #endregion
+
+        #region Data
+        /// <summary>
+        /// 임시로 작성된 저장하는 용도
+        /// </summary>
+        public void SaveData()
+        {
+            
         }
 
         #endregion
