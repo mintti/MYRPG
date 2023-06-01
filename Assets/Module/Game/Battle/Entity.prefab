@@ -184,6 +184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testDeadMark: {fileID: 0}
+  spriteRenderer: {fileID: 3069048733510042273}
   canBeTargetGameObject: {fileID: 1381668281722767710}
 --- !u!65 &5886647728926040390
 BoxCollider:

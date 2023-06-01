@@ -11,6 +11,11 @@ namespace Module.Game.Battle
         IEnumerable<BattleEntity> GetUnits();
         
         UIActionSelector UIActionSelector { get; }
-        
+
+        /// <summary>
+        /// Entity 객체가 죽었을 때 알림
+        /// </summary>
+        void UpdateEntityState();
+
     }
 }

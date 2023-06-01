@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Module.Game.Slot
 {
-    internal class UIBlock : MonoBehaviour
+    internal class UIBlock : BaseMonoBehaviour
     {
         public Image backgroundColor;
         public Image icon;

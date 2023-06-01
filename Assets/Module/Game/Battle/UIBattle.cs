@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Module.Game.Battle
 {
-    internal class UIBattle : MonoBehaviour, IBattleController
+    internal class UIBattle : BaseMonoBehaviour, IBattleController
     {
         #region Variables
         public UIGame UIGame { get; private set; }
@@ -13,6 +13,7 @@ namespace Module.Game.Battle
         public List<Unit> UnitList { get; set; }= new();
         public List<Enemy> EnemyList { get; set; } = new();
 
+        public bool WhoseDieFlag { get; set; }
         #region External 
         public UIEntity[] UIUnits = new UIEntity[4];
         public UIEntity[] UIEnemies = new UIEntity[4];
@@ -67,6 +68,10 @@ namespace Module.Game.Battle
 
         public  UIActionSelector UIActionSelector => UIGame.uIActionSelector;
 
+        public void UpdateEntityState()
+        {
+            WhoseDieFlag = true;
+        }
         #endregion
 
     }

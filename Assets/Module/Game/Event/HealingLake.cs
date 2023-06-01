@@ -5,7 +5,7 @@ namespace Module.Game.Event
 {
     internal class HealingLake : EventBase, IEventItem
     {
-        public HealingLake(IEventController ec) : base(ec)
+        public HealingLake(UIGame uiGame) : base(uiGame)
         {
             
         }

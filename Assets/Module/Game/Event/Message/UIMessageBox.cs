@@ -16,7 +16,7 @@ namespace Module.Game.Event.Message
     /// <summary>
     /// 다용도 메세지창
     /// </summary>
-    internal class UIMessageBox : MonoBehaviour, IMessageBox
+    internal class UIMessageBox : BaseMonoBehaviour, IMessageBox
     {
         #region Varaibles
         private UIGame UIGame { get; set; }

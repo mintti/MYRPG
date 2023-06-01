@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Module.Game.Battle
 {
-    internal class UIAction : MonoBehaviour
+    internal class UIAction : BaseMonoBehaviour
     {
         #region Variables
         private UIActionSelector UIActionSelector { get; set; }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Module.WorldMap
 {
-    internal class UIWorldMap : MonoBehaviour
+    internal class UIWorldMap : BaseMonoBehaviour
     {
         private GameManager GameManager { get; set; }
 

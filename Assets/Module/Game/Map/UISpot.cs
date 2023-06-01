@@ -9,7 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-internal class UISpot : MonoBehaviour
+internal class UISpot : BaseMonoBehaviour
 {
     #region Varaibles
     private UIMap UIMap { get; set; }
@@ -60,5 +60,15 @@ internal class UISpot : MonoBehaviour
                 _button.interactable = false;
                 break;
         }
+    }
+
+    /// <summary>
+    /// 객체를 제거
+    /// </summary>
+    public void ClearAndDestroy()
+    {
+        BaseSpot = null;
+        UIMap = null;
+        Destroy(gameObject);
     }
 }

@@ -79,6 +79,12 @@ namespace Infra.Model.Game
             }
         }
 
+        public void DungeonClear()
+        {
+            Map = null;
+            DungeonList[DungeonIndex].IsClear = true;
+        }
+
         #endregion
     }
 }

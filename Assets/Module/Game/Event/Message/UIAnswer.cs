@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Module.Game.Event.Message
 {
-    internal class UIAnswer : MonoBehaviour
+    internal class UIAnswer : BaseMonoBehaviour
     {
         #region Variables
         private UIMessageBox UIMessageBox { get; set; }

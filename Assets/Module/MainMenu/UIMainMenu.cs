@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 namespace Module.MainMenu
 {
-    internal class UIMainMenu : MonoBehaviour
+    internal class UIMainMenu : BaseMonoBehaviour
     {
         #region Varaibles
         private GameManager GameManager { get; set; }

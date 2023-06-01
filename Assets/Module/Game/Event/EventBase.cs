@@ -2,13 +2,17 @@
 {
     internal abstract class EventBase : IEventItem
     {
-        protected IEventController EC { get; }
+        protected IEventController EC { get; set; }
 
         protected EventBase(IEventController ec)
         {
             EC = ec;
         }
         
+        public void UpdateUIGame(UIGame uiGame)
+        {
+            EC = uiGame;
+        }
         public virtual void Execute()
         {
             

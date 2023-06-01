@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Module.MainMenu
 {
-    internal class UIJob : MonoBehaviour
+    internal class UIJob : BaseMonoBehaviour
     {
         public GameObject selectedObj;
         public GameObject lockGameObject;

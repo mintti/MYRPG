@@ -7,7 +7,7 @@ using UnityEngine.PlayerLoop;
 
 namespace Module.Game
 {
-    internal class UIReward : MonoBehaviour
+    internal class UIReward : BaseMonoBehaviour
     {
         private UIGame UIGame { get; set; }
         

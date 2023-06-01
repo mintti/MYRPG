@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Module.Game
 {
-    internal class UIRewardItem: MonoBehaviour
+    internal class UIRewardItem: BaseMonoBehaviour
     {
         private UIReward UIReward { get; set; }
 

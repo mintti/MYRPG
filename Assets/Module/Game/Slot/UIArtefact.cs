@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Module.Game.Slot
 {
-    internal class UIArtefact : MonoBehaviour
+    internal class UIArtefact : BaseMonoBehaviour
     {
         private Artefact Artefact { get; set; }
 

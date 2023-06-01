@@ -1,15 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Module.Game.Battle
 {
-    internal class UIEntity : MonoBehaviour
+    internal class UIEntity : BaseMonoBehaviour
     {
         private UIBattle UIBattle { get; set; }
         private IBattleEntity BattleEntity{ get; set; }
 
         public GameObject testDeadMark;
-        
+        public SpriteRenderer spriteRenderer;        
         public void Init(UIBattle uiBattle)
         {
             UIBattle = uiBattle;
@@ -21,7 +22,7 @@ namespace Module.Game.Battle
         {
             BattleEntity = entity;
             BattleEntity.Connect(UIBattle, this);
-            GetComponent<SpriteRenderer>().sprite = BattleEntity.Sprite;
+            spriteRenderer.sprite = BattleEntity.Sprite;
             gameObject.SetActive(true);
         }
 
@@ -31,7 +32,7 @@ namespace Module.Game.Battle
             {
                 BattleEntity.Disconnect();
                 BattleEntity = null;
-                GetComponent<SpriteRenderer>().sprite = null;
+                spriteRenderer.sprite = null;
             }
         }
 
@@ -49,5 +50,6 @@ namespace Module.Game.Battle
             UIBattle.UIGame.SelectedUIEntityEvent(BattleEntity.GetEntity);
         }
         #endregion
+        
     }
 }

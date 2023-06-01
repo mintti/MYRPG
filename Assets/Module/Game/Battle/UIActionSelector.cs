@@ -8,7 +8,7 @@ namespace Module.Game.Battle
     /// <summary>
     /// 사용자가 처리해야할 액션
     /// </summary>
-    internal class UIActionSelector : MonoBehaviour
+    internal class UIActionSelector : BaseMonoBehaviour
     {
         #region Varialbes
         public UIGame UIGame { get; private set; } 

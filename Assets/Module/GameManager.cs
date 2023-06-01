@@ -3,6 +3,7 @@ using System.Linq;
 using Infra;
 using Infra.Model.Data;
 using Infra.Model.Game;
+using Module.Game;
 using Module.WorldMap;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -20,7 +21,6 @@ namespace Module
         #endregion
 
         private bool IsLoaded { get; set; }
-
 
         #region Initialize
         public void Awake()
@@ -44,7 +44,7 @@ namespace Module
             // 시스템 초기화는 한 번만 수행한다.
             if (!IsLoaded)
             {
-                SceneManager.LoadScene($"MainMenuScene");
+                MoveMainMenuScene();
                 IsLoaded = true;
             }
         }
@@ -71,20 +71,28 @@ namespace Module
                 GameData = data;
                 SaveData();
             }
-            
-            SceneManager.LoadScene($"WorldMapScene");
+
+            MoveWorldMapScene();
         }
 
-        /// <summary>
-        /// Move to SlotScene from WorldScene.
-        /// </summary>
-        /// <param name="type"></param>
-        public void MoveGameScene()
+        private void MoveMainMenuScene() => LoadScene("MainMenuScene");
+        private void MoveWorldMapScene() => LoadScene("WorldMapScene");
+        public void MoveGameScene() => LoadScene("SlotScene");
+
+
+        public void DungeonClear()
         {
-            
-            SceneManager.LoadScene($"SlotScene");
+            MoveWorldMapScene();
+        }
+        public void ClearFail()
+        {
+            MoveMainMenuScene();
         }
 
+        private void LoadScene(string name)
+        {
+            SceneManager.LoadSceneAsync(name);
+        }
         #endregion
 
         #region Data

@@ -7,10 +7,9 @@ using UnityEngine.UI;
 
 namespace Module.Game.Map
 {
-    internal class UIMap : MonoBehaviour
+    internal class UIMap : BaseMonoBehaviour 
     {
         #region Variables
-        private GameManager GameManager { get; set; }
         public UIGame UIGame { get; set; }
         
         private List<UISpot> SpotList { get; set; }
@@ -23,15 +22,10 @@ namespace Module.Game.Map
         
         public void Init(UIGame game)
         {
-            GameManager ??= GameManager.Instance;
             UIGame = game;
-            
-            if (content.childCount == 0)
-            {
-                GenerateMap(GameManager.GameData.Map);
-            }
+            GenerateMap(GameManager.Instance.GameData.Map);
         }
-
+        
         private void GenerateMap(Spot firstSpot)
         {
             SpotList = new List<UISpot>();
@@ -62,7 +56,8 @@ namespace Module.Game.Map
             int space = 100; // Spot간 간격
             foreach (var key in dict.Keys)
             {
-                var obj = Instantiate(new GameObject(), content);
+                var obj = new GameObject();
+                obj.transform.SetParent(content);
                 
                 var c1 = obj.AddComponent<HorizontalLayoutGroup>();
                 c1.spacing = space;

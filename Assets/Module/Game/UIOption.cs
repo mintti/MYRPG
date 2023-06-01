@@ -2,7 +2,7 @@
 
 namespace Module.Game
 {
-    internal class UIOption : MonoBehaviour
+    internal class UIOption : BaseMonoBehaviour
     {
         
     }

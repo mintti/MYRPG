@@ -28,6 +28,7 @@ namespace Module.Game
                 {
                     _hp = 0;
                     State = State.Die;
+                    BattleController.UpdateEntityState();
                 }
             }
         }

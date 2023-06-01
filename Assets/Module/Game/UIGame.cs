@@ -12,13 +12,14 @@ using Module.Game.Event.Message;
 using Module.Game.Map;
 using Module.Game.Slot;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Artefact = Infra.Model.Game.Artefact;
 using Unit = Infra.Model.Game.Unit;
 
 namespace Module.Game
 {
-    internal class UIGame : MonoBehaviour, IEventController
+    internal class UIGame : BaseMonoBehaviour, IEventController
     {
         #region Variables
         private GameManager GameManager { get; set; }
@@ -63,30 +64,34 @@ namespace Module.Game
         private void Start()
         {
             GameManager = GameManager.Instance;
-
-            // 초기화
+            
+            // 재활용 구현된 UI 클래스
             uiMap.Init(this);
             uIBattle.Init(this);
             uIMessageBox.Init(this);
             uIActionSelector.Init(this);
             uiReward.Init(this);
-            Init();
+            uiSlot.Init(this);
             
-            Map();
+            Init();
         }
 
-        private void Init()
+        public void Init()
         {
+            if (this == null)
+            {
+                return;
+            }
+            
             GameData = GameManager.Instance.GameData;
 
             #region 화면 설정
-
             SlotService = new SlotService();
 
             // Slot 배치
             BlockList.Clear();
             BlockList = GameData.UnitList.SelectMany(u => u.HasBlocks).ToList();
-            uiSlot.Init(this, GameData.SlotWidth, GameData.SlotHeight);
+            uiSlot.CreateSlot(GameData.SlotWidth, GameData.SlotHeight);
 
             // Artefact 배치
             ArtefactList.Clear();
@@ -100,11 +105,12 @@ namespace Module.Game
             // 블럭 효과 초기화 (by artefact and enemy)
             BlockEvents = new BlockEvents((e) => { });
             
-            
             // 화면
             targetSelectGameObject.SetActive(false);
 
             #endregion
+            
+            Map();
         }
 
         #region GameView/Event-Related
@@ -129,6 +135,17 @@ namespace Module.Game
                 GameData.Map.UpdateStateRest(CurrentSpot.Depth);
                 Map(true);
                 uiMap.UpdateMap();
+
+                // 클리어 
+                if (CurrentSpot.ChildSpots == null)
+                {
+                    GameData.DungeonClear();
+                    GameManager.DungeonClear();
+                }
+            }
+            else
+            {
+                GameManager.ClearFail();
             }
         }
 

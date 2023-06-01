@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Module.WorldMap
 {
-    internal class UIDungeon : MonoBehaviour
+    internal class UIDungeon : BaseMonoBehaviour
     {
         private UIWorldMap WorldMap { get; set; }
         

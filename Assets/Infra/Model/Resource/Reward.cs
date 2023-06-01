@@ -14,6 +14,12 @@ namespace Infra.Model.Resource
             Probability = probab;
             Value = value;
         }
+        
+        public Reward(RewardType type, int value)
+        {
+            Type = type;
+            Value = value;
+        }
     }
     
     public enum RewardType

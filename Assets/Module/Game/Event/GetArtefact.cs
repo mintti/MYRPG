@@ -2,8 +2,9 @@
 {
     internal class GetArtefact : EventBase, IEventItem
     {
-        public GetArtefact(IEventController ec) : base(ec)
+        public GetArtefact(UIGame uiGame) : base(uiGame)
         {
+
         }
 
         public override void Execute()

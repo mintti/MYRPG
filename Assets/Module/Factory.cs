@@ -106,8 +106,12 @@ namespace Module
             (SpotEventType type, int index) key = (spotEvent.Type, spotEvent.Index);
             IEventItem eventItem = null;
 
-            if (EventBuffer.ContainsKey(key)) eventItem = EventBuffer[key];
-            else
+            // if (EventBuffer.ContainsKey(key))
+            // {
+            //     eventItem = EventBuffer[key];
+            //     eventItem.UpdateUIGame(uiGame);
+            // }
+            // else
             {
                 switch (key.type)
                 {
@@ -137,9 +141,9 @@ namespace Module
                         throw new NotImplementedException("구현하지 않음");
                         break;
                 }
-                EventBuffer[key] = eventItem;
+               // EventBuffer[key] = eventItem;
             }
-
+            
             return eventItem;
         }
 

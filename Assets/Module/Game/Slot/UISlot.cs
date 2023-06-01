@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Infra.Model.Game;
 using UnityEngine;
 namespace Module.Game.Slot
 {
-    internal class UISlot : MonoBehaviour
+    internal class UISlot : BaseMonoBehaviour
     {
         #region Variables
         private UIGame UIGame { get; set; }
@@ -14,11 +15,14 @@ namespace Module.Game.Slot
         
         private List<UIBlock> Blocks { get; set; }
         #endregion
-        
-        public void Init(UIGame uiGame, int width, int height) 
+
+        public void Init(UIGame uiGame)
         {
             UIGame = uiGame;
+        }
 
+        public void CreateSlot(int width, int height) 
+        {
             slotRectTr.sizeDelta = new Vector2(width * 100, height * 100);
 
             Blocks = new List<UIBlock>();
@@ -27,6 +31,11 @@ namespace Module.Game.Slot
                 var obj = Instantiate(blockPrefab, blockContentTr);
                 Blocks.Add(obj.GetComponent<UIBlock>());
             }
+        }
+
+        public void CreateBlock()
+        {
+            
         }
 
         /// <summary>

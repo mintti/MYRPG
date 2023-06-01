@@ -72,7 +72,7 @@ namespace Infra.Model.Data
             }
             else if (Depth < clearDepth)
             {
-                ChildSpots.ForEach(s => s.UpdateStateRest(clearDepth));
+                ChildSpots?.ForEach(s => s.UpdateStateRest(clearDepth));
             }
         }
     }
