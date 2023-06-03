@@ -184,7 +184,7 @@ namespace Module.Game
             uiSlot.SetBlocks(list);
             
             // 스핀 효과 적용 *Show Animation
-            uiSlot.SpinAnimation();
+            yield return uiSlot.SpinAnimation();
             
             // 결과 전달
             if (callback != null)
