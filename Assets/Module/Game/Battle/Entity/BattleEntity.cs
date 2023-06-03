@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Runtime.CompilerServices;
 using Infra.Model.Game;
 using Module.Game.Battle;
 using UnityEditor.Sprites;
@@ -27,8 +28,7 @@ namespace Module.Game
                 if (_hp <= 0)
                 {
                     _hp = 0;
-                    State = State.Die;
-                    BattleController.UpdateEntityState();
+                    Dead();
                 }
             }
         }
@@ -39,6 +39,10 @@ namespace Module.Game
         public State State { get; set; }
         
         public bool CanAction()
+        {
+            return State == State.Alive;
+        }
+        public bool CanDesignateTarget()
         {
             return State == State.Alive;
         }
@@ -75,14 +79,27 @@ namespace Module.Game
         #endregion
 
         #region Battle Action Related
+
+        private void Animation(string name) => UIEntity.Animation(name);
+        
         public void Hit(int damage)
         {
             Hp -= damage;
+            Animation(nameof(Hit));
         }
 
         public void Heal(int point)
         {
             Hp += point;
+            Animation(nameof(Heal));
+        }
+
+        private void Dead()
+        {
+            State = State.Die;
+            BattleController.UpdateEntityState();
+            Animation(nameof(Dead));
+            
         }
         #endregion
     }
