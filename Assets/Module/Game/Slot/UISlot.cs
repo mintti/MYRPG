@@ -19,6 +19,8 @@ namespace Module.Game.Slot
 
         private int _height; // 슬롯 세로 크기
         private int _augmenter; // 슬롯 애니메이션이 증가값
+
+        private const int BlockSize = 80;
         #endregion
 
         public void Init(UIGame uiGame)
@@ -30,7 +32,7 @@ namespace Module.Game.Slot
         {
             _height = height;
             _augmenter = 15 * height;
-            slotRectTr.sizeDelta = new Vector2(width * 100, height * 100);
+            slotRectTr.sizeDelta = new Vector2(width * BlockSize, height * BlockSize);
             
             Blocks = new List<UIBlock>();
             for (int i = 0, cnt = width * height; i < cnt; i++)
@@ -76,7 +78,7 @@ namespace Module.Game.Slot
         {
             var rect = blockContentTr.GetComponent<RectTransform>();
             
-            int targetTop = 100 * _height;
+            int targetTop = BlockSize * _height;
             
             for (int i = 0; i < 3; i++)
             {

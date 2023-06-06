@@ -18,6 +18,7 @@ internal class UISpot : BaseMonoBehaviour
 
     #region External
     public void B_Select() => UIMap.UIGame.SelectMap(BaseSpot);
+    public GameObject linePrefab;
     public Image icon;
     #endregion
     #endregion
