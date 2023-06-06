@@ -1,18 +1,33 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UILine : MonoBehaviour
+internal class UILine : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int TargetIndex { get; set; }
+    private Image _image;
 
-    // Update is called once per frame
-    void Update()
+    public Color Color { set { _image.color = value; } }
+    
+    public void Init(int targetIndex, RectTransform currentTr, RectTransform targetTr)
     {
+        TargetIndex = targetIndex;
+        _image = GetComponent<Image>();
         
+        var rect = GetComponent<RectTransform>();
+        
+        var curPos = currentTr.position;
+        var targetPos = targetTr.position; 
+
+        var x = targetPos.x - curPos.x;
+        var y = targetPos.y - curPos.y;
+ 
+        var height = Math.Sqrt(x * x + y * y);
+        rect.sizeDelta = new(8,(float)height);
+        
+        var angle = (Math.Atan(Math.Abs(x) / y) * 180 / Math.PI) * (x < 0 ? 1 : -1) ;
+        rect.eulerAngles  = new Vector3(0, 0, (float) angle);
     }
 }

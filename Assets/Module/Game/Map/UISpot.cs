@@ -7,6 +7,7 @@ using Module;
 using Module.Game.Map;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 internal class UISpot : BaseMonoBehaviour
@@ -14,53 +15,88 @@ internal class UISpot : BaseMonoBehaviour
     #region Varaibles
     private UIMap UIMap { get; set; }
     private Spot BaseSpot { get; set; }
+    
     private Button _button;
-
+    private List<UILine> _childLines;
+    private bool _updateStop;
     #region External
     public void B_Select() => UIMap.UIGame.SelectMap(BaseSpot);
     public GameObject linePrefab;
+    public Transform lineContentTr;
     public Image icon;
     #endregion
+    
     #endregion
     
     public void Init(UIMap map, Spot spot)
     {
         UIMap = map;
         BaseSpot = spot;
-        
+
         _button = GetComponentInChildren<Button>();
         _button.interactable = false;
 
-        icon.sprite = ResourceManager.Instance.MapSprites[(int) BaseSpot.Event.Type];
+        _updateStop = false;
         
-        // [TEST] 텍스트 설정
-        string childtext = "";
-        if (spot.ChildSpots != null)
+        icon.sprite = ResourceManager.Instance.MapSprites[(int) BaseSpot.Event.Type];
+    }
+
+    public void CreateLine(in List<UISpot> list)
+    {
+        if (BaseSpot.ChildSpots != null)
         {
-            foreach (var s in spot.ChildSpots)
+            var currentTr = GetComponent<RectTransform>();
+            _childLines = new();
+            
+            foreach (var child in BaseSpot.ChildSpots)
             {
-                childtext += $"{s.Index} ";
+                int index = list.FindIndex(x => x.BaseSpot.Index == child.Index);
+                var line = Instantiate(linePrefab, lineContentTr).GetComponent<UILine>();
+                var targetTr = list[index].GetComponent<RectTransform>();
+                
+                line.Init(child.Index, currentTr, targetTr);
+                line.Color = _button.colors.disabledColor;
+                _childLines.Add(line);
             }
         }
-        string text = $"{spot.Index}\n({childtext})";
-        GetComponentInChildren<TextMeshProUGUI>().SetText(text);
-        
         
         Refresh();
     }
 
     public void Refresh()
     {
+        if (_updateStop) return;
+        
+        var interac = false;
+        
         switch (BaseSpot.State)
         {
             case SpotState.Do:
-                _button.interactable = true;
+                interac = true;
+                _childLines?.ForEach(line => line.Color = _button.colors.disabledColor);
                 break;
-            case SpotState.None:
             case SpotState.Clear :
-                _button.interactable = false;
+                icon.color =  _button.colors.normalColor;
+                BaseSpot.State = SpotState.History;
+                _childLines?.ForEach(line => line.Color = _button.colors.normalColor);
+                break;
+            case SpotState.History :
+                int index = 0;
+                foreach (var child in BaseSpot.ChildSpots)
+                {
+                    if (child.State != SpotState.Clear)
+                    {
+                        _childLines[index].Color = _button.colors.disabledColor;
+                    }
+                    index++;
+                }
+                _updateStop = true;
+                return;
                 break;
         }
+        
+        _button.interactable = interac;
+        
     }
 
     /// <summary>
