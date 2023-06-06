@@ -21,7 +21,7 @@ namespace Infra.Model.Game.Class
         
         private void MagicShower(BattleEntity entity)
         {
-            entity.Hit(5 * MagicShowerGauge);
+            entity.Hit(((int)(5f * MagicShowerGauge * 0.01f)));
         }
         #endregion
     }

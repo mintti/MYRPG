@@ -19,7 +19,7 @@ namespace Infra.Model.Game.Class
 
         private void Heal(BattleEntity entity)
         {
-            entity.Hit(5 * HealGauge);
+            entity.Hit(((int)(5f * HealGauge * 0.01f)));
         }
     }
 }

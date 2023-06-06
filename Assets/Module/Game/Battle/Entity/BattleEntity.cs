@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using Infra.Model.Game;
 using Module.Game.Battle;
+using Unity.PlasticSCM.Editor.WebApi;
 using UnityEditor.Sprites;
 using UnityEngine;
 
@@ -85,6 +86,7 @@ namespace Module.Game
         public void Hit(int damage)
         {
             Hp -= damage;
+            Debug.Log($"Current Hp : {Hp}");
             Animation(nameof(Hit));
         }
 

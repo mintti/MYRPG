@@ -27,11 +27,11 @@ namespace Module
             Jobs = new List<Job>()
             {
                 new ((int)JobType.Test, "테스트", 20, Color.black),
-                new ((int)JobType.Warrior, "Warrior", 20, Color.blue, jobSprites[0]),
-                new ((int)JobType.Wizard, "Wizard", 20, Color.magenta, jobSprites[1]),
-                new ((int)JobType.Archer, "Archer", 20, Color.green, jobSprites[2]),
-                new ((int)JobType.Knight, "Knight", 20, Color.cyan, jobSprites[3]),
-                new ((int)JobType.Priest, "Priest", 20, Color.yellow, jobSprites[4]),
+                new ((int)JobType.Warrior, "Warrior", 1, Color.blue, jobSprites[0]),
+                new ((int)JobType.Wizard, "Wizard", 1, Color.magenta, jobSprites[1]),
+                new ((int)JobType.Archer, "Archer", 1, Color.green, jobSprites[2]),
+                new ((int)JobType.Knight, "Knight", 1, Color.cyan, jobSprites[3]),
+                new ((int)JobType.Priest, "Priest", 1, Color.yellow, jobSprites[4]),
             };
             Dungeons = new List<Dungeon>()
             {
@@ -41,7 +41,7 @@ namespace Module
             List<Reward> defaultRewards = new() { new Reward(RewardType.Gold, 100, 10) };
             Enemies = new List<Enemy>()
             {
-                new("테스트 몬스터", 10, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
+                new("테스트 몬스터", 1000, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
             };
 
             BlockSprites = Resources.LoadAll<Sprite>("Sprite/block").ToList();

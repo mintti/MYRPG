@@ -18,7 +18,7 @@ namespace Infra.Model.Game.Class
         
         private void Shot(BattleEntity entity)
         {
-            entity.Hit(5 * ShotGauge);
+            entity.Hit((int)(5f * ShotGauge * 0.01f));
         }
     }
 }
