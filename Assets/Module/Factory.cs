@@ -64,6 +64,7 @@ namespace Module
         public static Block GetBlock((int job, int index, int level) key)
         {
             Block block = null;
+            
             // if (BlockBuffer.ContainsKey(key)) block = BlockBuffer[key];
             // else
             {
@@ -89,8 +90,8 @@ namespace Module
                 }
                 
                 var job = ResourceManager.Instance.Jobs[key.job];
-                var sprite = ResourceManager.Instance.BlockSprites[0];
-                block.Set($"{job.Name}블럭", job.Color, sprite);
+                var sprite = ResourceManager.Instance.BlockSpriteDict[((JobType)key.job, block.Index)];
+                block.Set($"{job.Name}블럭", job.Color, sprite );
                 //BlockBuffer.Add(key, block);
             }
             

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 8f2c1e2e6043efa4e9b57ab16e0164b4
+guid: b743b6dc0b22b6844a9acfa171a5760d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,18 +127,40 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: WarriorBlock_1
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 10
+        width: 82
+        height: 74
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2195e393e628c74e842b3ce684da0ab
+      internalID: 1303369648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 267c3990bea33e840b304b4c0a418591
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      WarriorBlock_1: 1303369648
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

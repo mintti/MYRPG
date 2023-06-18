@@ -9,6 +9,11 @@ namespace Infra.Model.Game
     {
         #region Info
         public string Name { get; set; }
+
+        /// <summary>
+        /// 스킬 인덱스
+        /// </summary>
+        public int Index { get; set; } = 1;
         public Color Color { get; set; }
         public Sprite Sprite { get; set; }
         

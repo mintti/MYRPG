@@ -43,7 +43,20 @@ namespace Module
                 new("테스트 몬스터", 15, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
             };
 
-            BlockSprites = Resources.LoadAll<Sprite>("Sprite/block").ToList();
+            for (int i = 0, cnt = Enum.GetNames(typeof(JobType)).Length; i < cnt; i++)
+            {
+                var job = (JobType)i;
+                var sprites = Resources.LoadAll<Sprite>($"Sprite/Blocks/{job.ToString()}Block").ToList();
+
+                if (sprites != null)
+                {
+                    for (int skillIdx = 1; skillIdx <= sprites.Count; skillIdx++)
+                    {
+                        var key = (job, skillIdx);
+                        BlockSpriteDict.Add(key, sprites[skillIdx - 1]);
+                    }
+                }
+            }
 
             MapSprites = new ();
             var temps = Resources.LoadAll<Sprite>($"Sprite/Map");
@@ -64,6 +77,7 @@ namespace Module
         public List<Dungeon> Dungeons { get; }
 
         public List<Enemy> Enemies  { get;  }
+        
         #endregion
         
         public readonly List<(int depth, int width)> MapSizeByDungeonLevel= new ()
@@ -79,7 +93,7 @@ namespace Module
         public readonly (float battle, float elete, float @event, float rest) EventPercentage 
             = new (0.6f, 0.0f, 0.4f, 0.0f);
 
-        public List<Sprite> BlockSprites { get; }
+        public Dictionary<(JobType job, int index), Sprite> BlockSpriteDict { get; } = new();
         
         public List<Sprite> MapSprites { get; }
         #endregion

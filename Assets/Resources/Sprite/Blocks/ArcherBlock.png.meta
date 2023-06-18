@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b743b6dc0b22b6844a9acfa171a5760d
+guid: 8f2c1e2e6043efa4e9b57ab16e0164b4
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -127,18 +127,42 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: ArcherBlock_1
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 14
+        width: 83
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12dc6817157a5c44cbd1baa8ca688004
+      internalID: 826288284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 242b36e0631fc8d458e259491e4cfcc8
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ArcherBlock_1: 826288284
+      ArcherBlock_3: -1023695261
+      ArcherBlock_2: -1722459355
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
