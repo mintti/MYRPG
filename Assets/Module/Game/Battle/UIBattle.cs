@@ -13,10 +13,16 @@ namespace Module.Game.Battle
         public List<Unit> UnitList { get; set; }= new();
         public List<Enemy> EnemyList { get; set; } = new();
 
+        private List<UIEntityState> UIEttSttList { get; set; } = new();
+
+        public Camera mainCamera;
         public bool WhoseDieFlag { get; set; }
         #region External 
         public UIEntity[] UIUnits = new UIEntity[4];
         public UIEntity[] UIEnemies = new UIEntity[4];
+
+        public GameObject uiEttSttPrefab;
+        public Transform ettSttContentTr;
         #endregion
 
         #endregion
@@ -32,19 +38,28 @@ namespace Module.Game.Battle
             foreach (var uiEntity in UIUnits.Concat(UIEnemies))
             {
                 uiEntity.Init(this);
+                var ettstt = Instantiate(uiEttSttPrefab, ettSttContentTr).GetComponent<UIEntityState>();
+                UIEttSttList.Add(ettstt);
             }
         }
 
+        /// <summary>
+        /// Entity 지정
+        /// </summary>
         public void UpdateView()
         {
+            int etstIdx = 0;
+            UIEttSttList.ForEach(x=> x.Clear());
+            
+            // [TODO] Entity 객체 동적 생성 가능하도록 고안해보기 
             for (int i = 0, cnt = UnitList.Count; i < cnt; i++)
             {
-                UIUnits[i].SetEntity(UnitList[i]);
+                UIUnits[i].SetEntity(UnitList[i], UIEttSttList[etstIdx++]);
             }
             
             for (int i = 0, cnt = EnemyList.Count; i < cnt; i++)
             {
-                UIEnemies[i].SetEntity(EnemyList[i]);  
+                UIEnemies[i].SetEntity(EnemyList[i], UIEttSttList[etstIdx++]);  
             }
         }
 

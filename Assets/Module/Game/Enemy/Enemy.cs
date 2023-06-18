@@ -34,8 +34,8 @@ namespace Module.Game
             BaseEnemy = enemy;
             
             Name = enemy.Name;
-            Hp = enemy.Hp;
             MaxHp = enemy.Hp;
+            Hp = enemy.Hp;
             Power = enemy.Power;
             Sprite = enemy.Sprite;
             State = State.Alive;

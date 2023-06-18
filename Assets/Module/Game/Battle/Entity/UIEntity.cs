@@ -7,8 +7,9 @@ namespace Module.Game.Battle
     internal class UIEntity : BaseMonoBehaviour
     {
         private UIBattle UIBattle { get; set; }
-        private IBattleEntity BattleEntity{ get; set; }
+        private BattleEntity BattleEntity{ get; set; }
 
+        public UIEntityState UIEntityState { get; private set; }
         public SpriteRenderer spriteRenderer;
 
         private Animator _animator;
@@ -21,8 +22,14 @@ namespace Module.Game.Battle
             gameObject.SetActive(false);
         } 
 
-        public void SetEntity(IBattleEntity entity)
+        public void SetEntity(BattleEntity entity, UIEntityState uiEttStt)
         {
+            // ui entity state
+            UIEntityState = uiEttStt;
+            uiEttStt.Connect(this);
+            UpdatePosition();
+            
+            // battle entity 
             BattleEntity = entity;
             BattleEntity.Connect(UIBattle, this);
 
@@ -30,7 +37,6 @@ namespace Module.Game.Battle
             
             gameObject.SetActive(true);
             TargetMode(false);
-            
         }
 
         public void Clear()
@@ -78,6 +84,16 @@ namespace Module.Game.Battle
             canBeTargetGameObject.SetActive(false);
             gameObject.SetActive(false);
         }
+
+        #region Camera
+        public void UpdatePosition()
+        {
+            Vector3 pos = UIBattle.mainCamera.WorldToScreenPoint(transform.position);
+            UIEntityState.UpdatePosition(pos);
+        }
+        
+
+        #endregion
         
     }
 }

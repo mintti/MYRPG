@@ -5,7 +5,7 @@ using Module.Game.Battle;
 
 namespace Infra.Model.Game
 {
-    internal class Unit : BattleEntity, IBattleEntity
+    internal class Unit : BattleEntity
     {
         #region Variables
         public int JobIndex { get; private set;}

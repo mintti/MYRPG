@@ -11,7 +11,7 @@ namespace Module.Game
     /// <summary>
     /// 전투하기 위해 필요한 개체
     /// </summary>
-    internal abstract class BattleEntity : IBattleEntity
+    internal abstract class BattleEntity
     {
         protected IBattleController BattleController { get; set; }
         private UIEntity UIEntity { get; set; }
@@ -31,6 +31,16 @@ namespace Module.Game
                     _hp = 0;
                     Dead();
                 }
+                else
+                {
+                    if (_hp > MaxHp)
+                    {
+                        _hp = MaxHp;
+                    }
+                    
+                    UIEntity?.UIEntityState.UpdateHp(Hp, MaxHp);
+                }
+
             }
         }
         
@@ -53,10 +63,12 @@ namespace Module.Game
         /// <summary>
         /// UI Entity 인스턴스와 연결
         /// </summary>
-        public void Connect(IBattleController controller, UIEntity uiEntity)
+        public void Connect(IBattleController controller,
+                            UIEntity uiEntity)
         {
             BattleController = controller;
             UIEntity = uiEntity;
+            UIEntity.UIEntityState.UpdateHp(Hp, MaxHp);
         }
 
         /// <summary>
@@ -86,7 +98,6 @@ namespace Module.Game
         public void Hit(int damage)
         {
             Hp -= damage;
-            Debug.Log($"Current Hp : {Hp}");
             Animation(nameof(Hit));
         }
 
@@ -101,7 +112,7 @@ namespace Module.Game
             State = State.Die;
             BattleController.UpdateEntityState();
             Animation(nameof(Dead));
-            
+            UIEntity?.UIEntityState.Dead();
         }
         #endregion
     }

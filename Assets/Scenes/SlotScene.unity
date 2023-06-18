@@ -1056,7 +1056,7 @@ RectTransform:
   - {fileID: 965607509}
   - {fileID: 557040774}
   m_Father: {fileID: 1430165494}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -2006,6 +2006,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 462436703}
   m_CullTransparentMesh: 1
+--- !u!1 &471268325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 471268326}
+  - component: {fileID: 471268327}
+  m_Layer: 5
+  m_Name: BattleView
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &471268326
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471268325}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1430165494}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &471268327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 471268325}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e3f2439e6df996438b883703830e9fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &482246179
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3977,7 +4026,7 @@ RectTransform:
   m_Children:
   - {fileID: 1618162077}
   m_Father: {fileID: 1430165494}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -4075,6 +4124,7 @@ RectTransform:
   - {fileID: 1841276475}
   - {fileID: 451250437}
   - {fileID: 1656702397}
+  - {fileID: 471268326}
   - {fileID: 261380254}
   - {fileID: 1427370186}
   - {fileID: 2032496055}
@@ -6792,6 +6842,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8575b4565af8ba74197cd41d1b245a60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 363754027}
   UIUnits:
   - {fileID: 3069048734384068583}
   - {fileID: 191414331}
@@ -6802,6 +6853,8 @@ MonoBehaviour:
   - {fileID: 482246181}
   - {fileID: 520456263}
   - {fileID: 1907799758}
+  uiEttSttPrefab: {fileID: 5659433685490653392, guid: a30220f6ea8c67649828d0f75361ebbe, type: 3}
+  ettSttContentTr: {fileID: 471268326}
 --- !u!1 &2001215815
 GameObject:
   m_ObjectHideFlags: 0
@@ -6868,7 +6921,7 @@ RectTransform:
   - {fileID: 1524325896}
   - {fileID: 1537639074}
   m_Father: {fileID: 1430165494}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
