@@ -27,7 +27,7 @@ namespace Infra.Model.Game
         /// <summary>
         /// 스킬 인덱스
         /// </summary>
-        public int Index { get; private set; } = 1;
+        public int Index { get; private set; } = Factory.NullBlockIndex;
         public Color Color { get; private set;}
         public Sprite Sprite { get; private set;}
         
@@ -42,6 +42,12 @@ namespace Infra.Model.Game
         public float WeightBackup { get; set; }
         #endregion
 
+        public Block()
+        {
+            Weight = 1;
+            WeightBackup = Weight;
+        }
+        
         public Block(int index, string name, int defDam, SkillType skillType, TargetType targetType, Color color, Sprite sprite = null)
         {
             Index = index;
@@ -79,7 +85,7 @@ namespace Infra.Model.Game
         /// </summary>
         public void Execute()
         {
-            Caster.SendAction(this);
+            Caster?.SendAction(this);
         }
 
         public void Action(BattleEntity target, Level level = default)

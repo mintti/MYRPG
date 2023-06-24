@@ -41,7 +41,7 @@ namespace Module
             var jobSprites = Resources.LoadAll<Sprite>("Sprite/Job");
             Jobs = new List<Job>()
             {
-                new ((int)JobType.Test, "테스트", 20, Color.black),
+                new ((int)JobType.Unknown, "테스트", 20, Color.black),
                 new ((int)JobType.Warrior, "Warrior", 10, Color.blue, jobSprites[0]),
                 new ((int)JobType.Wizard, "Wizard", 10, Color.magenta, jobSprites[1]),
                 new ((int)JobType.Archer, "Archer", 10, Color.green, jobSprites[2]),

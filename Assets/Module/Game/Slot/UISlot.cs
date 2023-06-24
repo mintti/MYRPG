@@ -48,7 +48,6 @@ namespace Module.Game.Slot
                 var obj = Instantiate(blockPrefab, blockContentTr);
                 DummyBlocks.Add(obj.GetComponent<UIBlock>());
             }
-                
         }
 
         public void CreateBlock()

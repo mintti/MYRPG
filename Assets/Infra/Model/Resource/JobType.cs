@@ -2,7 +2,7 @@
 {
     internal enum JobType
     {
-        Test = 0,
+        Unknown = 0,
         Warrior,
         Wizard,
         Archer,

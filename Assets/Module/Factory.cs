@@ -20,6 +20,8 @@ namespace Module
     internal class Factory
     { 
         #region Block
+
+        public const int NullBlockIndex = 1;
         private static Dictionary<(int job, int index, int level), Block> BlockBuffer { get; set; } =
             new();
 

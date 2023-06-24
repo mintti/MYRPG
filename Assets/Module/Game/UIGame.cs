@@ -89,8 +89,11 @@ namespace Module.Game
             SlotService = new SlotService();
 
             // Slot 배치
-            BlockList.Clear();
-            BlockList = GameData.UnitList.SelectMany(u => u.HasBlocks).ToList();
+            InitBlock();
+            foreach (var block in GameData.UnitList.SelectMany(u => u.HasBlocks))
+            {
+                AddBlock(block);
+            }
             uiSlot.CreateSlot(GameData.SlotWidth, GameData.SlotHeight);
 
             // Artefact 배치
@@ -171,14 +174,47 @@ namespace Module.Game
         #endregion
 
         #region Block
+
+
+        public void InitBlock()
+        {
+            // 빈 칸은 빈 블럭으로 채우기
+            var slotSize = GameData.SlotWidth * GameData.SlotHeight;
+            FillNullBlock(slotSize);
+        }
+        
+        /// <summary>
+        /// 블럭 추가
+        /// </summary>
+        public void AddBlock(Block block)
+        {
+            var nullBlock = BlockList.FirstOrDefault(b => b.Index == Factory.NullBlockIndex);
+            if (nullBlock != null)
+            {
+                BlockList.Remove(nullBlock);
+                BlockList.Add(block);
+            }
+        }
+        
         /// <summary>
         /// 대상의 블럭을 제거
         /// </summary>
         public void RemoveBlock(Unit Caster)
         {
             Caster.HasBlocks.ForEach(b => BlockList.Remove(b));
+            
+            // 빈 칸은 빈 블럭으로 채우기
+            var slotSize = GameData.SlotWidth * GameData.SlotHeight;
+            FillNullBlock(slotSize - BlockList.Count);
         }
 
+        private void FillNullBlock(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                BlockList.Add(new Block());
+            }         
+        }
         #endregion
 
         #region Spin Event
@@ -189,6 +225,7 @@ namespace Module.Game
 
             int slotWidth = GameData.SlotWidth;
             int slotHeight = GameData.SlotHeight;
+            
             // 블럭 지정 및 설정
             var list = SlotService.GetRandomBlock(BlockList, slotWidth, slotHeight, BlockEvents).ToList();
             uiSlot.SetBlocks(list);

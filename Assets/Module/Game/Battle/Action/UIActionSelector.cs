@@ -81,6 +81,8 @@ namespace Module.Game.Battle
             NextAction = nextAction;
             CheckFunc = checkFunc;
             On();
+
+            if (Actions.Count == 0) ExecuteAction();
         }
 
         public void EndBattle()
