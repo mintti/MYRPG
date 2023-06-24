@@ -45,14 +45,14 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  alignment: 9
+  spritePivot: {x: 0.5206229, y: 0.1603471}
+  spritePixelsToUnits: 50
   spriteBorder: {x: 29, y: 20, z: 23, w: 19}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 0
-  spriteTessellationDetail: 0
+  spriteTessellationDetail: 0.14
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -133,11 +133,12 @@ TextureImporter:
       - {x: 19, y: 42.5}
       - {x: 12, y: 33.5}
       - {x: 6, y: 41.5}
-      - {x: 6, y: 42.5}
-      - {x: -12, y: 42.5}
-      - {x: -24, y: 15.5}
-      - {x: -24, y: -29.5}
-      - {x: -8, y: -45.5}
+      - {x: 4, y: 42.5}
+      - {x: -4, y: 42.5}
+      - {x: -22, y: 20.5}
+      - {x: -24, y: 6.5}
+      - {x: -24, y: -16.5}
+      - {x: -6, y: -45.5}
       - {x: 12, y: -45.5}
       - {x: 32, y: -16.5}
       - {x: 32, y: 22.5}

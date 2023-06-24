@@ -11,7 +11,7 @@ namespace Module.Game.Slot
         
         public void Set(Block block)
         {
-            backgroundColor.color = block.Color;
+            backgroundColor.color = block.Color - new Color(0, 0, 0, 0.7f);;
             icon.sprite = block.Sprite;
         }
     }

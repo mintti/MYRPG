@@ -7,6 +7,7 @@ namespace Infra.Model.Data
     {
         None,
         Clear,
+        History,
         Do,
     }
     
@@ -18,8 +19,8 @@ namespace Infra.Model.Data
         public int Index { get; protected set; }
         
         public int Depth { get; set; }
-        public SpotState State { get; set; } 
-     
+        public SpotState State { get; set; }
+
         public List<Spot> ChildSpots { get; set; }
        
         public SpotEvent Event { get; set; }
@@ -37,7 +38,7 @@ namespace Infra.Model.Data
         /// <param name="child">자식 노드</param>
         public void Connect(Spot child)
         {
-            ChildSpots ??= new List<Spot>();
+            ChildSpots ??= new();
             ChildSpots.Add(child);
         }
         #endregion

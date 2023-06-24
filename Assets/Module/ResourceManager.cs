@@ -4,7 +4,9 @@ using System.Linq;
 using Infra;
 using Infra.Model;
 using Infra.Model.Data;
+using Infra.Model.Game;
 using Infra.Model.Resource;
+using Module.Game.Battle;
 using Module.WorldMap;
 using UnityEngine;
 using Dungeon = Infra.Model.Resource.Dungeon;
@@ -17,21 +19,34 @@ namespace Module
     /// </summary>
     internal class ResourceManager : Singleton<ResourceManager>
     {
-        
         #region Initializer
         public ResourceManager()
         {
             #region 테스트 코드
+            for (int i = 0, cnt = Enum.GetNames(typeof(JobType)).Length; i < cnt; i++)
+            {
+                var job = (JobType)i;
+                var sprites = Resources.LoadAll<Sprite>($"Sprite/Blocks/{job.ToString()}Block").ToList();
+
+                if (sprites != null)
+                {
+                    for (int skillIdx = 1; skillIdx <= sprites.Count; skillIdx++)
+                    {
+                        var key = (job, skillIdx);
+                        BlockSpriteDict.Add(key, sprites[skillIdx - 1]);
+                    }
+                }
+            }
 
             var jobSprites = Resources.LoadAll<Sprite>("Sprite/Job");
             Jobs = new List<Job>()
             {
-                new ((int)JobType.Test, "테스트", 20, Color.black),
-                new ((int)JobType.Warrior, "Warrior", 20, Color.blue, jobSprites[0]),
-                new ((int)JobType.Wizard, "Wizard", 20, Color.magenta, jobSprites[1]),
-                new ((int)JobType.Archer, "Archer", 20, Color.green, jobSprites[2]),
-                new ((int)JobType.Knight, "Knight", 20, Color.cyan, jobSprites[3]),
-                new ((int)JobType.Priest, "Priest", 20, Color.yellow, jobSprites[4]),
+                new ((int)JobType.Unknown, "테스트", 20, Color.black),
+                new ((int)JobType.Warrior, "Warrior", 10, Color.blue, jobSprites[0]),
+                new ((int)JobType.Wizard, "Wizard", 10, Color.magenta, jobSprites[1]),
+                new ((int)JobType.Archer, "Archer", 10, Color.green, jobSprites[2]),
+                new ((int)JobType.Knight, "Knight", 10, Color.cyan, jobSprites[3]),
+                new ((int)JobType.Priest, "Priest", 10, Color.yellow, jobSprites[4]),
             };
             Dungeons = new List<Dungeon>()
             {
@@ -41,11 +56,10 @@ namespace Module
             List<Reward> defaultRewards = new() { new Reward(RewardType.Gold, 100, 10) };
             Enemies = new List<Enemy>()
             {
-                new("테스트 몬스터", 10, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
+                new("테스트 몬스터", 15, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
             };
 
-            BlockSprites = Resources.LoadAll<Sprite>("Sprite/block").ToList();
-
+            
             MapSprites = new ();
             var temps = Resources.LoadAll<Sprite>($"Sprite/Map");
             foreach (var name in Enum.GetNames(typeof(SpotEventType)))
@@ -61,26 +75,37 @@ namespace Module
 
         #region Core Data ★★★
         public List<Job> Jobs { get; }
-
         public List<Dungeon> Dungeons { get; }
 
         public List<Enemy> Enemies  { get;  }
+
         #endregion
         
         public readonly List<(int depth, int width)> MapSizeByDungeonLevel= new ()
         {
             (0,0), // never using
-            (4,2),
+            (4,4),
             (0,0),
             (0,0),
             (0,0),
             (0,0),
         };
 
+        public readonly Dictionary<Level, (int level, int bonus)> LevelInfo = new()
+        {
+            {Level.Lv1, (1, 0)},
+            {Level.Lv2, (2, 120)},
+            {Level.Lv3, (3, 250)},
+            {Level.Lv4, (4, 390)},
+            {Level.Lv5, (5, 600)},
+            {Level.Lv6, (6, 750)},
+            {Level.Lv7, (7, 800)},
+        };
+
         public readonly (float battle, float elete, float @event, float rest) EventPercentage 
             = new (0.6f, 0.0f, 0.4f, 0.0f);
 
-        public List<Sprite> BlockSprites { get; }
+        public Dictionary<(JobType job, int index), Sprite> BlockSpriteDict { get; } = new();
         
         public List<Sprite> MapSprites { get; }
         #endregion

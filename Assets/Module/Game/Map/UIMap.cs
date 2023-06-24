@@ -1,6 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Infra.Model.Data;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,7 +11,6 @@ namespace Module.Game.Map
     {
         #region Variables
         public UIGame UIGame { get; set; }
-        
         private List<UISpot> SpotList { get; set; }
         
         #region External 
@@ -26,6 +25,7 @@ namespace Module.Game.Map
             GenerateMap(GameManager.Instance.GameData.Map);
         }
         
+        List<(HorizontalLayoutGroup layoutGroup, ContentSizeFitter fileter)> controlList = new ();
         private void GenerateMap(Spot firstSpot)
         {
             SpotList = new List<UISpot>();
@@ -50,8 +50,9 @@ namespace Module.Game.Map
                     }
                 }
                 depth++;
-            } 
- 
+            }
+
+            
             // 오브젝트 생성
             int space = 100; // Spot간 간격
             foreach (var key in dict.Keys)
@@ -75,11 +76,46 @@ namespace Module.Game.Map
                     uiSpot.Init(this, spot);
                     SpotList.Add(uiSpot);
                 }
+                
+                controlList.Add((c1, c2));
             }
+         
+            gameObject.SetActive(true);
+            StartCoroutine(DrawLine());
+        }
+
+        IEnumerator DrawLine()
+        {
+            yield return new WaitForSeconds(0.1f);
+            // 라인 생성을 위해 이동
+            var cttFilter = content.GetComponent<ContentSizeFitter>();
+            var cttLayGroup = content.GetComponent<VerticalLayoutGroup>();
+
+            cttFilter.enabled = false;
+            cttLayGroup.enabled = false;
+            foreach (var pair in controlList)
+            {
+                pair.fileter.enabled = false;
+                pair.layoutGroup.enabled = false;
+            }
+
+            SpotList.ForEach(ui => ui.transform.parent = content);
+            controlList.ForEach(item => Destroy(item.fileter.gameObject));
+            controlList.Clear();
+            
+            // Spot간 라인 생성
+            SpotList.ForEach(x=> x.CreateLine(SpotList));
+
+            yield return null;
         }
 
         public void UpdateMap()
         {
+            foreach (var spot in SpotList)
+            {
+                
+            }
+            
             SpotList.ForEach(s => s.Refresh());
         }
     }

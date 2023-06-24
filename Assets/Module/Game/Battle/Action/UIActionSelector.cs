@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Infra.Model.Game;
 using UnityEngine;
 
 namespace Module.Game.Battle
@@ -17,7 +18,10 @@ namespace Module.Game.Battle
         public Transform actionContent;
         public GameObject actionPrefab;
 
-    
+        /// <summary>
+        /// 직전 스킬 블럭의 인덱스. 동일한 경우 강화
+        /// </summary>
+        private int _beforeBlockIndex = -1;
         #endregion
 
         /// <summary>
@@ -45,18 +49,27 @@ namespace Module.Game.Battle
         public void On() => gameObject.SetActive(true);
         public void Off() =>  gameObject.SetActive(false);
 
-        public void AddAction(ActionInfo info)
+        public void AddAction(Block block)
         {
-            var uiAction = Actions.FirstOrDefault(x => !x.Active);
-            if (uiAction == null)
+            if (block.Index == _beforeBlockIndex) // 강화
             {
-                var obj = Instantiate(actionPrefab, actionContent);
-                uiAction = obj.GetComponent<UIAction>();
-                Actions.Add(uiAction);
-                uiAction.Init(this);
+                var uiAction = Actions.Last(x => x.Active);
+                uiAction.Upgrade();    
             }
+            else // 신규
+            {
+                var uiAction = Actions.FirstOrDefault(x => !x.Active);
+                if (uiAction == null)
+                {
+                    var obj = Instantiate(actionPrefab, actionContent);
+                    uiAction = obj.GetComponent<UIAction>();
+                    Actions.Add(uiAction);
+                    uiAction.Init(this);
+                }
 
-            uiAction.Set(info);
+                uiAction.Set(block);
+                _beforeBlockIndex = block.Index;
+            }
         }
 
         
@@ -68,6 +81,14 @@ namespace Module.Game.Battle
             NextAction = nextAction;
             CheckFunc = checkFunc;
             On();
+
+            if (Actions.Count == 0) ExecuteAction();
+        }
+
+        public void EndBattle()
+        {
+            _beforeBlockIndex = -1;
+            Actions.ForEach(x=> x.Hide());
         }
         
         /// <summary>
@@ -82,6 +103,7 @@ namespace Module.Game.Battle
                 Off();
                 NextAction = null;
                 CheckFunc = null;
+                _beforeBlockIndex = -1;
             }
         }
     }

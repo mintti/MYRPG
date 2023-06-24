@@ -53,14 +53,14 @@ namespace Infra.Model.Game
 
             foreach (var unit in PlayerData.UnitList)
             {
-                var unitInstance = Factory.GetUnit(unit.JobIndex);
+                var unitInstance = new Unit();
                 unitInstance.SetBaseData(unit);
                 UnitList.Add(unitInstance);
             }
 
             // 임시 초기 값
             SlotWidth = 5;
-            SlotHeight = 2;
+            SlotHeight = 1;
         }
 
         #region Update Item
