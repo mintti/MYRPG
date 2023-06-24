@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Infra.Model.Game;
 
 namespace Module.Game.Battle
 {
@@ -16,6 +17,10 @@ namespace Module.Game.Battle
         /// Entity 객체가 죽었을 때 알림
         /// </summary>
         void UpdateEntityState();
-
+        
+        /// <summary>
+        /// Entity 객체가 죽었을 때 알림
+        /// </summary>
+        void UpdateEntityState(Unit unit);
     }
 }

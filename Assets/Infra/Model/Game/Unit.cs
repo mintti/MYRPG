@@ -5,7 +5,7 @@ using Module.Game.Battle;
 
 namespace Infra.Model.Game
 {
-    internal class Unit : BattleEntity, IBattleEntity
+    internal class Unit : BattleEntity
     {
         #region Variables
         public int JobIndex { get; private set;}
@@ -32,44 +32,15 @@ namespace Infra.Model.Game
             Sprite = jobBase.Icon;
         }
         
-
-        #region Common Battle Unit
-        public bool IsCalled { get; set; }
-        private Dictionary<string, ActionInfo> ActionInfoDict { get; set; } = new();
-        private readonly Dictionary<string, ActionInfo> SkillBuffer = new();
-        
-        /// <summary>
-        /// 스킬 게이지가 추가 된 순간, 행동으로 설정
-        /// </summary>
-        protected void CalledSkill(ActionInfo info)
+        public void SendAction(Block block)
         {
-            string name = info.SkillName;
-            // Check Skill Buffer. If not contained, add it in buffer.
-            if (!SkillBuffer.ContainsKey(name))
-            {
-                SkillBuffer.Add(name, info);
-            }
-
-            // Add Action Info
-            if (!ActionInfoDict.ContainsKey(name))
-            {
-                ActionInfoDict.Add(name, info);
-            }
+            BattleController.UIActionSelector.AddAction(block);
         }
 
-        /// <summary>
-        /// Battle Entity Override.
-        /// 사용 가능한 스킬 리스트를 전달
-        /// </summary>
-        public override void Execute()
+        protected override void Dead()
         {
-            foreach (var action in ActionInfoDict.Values)
-            {
-                BattleController.UIActionSelector.AddAction(action);
-            }
-            
-            ActionInfoDict.Clear();
+            BattleController.UpdateEntityState(this);
+            base.Dead();
         }
-        #endregion
     }
 }

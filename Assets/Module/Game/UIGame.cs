@@ -89,8 +89,11 @@ namespace Module.Game
             SlotService = new SlotService();
 
             // Slot 배치
-            BlockList.Clear();
-            BlockList = GameData.UnitList.SelectMany(u => u.HasBlocks).ToList();
+            InitBlock();
+            foreach (var block in GameData.UnitList.SelectMany(u => u.HasBlocks))
+            {
+                AddBlock(block);
+            }
             uiSlot.CreateSlot(GameData.SlotWidth, GameData.SlotHeight);
 
             // Artefact 배치
@@ -169,7 +172,50 @@ namespace Module.Game
         public IEnumerable<Unit> UnitList => GameData.UnitList;
 
         #endregion
+
+        #region Block
+
+
+        public void InitBlock()
+        {
+            // 빈 칸은 빈 블럭으로 채우기
+            var slotSize = GameData.SlotWidth * GameData.SlotHeight;
+            FillNullBlock(slotSize);
+        }
         
+        /// <summary>
+        /// 블럭 추가
+        /// </summary>
+        public void AddBlock(Block block)
+        {
+            var nullBlock = BlockList.FirstOrDefault(b => b.Index == Factory.NullBlockIndex);
+            if (nullBlock != null)
+            {
+                BlockList.Remove(nullBlock);
+                BlockList.Add(block);
+            }
+        }
+        
+        /// <summary>
+        /// 대상의 블럭을 제거
+        /// </summary>
+        public void RemoveBlock(Unit Caster)
+        {
+            Caster.HasBlocks.ForEach(b => BlockList.Remove(b));
+            
+            // 빈 칸은 빈 블럭으로 채우기
+            var slotSize = GameData.SlotWidth * GameData.SlotHeight;
+            FillNullBlock(slotSize - BlockList.Count);
+        }
+
+        private void FillNullBlock(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                BlockList.Add(new Block());
+            }         
+        }
+        #endregion
 
         #region Spin Event
         private IEnumerator Spin(Action<Block[,]> callback = null)
@@ -179,12 +225,13 @@ namespace Module.Game
 
             int slotWidth = GameData.SlotWidth;
             int slotHeight = GameData.SlotHeight;
+            
             // 블럭 지정 및 설정
             var list = SlotService.GetRandomBlock(BlockList, slotWidth, slotHeight, BlockEvents).ToList();
             uiSlot.SetBlocks(list);
             
             // 스핀 효과 적용 *Show Animation
-            uiSlot.SpinAnimation();
+            yield return uiSlot.SpinAnimation();
             
             // 결과 전달
             if (callback != null)
@@ -211,26 +258,27 @@ namespace Module.Game
         /// </summary>
         /// <param name="targetType"></param>
         /// <returns></returns>
+        IEnumerable<UIEntity> _targets = null;
         public void SelectBattleEntity(TargetType targetType, Action<BattleEntity> action = null)
         {
             BattleEntity entity = null;
             SelectedAction = action;
             targetSelectGameObject.SetActive(true);
 
-            IEnumerable<UIEntity> targets = null;
+            _targets = null;
             switch (targetType)
             {
                 case TargetType.Enemy :
-                    targets = uIBattle.UIEnemies;
+                    _targets = uIBattle.UIEnemies;
                     break;
                 case TargetType.Unit :
-                    targets = uIBattle.UIUnits;
+                    _targets = uIBattle.UIUnits;
                     break;
             }
 
-            if (targets != null)
+            if (_targets != null)
             {
-                foreach (var target in targets)
+                foreach (var target in _targets)
                 {
                     target.TargetMode(true);
                 }
@@ -240,6 +288,11 @@ namespace Module.Game
 
         public void SelectedUIEntityEvent(BattleEntity battleEntity)
         {
+            foreach (var target in _targets)
+            {
+                target.TargetMode(false);
+            }
+            
             SelectedAction?.Invoke(battleEntity);
             SelectedAction = null;
             CancelSelectEntity();

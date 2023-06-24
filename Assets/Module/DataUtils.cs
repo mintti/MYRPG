@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Versioning;
 using System.Security.Cryptography.X509Certificates;
@@ -20,6 +21,7 @@ namespace Module
     
     internal static class DataUtils
     {
+        private static System.Random _random;
         private static ResourceManager Resource => ResourceManager.Instance;
         public static PlayerData CreateNewData(List<int> selectedJobList)
         {
@@ -43,6 +45,8 @@ namespace Module
 
         public static Spot GetRandomMap(Dungeon dungeonData)
         {
+            _random = new System.Random();
+            
             RandomMapMaker map = new RandomMapMaker();
             var dungeon = Resource.Dungeons[dungeonData.Index];
             
@@ -86,9 +90,8 @@ namespace Module
             
             // Set Detail of event 
             int index = 0;
-            var randomMonsterSeq = GetRandomList(dungeon.EnemyList, 1, 4);
             var randomEliteSeq = GetRandomList(dungeon.EnemyList, 1, 4); // [TODO] 랜덤 엘리트 조합 생성 필요
-            var randomEventSeq = (GetRandomList(dungeon.EventList, 1));
+            var randomEventSeq = GetRandomList(dungeon.EventList, 1);
             foreach (var evt in eventList)
             {
                 SpotEvent spotEvent;
@@ -96,14 +99,14 @@ namespace Module
                 switch (type)
                 {
                     case SpotEventType.Battle:
-                        spotEvent = new BattleEvent(randomMonsterSeq.ToList());
+                        spotEvent = GetBattleEvent(GetRandomList(dungeon.EnemyList, 1, 4));
                         break;
                     case  SpotEventType.Elite:
-                        spotEvent = new BattleEvent(randomEliteSeq.ToList());
+                        spotEvent = GetBattleEvent(randomEliteSeq);
                         type = SpotEventType.Battle;
                         break;
                     case SpotEventType.Boss:
-                        spotEvent = new BattleEvent(null);
+                        spotEvent = GetBattleEvent(null);
                         type = SpotEventType.Battle;
                         break;
                     case SpotEventType.Rest:
@@ -122,6 +125,8 @@ namespace Module
             }
             #endregion
             
+            _random = null;
+            
             return spotList.First();
         }
 
@@ -135,13 +140,12 @@ namespace Module
 
         private static IEnumerable<T> ShuffleList<T>(List<T> list)
         {
-            var random = new System.Random();
             var output = new List<T>();
             
             // 한번 더 랜덤 섞기
             for (var i = list.Count; i > 0; i--)
             {
-                var randomIdx = random.Next(0, i);
+                var randomIdx = _random.Next(0, i);
                 output.Add(list[randomIdx]);
             }
 
@@ -150,12 +154,11 @@ namespace Module
 
         private static IEnumerable<int> GetRandomList(List<int> list, int count)
         {
-            var random = new System.Random();
             var output = new List<int>();
             var length = list.Count;
             for (int i = 0; i < count; i++)
             {
-                var index = random.Next(0, length);
+                var index = _random.Next(0, length);
                 output.Add(list[index]);
             }
 
@@ -164,18 +167,22 @@ namespace Module
         
         private static IEnumerable<int> GetRandomList(List<int> list, int min, int max)
         {
-            var random = new System.Random();
             var output = new List<int>();
             var length = list.Count;
-            var count = random.Next(min, max + 1);
+            var count = _random.Next(min, max + 1);
             
             for (int i = 0; i < count; i++)
             {
-                var index = random.Next(0, length);
+                var index = _random.Next(0, length);
                 output.Add(list[index]);
             }
 
             return output;
+        }
+
+        private static BattleEvent GetBattleEvent(IEnumerable<int> enemies)
+        {
+            return  new BattleEvent(enemies);
         }
     }
 }

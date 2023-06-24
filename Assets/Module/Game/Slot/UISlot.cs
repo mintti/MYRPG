@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Infra.Model.Game;
 using UnityEngine;
@@ -14,6 +15,12 @@ namespace Module.Game.Slot
         public GameObject blockPrefab;
         
         private List<UIBlock> Blocks { get; set; }
+        private List<UIBlock> DummyBlocks { get; set; }
+
+        private int _height; // 슬롯 세로 크기
+        private int _augmenter; // 슬롯 애니메이션이 증가값
+
+        private const int BlockSize = 80;
         #endregion
 
         public void Init(UIGame uiGame)
@@ -23,13 +30,23 @@ namespace Module.Game.Slot
 
         public void CreateSlot(int width, int height) 
         {
-            slotRectTr.sizeDelta = new Vector2(width * 100, height * 100);
-
+            _height = height;
+            _augmenter = 15 * height;
+            slotRectTr.sizeDelta = new Vector2(width * BlockSize, height * BlockSize);
+            
             Blocks = new List<UIBlock>();
             for (int i = 0, cnt = width * height; i < cnt; i++)
             {
                 var obj = Instantiate(blockPrefab, blockContentTr);
                 Blocks.Add(obj.GetComponent<UIBlock>());
+            }
+            
+            // 더미도 생성
+            DummyBlocks = new List<UIBlock>();
+            for (int i = 0, cnt = width * height; i < cnt; i++)
+            {
+                var obj = Instantiate(blockPrefab, blockContentTr);
+                DummyBlocks.Add(obj.GetComponent<UIBlock>());
             }
         }
 
@@ -50,14 +67,28 @@ namespace Module.Game.Slot
             {
                 foreach (var block in seq)
                 {
-                    Blocks[index++].Set(block);
+                    Blocks[index].Set(block);
+                    DummyBlocks[index++].Set(block);
                 }
             } while (index < length);
         }
 
-        public void SpinAnimation()
+        public IEnumerator SpinAnimation()
         {
+            var rect = blockContentTr.GetComponent<RectTransform>();
             
+            int targetTop = BlockSize * _height;
+            
+            for (int i = 0; i < 3; i++)
+            {
+                for (int top = 0; top <= targetTop; top += _augmenter)
+                {
+                    rect.anchoredPosition = new Vector3(0, top, 0);
+                    yield return new WaitForSeconds(0.01f);
+                }
+            }
+
+            rect.anchoredPosition = Vector3.zero;
         }
     }
 }

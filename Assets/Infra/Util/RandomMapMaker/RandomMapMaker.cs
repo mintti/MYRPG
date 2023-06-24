@@ -81,7 +81,6 @@ namespace Infra.Util.RandomMapMaker
                 if (canBranchCount < Childs.Count)
                     pivot = _random.Next(canBranchCount, canBranchCount + 1);
                 else pivot = canBranchCount;
-
             }
         }
         #region interface
