@@ -4,7 +4,9 @@ using System.Linq;
 using Infra;
 using Infra.Model;
 using Infra.Model.Data;
+using Infra.Model.Game;
 using Infra.Model.Resource;
+using Module.Game.Battle;
 using Module.WorldMap;
 using UnityEngine;
 using Dungeon = Infra.Model.Resource.Dungeon;
@@ -21,6 +23,20 @@ namespace Module
         public ResourceManager()
         {
             #region 테스트 코드
+            for (int i = 0, cnt = Enum.GetNames(typeof(JobType)).Length; i < cnt; i++)
+            {
+                var job = (JobType)i;
+                var sprites = Resources.LoadAll<Sprite>($"Sprite/Blocks/{job.ToString()}Block").ToList();
+
+                if (sprites != null)
+                {
+                    for (int skillIdx = 1; skillIdx <= sprites.Count; skillIdx++)
+                    {
+                        var key = (job, skillIdx);
+                        BlockSpriteDict.Add(key, sprites[skillIdx - 1]);
+                    }
+                }
+            }
 
             var jobSprites = Resources.LoadAll<Sprite>("Sprite/Job");
             Jobs = new List<Job>()
@@ -43,21 +59,7 @@ namespace Module
                 new("테스트 몬스터", 15, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
             };
 
-            for (int i = 0, cnt = Enum.GetNames(typeof(JobType)).Length; i < cnt; i++)
-            {
-                var job = (JobType)i;
-                var sprites = Resources.LoadAll<Sprite>($"Sprite/Blocks/{job.ToString()}Block").ToList();
-
-                if (sprites != null)
-                {
-                    for (int skillIdx = 1; skillIdx <= sprites.Count; skillIdx++)
-                    {
-                        var key = (job, skillIdx);
-                        BlockSpriteDict.Add(key, sprites[skillIdx - 1]);
-                    }
-                }
-            }
-
+            
             MapSprites = new ();
             var temps = Resources.LoadAll<Sprite>($"Sprite/Map");
             foreach (var name in Enum.GetNames(typeof(SpotEventType)))
@@ -73,11 +75,10 @@ namespace Module
 
         #region Core Data ★★★
         public List<Job> Jobs { get; }
-
         public List<Dungeon> Dungeons { get; }
 
         public List<Enemy> Enemies  { get;  }
-        
+
         #endregion
         
         public readonly List<(int depth, int width)> MapSizeByDungeonLevel= new ()
@@ -88,6 +89,17 @@ namespace Module
             (0,0),
             (0,0),
             (0,0),
+        };
+
+        public readonly Dictionary<Level, (int level, int bonus)> LevelInfo = new()
+        {
+            {Level.Lv1, (1, 0)},
+            {Level.Lv2, (2, 120)},
+            {Level.Lv3, (3, 250)},
+            {Level.Lv4, (4, 390)},
+            {Level.Lv5, (5, 600)},
+            {Level.Lv6, (6, 750)},
+            {Level.Lv7, (7, 800)},
         };
 
         public readonly (float battle, float elete, float @event, float rest) EventPercentage 

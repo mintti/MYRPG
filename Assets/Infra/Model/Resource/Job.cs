@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using Infra.Model.Game;
+using Module;
+using UnityEngine;
 
 namespace Infra.Model.Resource
 {
@@ -17,9 +20,7 @@ namespace Infra.Model.Resource
         {
             Index = index;
             Name = name;
-
             Hp = hp;
-            
             Color = color;
             Icon = icon;
         }

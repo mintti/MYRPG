@@ -1,10 +1,24 @@
 ﻿using System;
+using Infra.Model.Resource;
+using Module;
 using Module.Game;
+using Module.Game.Battle;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Infra.Model.Game
 {
+    internal enum Level : int
+    {
+        Lv1 = 1,
+        Lv2 = 2,
+        Lv3 = 3,
+        Lv4 = 4,
+        Lv5 = 5,
+        Lv6 = 6,
+        Lv7 = 7,
+    }
+
     internal class Block
     {
         #region Info
@@ -13,30 +27,37 @@ namespace Infra.Model.Game
         /// <summary>
         /// 스킬 인덱스
         /// </summary>
-        public int Index { get; set; } = 1;
-        public Color Color { get; set; }
-        public Sprite Sprite { get; set; }
+        public int Index { get; private set; } = 1;
+        public Color Color { get; private set;}
+        public Sprite Sprite { get; private set;}
         
-        protected BattleEntity ConnectedEntity { get; set; }
+        public SkillType SkillType { get; }
+        public TargetType TargetType { get; set; }
+        public int DefaultDamage { get; private set; }
         #endregion
         
         #region Game
+        protected Unit Caster { get; private set; }
         public float Weight { get; set; }
         public float WeightBackup { get; set; }
         #endregion
-        
-        public void Set(string name, Color color, Sprite sprite = null)
+
+        public Block(int index, string name, int defDam, SkillType skillType, TargetType targetType, Color color, Sprite sprite = null)
         {
+            Index = index;
             Name = name;
+            DefaultDamage = defDam;
+            SkillType = skillType;
+            TargetType = targetType;
             Color = color;
             Sprite = sprite;
             Weight = 1;
             WeightBackup = Weight;
         }
 
-        public void ConnectCaster(BattleEntity entity)
+        public void ConnectCaster(Unit caster)
         {
-            ConnectedEntity = entity;
+            Caster = caster;
         }
 
         protected float Bonus { get; set; }
@@ -56,18 +77,26 @@ namespace Infra.Model.Game
         /// <summary>
         /// 블럭 실행에 따라 Caster에게 부여할 이벤트가 존재할 경우, 재정의 하여 사용
         /// </summary>
-        public virtual void Execute()
+        public void Execute()
         {
-            
+            Caster.SendAction(this);
         }
 
-        // #region ICloneable
-        // public virtual object Clone()
-        // {
-        //     var block = new Block();
-        //     block.Set(Name, Color, Sprite);
-        //     return block;
-        // }
-        // #endregion
+        public void Action(BattleEntity target, Level level = default)
+        {
+            Caster.ActionAnimation(Name);
+
+            int gauge = (int) (DefaultDamage * (ResourceManager.Instance.LevelInfo[level].bonus + 100) * 0.01f);
+            
+            switch(SkillType) 
+            {
+                case SkillType.Attack: target.Hit(gauge);
+                    break;
+                case SkillType.Heal:
+                    target.Heal(gauge);
+                    break;
+                default: break;
+            }
+        }
     }
 }

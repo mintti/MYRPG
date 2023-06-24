@@ -53,6 +53,7 @@ namespace Module.Game
         {
             return State == State.Alive;
         }
+        
         public bool CanDesignateTarget()
         {
             return State == State.Alive;
@@ -70,6 +71,8 @@ namespace Module.Game
             UIEntity = uiEntity;
             UIEntity.UIEntityState.UpdateHp(Hp, MaxHp);
         }
+
+        public void ActionAnimation(string name) => UIEntity?.Animation(name);
 
         /// <summary>
         /// UI Entity 인스턴스와 연결 해제
@@ -106,7 +109,7 @@ namespace Module.Game
             Hp += point;
             Animation(nameof(Heal));
         }
-
+        
         private void Dead()
         {
             State = State.Die;

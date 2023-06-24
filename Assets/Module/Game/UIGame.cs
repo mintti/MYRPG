@@ -211,26 +211,27 @@ namespace Module.Game
         /// </summary>
         /// <param name="targetType"></param>
         /// <returns></returns>
+        IEnumerable<UIEntity> _targets = null;
         public void SelectBattleEntity(TargetType targetType, Action<BattleEntity> action = null)
         {
             BattleEntity entity = null;
             SelectedAction = action;
             targetSelectGameObject.SetActive(true);
 
-            IEnumerable<UIEntity> targets = null;
+            _targets = null;
             switch (targetType)
             {
                 case TargetType.Enemy :
-                    targets = uIBattle.UIEnemies;
+                    _targets = uIBattle.UIEnemies;
                     break;
                 case TargetType.Unit :
-                    targets = uIBattle.UIUnits;
+                    _targets = uIBattle.UIUnits;
                     break;
             }
 
-            if (targets != null)
+            if (_targets != null)
             {
-                foreach (var target in targets)
+                foreach (var target in _targets)
                 {
                     target.TargetMode(true);
                 }
@@ -240,6 +241,11 @@ namespace Module.Game
 
         public void SelectedUIEntityEvent(BattleEntity battleEntity)
         {
+            foreach (var target in _targets)
+            {
+                target.TargetMode(false);
+            }
+            
             SelectedAction?.Invoke(battleEntity);
             SelectedAction = null;
             CancelSelectEntity();

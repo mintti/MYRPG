@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -58,6 +59,16 @@ namespace Module.Game.Battle
         
         #region Target On Event
 
+        private bool _doTarget;
+        private bool DoTarget
+        {
+            get => _doTarget;
+            set
+            {
+                _doTarget = value;
+                canBeTargetGameObject.SetActive(value);
+            }
+        }
         public GameObject canBeTargetGameObject;
 
         public void TargetMode(bool state)
@@ -65,14 +76,14 @@ namespace Module.Game.Battle
             if (BattleEntity != null)
             {
                 if (state && !BattleEntity.GetEntity.CanDesignateTarget()) return;
-                
-                canBeTargetGameObject.SetActive(state);
+                DoTarget = state;
             }
             
         }
         
         private void OnMouseUp()
         {
+            if(_doTarget)
             UIBattle.UIGame.SelectedUIEntityEvent(BattleEntity.GetEntity);
         }
         #endregion

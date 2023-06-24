@@ -122,6 +122,7 @@ namespace Module.Game.Event
 
         private void End(bool clear = true)
         {
+            UIBattle.UIActionSelector.EndBattle();
             UIGame.EndEvent(clear);
         }
 
