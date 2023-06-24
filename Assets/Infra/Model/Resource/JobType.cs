@@ -6,7 +6,7 @@
         Warrior,
         Wizard,
         Archer,
+        Priest,
         Knight,
-        Priest
     }
 }

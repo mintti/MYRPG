@@ -51,6 +51,12 @@ namespace Module.Game.Battle
 
         public void AddAction(Block block)
         {
+            if (block.Index == Factory.NullBlockIndex)
+            {
+                _beforeBlockIndex = -1;
+                return;
+            }
+            
             if (block.Index == _beforeBlockIndex) // 강화
             {
                 var uiAction = Actions.Last(x => x.Active);

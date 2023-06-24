@@ -17,7 +17,7 @@ namespace Infra.Model.Data
 
             // 기본 데이타 설정
             HasBlocks = new List<(int Index, int Grade, int Level)>();
-            for (var i = 0; i < 1; i++)
+            for (var i = 0; i < 2; i++)
                 HasBlocks.Add((1, 1, 1));
 
             Hp = ResourceManager.Instance.Jobs[jobIndex].Hp;
