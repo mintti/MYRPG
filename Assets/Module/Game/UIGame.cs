@@ -90,7 +90,7 @@ namespace Module.Game
 
             // Slot 배치
             InitBlock();
-            foreach (var block in GameData.UnitList.SelectMany(u => u.HasBlocks))
+            foreach (var block in GameData.UnitList.Where(u => u.State == State.Alive).SelectMany(u => u.HasBlocks))
             {
                 AddBlock(block);
             }
@@ -192,8 +192,8 @@ namespace Module.Game
             if (nullBlock != null)
             {
                 BlockList.Remove(nullBlock);
-                BlockList.Add(block);
             }
+            BlockList.Add(block);
         }
         
         /// <summary>

@@ -17,7 +17,7 @@ namespace Module.Game
 
             if (target != null)
             {
-                target.Hit(1);
+                target.Hit(Power);
                 Debug.Log($"{this.Name}이가 {target.Name}에게 Hit");
             }
             else 

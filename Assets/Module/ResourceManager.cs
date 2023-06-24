@@ -45,8 +45,8 @@ namespace Module
                 new ((int)JobType.Warrior, "Warrior", 10, Color.blue, jobSprites[0]),
                 new ((int)JobType.Wizard, "Wizard", 10, Color.magenta, jobSprites[1]),
                 new ((int)JobType.Archer, "Archer", 10, Color.green, jobSprites[2]),
-                new ((int)JobType.Knight, "Knight", 10, Color.cyan, jobSprites[3]),
                 new ((int)JobType.Priest, "Priest", 10, Color.yellow, jobSprites[4]),
+                new ((int)JobType.Knight, "Knight", 10, Color.cyan, jobSprites[3]),
             };
             Dungeons = new List<Dungeon>()
             {
@@ -56,7 +56,7 @@ namespace Module
             List<Reward> defaultRewards = new() { new Reward(RewardType.Gold, 100, 10) };
             Enemies = new List<Enemy>()
             {
-                new("테스트 몬스터", 15, 5, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
+                new("테스트 몬스터", 15, 2, Resources.Load<Sprite>("Sprite/enemy")){Rewards = defaultRewards}
             };
 
             
