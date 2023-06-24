@@ -58,6 +58,7 @@ namespace Module.Game
         {
             return State == State.Alive;
         }
+
         #endregion
 
         #region IBattleEntity
@@ -110,7 +111,7 @@ namespace Module.Game
             Animation(nameof(Heal));
         }
         
-        private void Dead()
+        protected virtual void Dead()
         {
             State = State.Die;
             BattleController.UpdateEntityState();

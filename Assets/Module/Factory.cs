@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Infra.Model.Data;
 using Infra.Model.Game;
-using Infra.Model.Game.Class;
 using Infra.Model.Resource;
 using Module.Game;
 using Module.Game.Battle;

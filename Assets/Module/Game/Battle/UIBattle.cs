@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Infra.Model.Game;
+using Module.Game.Slot;
 using UnityEngine;
 
 namespace Module.Game.Battle
@@ -54,7 +55,10 @@ namespace Module.Game.Battle
             // [TODO] Entity 객체 동적 생성 가능하도록 고안해보기 
             for (int i = 0, cnt = UnitList.Count; i < cnt; i++)
             {
-                UIUnits[i].SetEntity(UnitList[i], UIEttSttList[etstIdx++]);
+                if (UnitList[i].State == State.Alive)
+                {
+                    UIUnits[i].SetEntity(UnitList[i], UIEttSttList[etstIdx++]);
+                }
             }
             
             for (int i = 0, cnt = EnemyList.Count; i < cnt; i++)
@@ -81,11 +85,19 @@ namespace Module.Game.Battle
             return UnitList.Where(x=> x.State == State.Alive);
         }
 
-        public  UIActionSelector UIActionSelector => UIGame.uIActionSelector;
+        public UIActionSelector UIActionSelector => UIGame.uIActionSelector;
 
         public void UpdateEntityState()
         {
             WhoseDieFlag = true;
+        }
+
+        /// <summary>
+        /// Entity 객체가 죽었을 때 알림
+        /// </summary>
+        public void UpdateEntityState(Unit unit)
+        {
+            UIGame.RemoveBlock(unit);
         }
         #endregion
 

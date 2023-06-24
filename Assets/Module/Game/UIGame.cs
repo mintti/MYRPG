@@ -169,7 +169,17 @@ namespace Module.Game
         public IEnumerable<Unit> UnitList => GameData.UnitList;
 
         #endregion
-        
+
+        #region Block
+        /// <summary>
+        /// 대상의 블럭을 제거
+        /// </summary>
+        public void RemoveBlock(Unit Caster)
+        {
+            Caster.HasBlocks.ForEach(b => BlockList.Remove(b));
+        }
+
+        #endregion
 
         #region Spin Event
         private IEnumerator Spin(Action<Block[,]> callback = null)

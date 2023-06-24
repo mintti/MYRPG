@@ -36,6 +36,11 @@ namespace Infra.Model.Game
         {
             BattleController.UIActionSelector.AddAction(block);
         }
-        
+
+        protected override void Dead()
+        {
+            BattleController.UpdateEntityState(this);
+            base.Dead();
+        }
     }
 }
