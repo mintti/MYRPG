@@ -12,14 +12,14 @@
 
 - `PROTO-04` branch
 
-![feedback_before](https://github.com/mintti/MYRPG/assets/31724017/7dd79bd2-2397-46fe-8965-8f2fecc85053)
+<img width="80%" src="https://github.com/mintti/MYRPG/assets/31724017/7dd79bd2-2397-46fe-8965-8f2fecc85053.gif"/>
 
 
 ### 2023.06: **프로토 타입 피드백 반영**
 
 - `Proto-feedback` branch
 
-![feedback_after](https://github.com/mintti/MYRPG/assets/31724017/03c98a26-d995-4f7a-8328-01cb4dd946d1)
+<img width="80%" src="https://github.com/mintti/MYRPG/assets/31724017/03c98a26-d995-4f7a-8328-01cb4dd946d1.gif"/>
 
 ### 2023.07 ~: 기본 기능 및 상세 구현 (예정)
 
